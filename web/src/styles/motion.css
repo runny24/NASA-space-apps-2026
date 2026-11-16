@@ -1,0 +1,209 @@
+/* The motion system (docs/MOTION_AND_STORY_BRIEF.md, section 6; the rules are in web/MOTION.md).
+   Motion explains where, when and what changed. It never touches a measurement: no radar picture
+   fades, no date glides, no chart grows, no number counts up (section 4 of the brief).
+
+   All motion goes through classes in this file and in story/story.css, never through inline styles:
+   styles.css sets every transition and animation duration to 0 s under prefers-reduced-motion, and
+   e2e/accessibility.spec.ts checks that no element reports another duration. */
+
+:root {
+  --dur-1: 120ms; /* press, hover, a switch */
+  --dur-2: 200ms; /* small fades: a tooltip, a readout arriving */
+  --dur-3: 320ms; /* a card, a drawer, the dialog */
+  --dur-4: 520ms; /* a word of the cover title, the cover leaving */
+  --dur-5: 900ms; /* night falling */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* things arriving */
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0); /* things leaving */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* things moving across */
+  --stagger: 45ms;
+  --rise: 12px;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   The tool, with less to read at once (brief, section 8, slice 4).
+
+   Three folds, each a native <details> built like a bars figure's method (.bars-method in
+   styles.css, left as it is): the region and method of each series in Statistics (StatsPanel.tsx;
+   the bar charts keep their region in view), the dated
+   reasons of the missing passes (Controls.tsx; the hatched marks, the key and the count stay in
+   view) and the layer's method in the legend (Legend.tsx; its description stays in view). The
+   marker and Enter / Space are the browser's own; the focus ring is the app's (:focus-visible in
+   styles.css). Nothing that must stay in view is folded: the citation, the mixed-release warning,
+   credits, the sentence that an overlay is not a NISAR measurement. */
+
+.series-method,
+.legend-method {
+  margin: 6px 0 0;
+}
+
+.series-method > summary,
+.legend-method > summary,
+.missing-reasons > summary {
+  cursor: pointer;
+  width: fit-content;
+  font-size: 0.9em;
+}
+
+.series-method > p,
+.legend-method > p {
+  margin: 4px 0 0;
+}
+
+/* The count of missing passes and the summary under it, in the type of the list they replace. */
+.missing-count {
+  margin: 4px 0 0;
+  font-size: 0.85em;
+  color: var(--muted);
+}
+
+.missing-reasons {
+  margin: 2px 0 0;
+}
+
+.missing-reasons > summary {
+  font-size: 0.85em;
+  color: var(--muted);
+}
+
+/* Touch screens and phone widths: each summary a 44 px row, its text in the middle. */
+@media (max-width: 760px), (pointer: coarse) {
+  .series-method > summary,
+  .legend-method > summary,
+  .missing-reasons > summary {
+    min-height: 44px;
+    box-sizing: border-box;
+    padding-block: 11px;
+  }
+}
+
+/* The tool's small motion. Only the frame moves: buttons, the switch's knob, a disclosure opening,
+   the About dialog, the panels arriving, a reading arriving, a ring where the marker lands. All of it
+   sits inside this media query, so with reduced motion none of it exists (no duration, no delay, no
+   pressed scale); styles.css also zeroes every duration there. Never touched here: the timeline's
+   marks (.tick, .tick-current), the bars, their whiskers and zero marks, the "Loading the picture"
+   note (.picture-loading, whose 400 ms delay is its own) and every radar picture (map/dataLayers.ts).
+   Only transform and opacity move, plus a button's colours (paint, not layout). */
+@media (prefers-reduced-motion: no-preference) {
+  /* Buttons, but never the timeline's marks, which are buttons too: a date change is instant.
+     :where() keeps this a default that any rule naming a button's class overrides. */
+  :where(button:not(.tick)) {
+    transition:
+      background-color var(--dur-1) var(--ease-out),
+      border-color var(--dur-1) var(--ease-out),
+      transform var(--dur-1) var(--ease-out);
+  }
+
+  :where(button:not(.tick, :disabled, [aria-disabled='true'])):active {
+    transform: scale(0.97);
+  }
+
+  /* The overlay switch's knob slides, where the switch is drawn with one (the input's ::before);
+     the browser's own checkbox has none, and then this does nothing. */
+  .switch input[type='checkbox']::before {
+    transition: transform var(--dur-1) var(--ease-out);
+  }
+
+  /* A disclosure opened in the side column: its content fades in and rises 6 px. Closing is instant. */
+  .side details[open] > :not(summary) {
+    animation: tool-unfold var(--dur-2) var(--ease-out);
+  }
+
+  /* The About dialog and its backdrop fade in, the dialog from 98 %. Closing is instant. */
+  .about[open] {
+    transition:
+      opacity var(--dur-3) var(--ease-out),
+      transform var(--dur-3) var(--ease-out);
+  }
+
+  .about[open]::backdrop {
+    transition: opacity var(--dur-3) var(--ease-out);
+  }
+
+  @starting-style {
+    .about[open] {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+
+    .about[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  /* The side panels rise into place once, when the data has loaded and they first appear, one
+     after another (--stagger apart). Each panel moves as one block: no chart grows, no number counts. */
+  .side > .panel {
+    animation: tool-panel-rise var(--dur-3) var(--ease-out) backwards;
+  }
+
+  .side > .panel:nth-child(2) {
+    animation-delay: var(--stagger);
+  }
+
+  .side > .panel:nth-child(3) {
+    animation-delay: calc(2 * var(--stagger));
+  }
+
+  .side > .panel:nth-child(n + 4) {
+    animation-delay: calc(3 * var(--stagger));
+  }
+
+  /* "At a point": the line with the value fades in whole when the value arrives. */
+  .inspect-value-line {
+    animation: tool-fade-in var(--dur-2) var(--ease-out);
+  }
+
+  /* One amber ring spreads from where the marker points (the point of the reading; the default
+     marker sits 14 px above it) and fades; components/MapView.tsx adds the class at each placing.
+     A highlight, not data: amber is "where you are", and it is gone in 600 ms. */
+  .point-marker-ring::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: calc(50% + 14px);
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid var(--focus);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 1px var(--focus-edge),
+      inset 0 0 0 1px var(--focus-edge);
+    opacity: 0;
+    pointer-events: none;
+    animation: tool-marker-ring 600ms var(--ease-out);
+  }
+}
+
+@keyframes tool-unfold {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes tool-panel-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise));
+  }
+}
+
+@keyframes tool-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes tool-marker-ring {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(3);
+  }
+}

@@ -1,0 +1,916 @@
+{
+  "id": "tarn-taran",
+  "title": "Southern Tarn Taran, Punjab, India: a farm year seen by radar",
+  "summary": "NISAR L-band radar backscatter over the rice and wheat fields between Patti and the Harike wetland, one pass every 12 days from November 2025 to November 2026.",
+  "is_sample": false,
+  "bounds": [
+    74.78,
+    31.08,
+    75.08,
+    31.34
+  ],
+  "source": {
+    "product": "NISAR L2 GCOV",
+    "collection": "NISAR_L2_GCOV_PROVISIONAL_V1, NISAR_L2_GCOV_V1",
+    "release": "mixed",
+    "stack": "156_A_017",
+    "direction": "ascending",
+    "frequency": "A",
+    "posting_m": 10.0,
+    "working_resolution_m": 20.0,
+    "native_epsg": 32643,
+    "citation": "NISAR L2 GCOV data: NASA/JPL-Caltech and ISRO, distributed by the Alaska Satellite Facility DAAC."
+  },
+  "dates": [
+    {
+      "date": "2025-11-21",
+      "datetime": "2025-11-21T00:13:10Z",
+      "granule": "NISAR_L2_PR_GCOV_005_156_A_017_4005_DHDH_A_20251121T001310_20251121T001345_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2025-12-03",
+      "datetime": "2025-12-03T00:13:11Z",
+      "granule": "NISAR_L2_PR_GCOV_006_156_A_017_4005_DHDH_A_20251203T001311_20251203T001345_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2025-12-15",
+      "datetime": "2025-12-15T00:13:11Z",
+      "granule": "NISAR_L2_PR_GCOV_007_156_A_017_4005_DHDH_A_20251215T001311_20251215T001346_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2025-12-27",
+      "datetime": "2025-12-27T00:13:12Z",
+      "granule": "NISAR_L2_PR_GCOV_008_156_A_017_4005_DHDH_A_20251227T001312_20251227T001347_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-01-08",
+      "datetime": "2026-01-08T00:13:12Z",
+      "granule": "NISAR_L2_PR_GCOV_009_156_A_017_4005_DHDH_A_20260108T001312_20260108T001347_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-01-20",
+      "datetime": "2026-01-20T00:13:13Z",
+      "granule": "NISAR_L2_PR_GCOV_010_156_A_017_4005_DHDH_A_20260120T001313_20260120T001348_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-02-01",
+      "datetime": "2026-02-01T00:13:14Z",
+      "granule": "NISAR_L2_PR_GCOV_011_156_A_017_4005_DHDH_A_20260201T001314_20260201T001348_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-02-25",
+      "datetime": "2026-02-25T00:13:15Z",
+      "granule": "NISAR_L2_PR_GCOV_013_156_A_017_4005_DHDH_A_20260225T001315_20260225T001349_P05023_N_F_J_002",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-03-09",
+      "datetime": "2026-03-09T00:13:15Z",
+      "granule": "NISAR_L2_PR_GCOV_014_156_A_017_4005_DHDH_A_20260309T001315_20260309T001350_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-03-21",
+      "datetime": "2026-03-21T00:13:16Z",
+      "granule": "NISAR_L2_PR_GCOV_015_156_A_017_4005_DHDH_A_20260321T001316_20260321T001350_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-04-26",
+      "datetime": "2026-04-26T00:13:16Z",
+      "granule": "NISAR_L2_PR_GCOV_018_156_A_017_4005_DHDH_A_20260426T001316_20260426T001350_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-05-08",
+      "datetime": "2026-05-08T00:13:15Z",
+      "granule": "NISAR_L2_PR_GCOV_019_156_A_017_4005_DHDH_A_20260508T001315_20260508T001350_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-05-20",
+      "datetime": "2026-05-20T00:13:15Z",
+      "granule": "NISAR_L2_PR_GCOV_020_156_A_017_4005_DHDH_A_20260520T001315_20260520T001349_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-06-01",
+      "datetime": "2026-06-01T00:13:14Z",
+      "granule": "NISAR_L2_PR_GCOV_021_156_A_017_4005_DHDH_A_20260601T001314_20260601T001349_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-06-13",
+      "datetime": "2026-06-13T00:13:13Z",
+      "granule": "NISAR_L2_PR_GCOV_022_156_A_017_4005_DHDH_A_20260613T001313_20260613T001348_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-06-25",
+      "datetime": "2026-06-25T00:13:13Z",
+      "granule": "NISAR_L2_PR_GCOV_023_156_A_017_4005_DHDH_A_20260625T001313_20260625T001347_P05023_N_F_J_002",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-07-19",
+      "datetime": "2026-07-19T00:13:11Z",
+      "granule": "NISAR_L2_PR_GCOV_025_156_A_017_4005_DHDH_A_20260719T001311_20260719T001346_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-08-12",
+      "datetime": "2026-08-12T00:13:10Z",
+      "granule": "NISAR_L2_PR_GCOV_027_156_A_017_4005_DHDH_A_20260812T001310_20260812T001344_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-08-24",
+      "datetime": "2026-08-24T00:13:09Z",
+      "granule": "NISAR_L2_PR_GCOV_028_156_A_017_4005_DHDH_A_20260824T001309_20260824T001344_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-09-17",
+      "datetime": "2026-09-17T00:13:09Z",
+      "granule": "NISAR_L2_PR_GCOV_030_156_A_017_4005_DHDH_A_20260917T001309_20260917T001344_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-09-29",
+      "datetime": "2026-09-29T00:13:09Z",
+      "granule": "NISAR_L2_PR_GCOV_031_156_A_017_4005_DHDH_A_20260929T001309_20260929T001344_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-10-11",
+      "datetime": "2026-10-11T00:13:09Z",
+      "granule": "NISAR_L2_PR_GCOV_032_156_A_017_4005_DHDH_A_20261011T001309_20261011T001344_P05023_N_F_J_001",
+      "version": "P05023",
+      "release": "provisional",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-10-23",
+      "datetime": "2026-10-23T00:13:09Z",
+      "granule": "NISAR_L2_PR_GCOV_033_156_A_017_4005_DHDH_A_20261023T001309_20261023T001344_P05036_N_F_J_001",
+      "version": "P05036",
+      "release": "validated",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    },
+    {
+      "date": "2026-11-04",
+      "datetime": "2026-11-04T00:13:09Z",
+      "granule": "NISAR_L2_PR_GCOV_034_156_A_017_4005_DHDH_A_20261104T001309_20261104T001344_P05036_N_F_J_001",
+      "version": "P05036",
+      "release": "validated",
+      "pols": [
+        "HH",
+        "HV"
+      ],
+      "bandwidth_mhz": 40.0,
+      "full_frame": true
+    }
+  ],
+  "missing_passes": [
+    {
+      "date": "2026-02-13",
+      "reason": "no product in the catalog for this pass"
+    },
+    {
+      "date": "2026-04-02",
+      "reason": "no product in the catalog for this pass"
+    },
+    {
+      "date": "2026-04-14",
+      "reason": "no product in the catalog for this pass"
+    },
+    {
+      "date": "2026-07-07",
+      "reason": "a product exists but is unusable here: the product holds no data over this area: every pixel of the site's window is zero in both polarizations, although its mask marks them valid"
+    },
+    {
+      "date": "2026-07-31",
+      "reason": "instrument data gap, 27 July to 10 August 2026"
+    },
+    {
+      "date": "2026-09-05",
+      "reason": "a product exists but is unusable here: the product shows no ground features over this area in either polarization: a smooth blur with streaks, in which Patti town reads more than 1 dB below every neighbouring date"
+    }
+  ],
+  "layers": [
+    {
+      "id": "hh",
+      "title": "HH backscatter",
+      "kind": "per-date",
+      "unit": "dB",
+      "description": "How strongly the ground sent the radar signal back: brighter usually means rougher or wetter ground, buildings or vegetation; darker usually means smoother surfaces such as calm water.",
+      "polarization": "HH",
+      "method": "Gamma-naught linear power, invalid pixels removed, averaged to 20 m, warped to Web Mercator, then 10*log10.",
+      "encoding": {
+        "type": "linear-uint8",
+        "nodata": 0,
+        "lo": -35.0,
+        "hi": 5.0
+      },
+      "display": {
+        "min": -25.0,
+        "max": 0.0,
+        "ramp": "grey"
+      },
+      "items": [
+        {
+          "date": "2025-11-21",
+          "url": "tarn-taran/hh_2025-11-21.tif",
+          "bytes": 3048132
+        },
+        {
+          "date": "2025-12-03",
+          "url": "tarn-taran/hh_2025-12-03.tif",
+          "bytes": 3048986
+        },
+        {
+          "date": "2025-12-15",
+          "url": "tarn-taran/hh_2025-12-15.tif",
+          "bytes": 3003250
+        },
+        {
+          "date": "2025-12-27",
+          "url": "tarn-taran/hh_2025-12-27.tif",
+          "bytes": 2990659
+        },
+        {
+          "date": "2026-01-08",
+          "url": "tarn-taran/hh_2026-01-08.tif",
+          "bytes": 2979068
+        },
+        {
+          "date": "2026-01-20",
+          "url": "tarn-taran/hh_2026-01-20.tif",
+          "bytes": 2946022
+        },
+        {
+          "date": "2026-02-01",
+          "url": "tarn-taran/hh_2026-02-01.tif",
+          "bytes": 2922583
+        },
+        {
+          "date": "2026-02-25",
+          "url": "tarn-taran/hh_2026-02-25.tif",
+          "bytes": 2893733
+        },
+        {
+          "date": "2026-03-09",
+          "url": "tarn-taran/hh_2026-03-09.tif",
+          "bytes": 2909215
+        },
+        {
+          "date": "2026-03-21",
+          "url": "tarn-taran/hh_2026-03-21.tif",
+          "bytes": 2880837
+        },
+        {
+          "date": "2026-04-26",
+          "url": "tarn-taran/hh_2026-04-26.tif",
+          "bytes": 3100697
+        },
+        {
+          "date": "2026-05-08",
+          "url": "tarn-taran/hh_2026-05-08.tif",
+          "bytes": 3097665
+        },
+        {
+          "date": "2026-05-20",
+          "url": "tarn-taran/hh_2026-05-20.tif",
+          "bytes": 3045613
+        },
+        {
+          "date": "2026-06-01",
+          "url": "tarn-taran/hh_2026-06-01.tif",
+          "bytes": 3040826
+        },
+        {
+          "date": "2026-06-13",
+          "url": "tarn-taran/hh_2026-06-13.tif",
+          "bytes": 3165821
+        },
+        {
+          "date": "2026-06-25",
+          "url": "tarn-taran/hh_2026-06-25.tif",
+          "bytes": 3251190
+        },
+        {
+          "date": "2026-07-19",
+          "url": "tarn-taran/hh_2026-07-19.tif",
+          "bytes": 3129216
+        },
+        {
+          "date": "2026-08-12",
+          "url": "tarn-taran/hh_2026-08-12.tif",
+          "bytes": 2946658
+        },
+        {
+          "date": "2026-08-24",
+          "url": "tarn-taran/hh_2026-08-24.tif",
+          "bytes": 2893373
+        },
+        {
+          "date": "2026-09-17",
+          "url": "tarn-taran/hh_2026-09-17.tif",
+          "bytes": 2858245
+        },
+        {
+          "date": "2026-09-29",
+          "url": "tarn-taran/hh_2026-09-29.tif",
+          "bytes": 2874664
+        },
+        {
+          "date": "2026-10-11",
+          "url": "tarn-taran/hh_2026-10-11.tif",
+          "bytes": 2920736
+        },
+        {
+          "date": "2026-10-23",
+          "url": "tarn-taran/hh_2026-10-23.tif",
+          "bytes": 2953664
+        },
+        {
+          "date": "2026-11-04",
+          "url": "tarn-taran/hh_2026-11-04.tif",
+          "bytes": 3016520
+        }
+      ]
+    },
+    {
+      "id": "hv",
+      "title": "HV backscatter",
+      "kind": "per-date",
+      "unit": "dB",
+      "description": "How strongly the ground sent the radar signal back: brighter usually means rougher or wetter ground, buildings or vegetation; darker usually means smoother surfaces such as calm water.",
+      "polarization": "HV",
+      "method": "Gamma-naught linear power, invalid pixels removed, averaged to 20 m, warped to Web Mercator, then 10*log10.",
+      "encoding": {
+        "type": "linear-uint8",
+        "nodata": 0,
+        "lo": -35.0,
+        "hi": 5.0
+      },
+      "display": {
+        "min": -30.0,
+        "max": -8.0,
+        "ramp": "grey"
+      },
+      "items": [
+        {
+          "date": "2025-11-21",
+          "url": "tarn-taran/hv_2025-11-21.tif",
+          "bytes": 2931766
+        },
+        {
+          "date": "2025-12-03",
+          "url": "tarn-taran/hv_2025-12-03.tif",
+          "bytes": 2931190
+        },
+        {
+          "date": "2025-12-15",
+          "url": "tarn-taran/hv_2025-12-15.tif",
+          "bytes": 2729993
+        },
+        {
+          "date": "2025-12-27",
+          "url": "tarn-taran/hv_2025-12-27.tif",
+          "bytes": 2811797
+        },
+        {
+          "date": "2026-01-08",
+          "url": "tarn-taran/hv_2026-01-08.tif",
+          "bytes": 2807241
+        },
+        {
+          "date": "2026-01-20",
+          "url": "tarn-taran/hv_2026-01-20.tif",
+          "bytes": 2801626
+        },
+        {
+          "date": "2026-02-01",
+          "url": "tarn-taran/hv_2026-02-01.tif",
+          "bytes": 2791634
+        },
+        {
+          "date": "2026-02-25",
+          "url": "tarn-taran/hv_2026-02-25.tif",
+          "bytes": 2782762
+        },
+        {
+          "date": "2026-03-09",
+          "url": "tarn-taran/hv_2026-03-09.tif",
+          "bytes": 2854421
+        },
+        {
+          "date": "2026-03-21",
+          "url": "tarn-taran/hv_2026-03-21.tif",
+          "bytes": 2831184
+        },
+        {
+          "date": "2026-04-26",
+          "url": "tarn-taran/hv_2026-04-26.tif",
+          "bytes": 2935980
+        },
+        {
+          "date": "2026-05-08",
+          "url": "tarn-taran/hv_2026-05-08.tif",
+          "bytes": 2905553
+        },
+        {
+          "date": "2026-05-20",
+          "url": "tarn-taran/hv_2026-05-20.tif",
+          "bytes": 2904427
+        },
+        {
+          "date": "2026-06-01",
+          "url": "tarn-taran/hv_2026-06-01.tif",
+          "bytes": 2927958
+        },
+        {
+          "date": "2026-06-13",
+          "url": "tarn-taran/hv_2026-06-13.tif",
+          "bytes": 2999585
+        },
+        {
+          "date": "2026-06-25",
+          "url": "tarn-taran/hv_2026-06-25.tif",
+          "bytes": 3001905
+        },
+        {
+          "date": "2026-07-19",
+          "url": "tarn-taran/hv_2026-07-19.tif",
+          "bytes": 2927701
+        },
+        {
+          "date": "2026-08-12",
+          "url": "tarn-taran/hv_2026-08-12.tif",
+          "bytes": 2882047
+        },
+        {
+          "date": "2026-08-24",
+          "url": "tarn-taran/hv_2026-08-24.tif",
+          "bytes": 2768900
+        },
+        {
+          "date": "2026-09-17",
+          "url": "tarn-taran/hv_2026-09-17.tif",
+          "bytes": 2795794
+        },
+        {
+          "date": "2026-09-29",
+          "url": "tarn-taran/hv_2026-09-29.tif",
+          "bytes": 2803554
+        },
+        {
+          "date": "2026-10-11",
+          "url": "tarn-taran/hv_2026-10-11.tif",
+          "bytes": 2820821
+        },
+        {
+          "date": "2026-10-23",
+          "url": "tarn-taran/hv_2026-10-23.tif",
+          "bytes": 2773807
+        },
+        {
+          "date": "2026-11-04",
+          "url": "tarn-taran/hv_2026-11-04.tif",
+          "bytes": 2907775
+        }
+      ]
+    },
+    {
+      "id": "harvest-wave",
+      "title": "Harvest wave",
+      "kind": "static",
+      "unit": "",
+      "description": "For each 100 m rice cell, the pair of radar passes in which its HV backscatter first fell sharply, from 29 September 2026 on; such a fall in this season is read as the harvest. The map misses much of the harvest: official figures and NASA's fire detections both point to more cut rice than it shows. So \"no harvest seen\" means that the radar saw no sharp fall, not that the rice was still standing. Cells that are not rice are grey.",
+      "polarization": "HV",
+      "method": "Harvest pair of each 100 m rice cell whose centre lies inside the site box, from HV: the first pair of consecutive passes, from 2026-09-29 to 2026-10-11 on, in which HV (mean of linear power over the cell, in dB) fell by more than 1.59 dB, the more negative of the 0.02 quantiles of the change on stable ground in any pair and on standing rice from 2026-09-17 to 2026-09-29. Rice: HH rose by at least 7.40 dB from the flood to the canopy. Warped to Web Mercator by nearest neighbour. Marker test, by a rule that the team's own record says was written down before any fire data was analysed: of the VIIRS fire detections with UTC dates from 2026-10-11 to 2026-11-14 that lie partly on rice (417 detections on 31 days, each weighted by the part of its 375 m square on rice cells), HH still called 68.4 % not harvested on the detection's date and HV 72.2 %; HV minus HH +3.8 percentage points, 95 % interval -5.7 to +10.9 (bootstrap over days). Decision: HV, by item 4 of the rule (the interval includes zero; HV gives a harvest pair to more rice cells by 4 November 2026: 31192 against 20503). Details: docs/METHODS.md.",
+      "encoding": {
+        "type": "categorical-uint8",
+        "nodata": 0,
+        "classes": [
+          {
+            "value": 1,
+            "label": "Harvested between 29 September and 11 October 2026",
+            "color": "#440154"
+          },
+          {
+            "value": 2,
+            "label": "Harvested between 11 October and 23 October 2026",
+            "color": "#3b528b"
+          },
+          {
+            "value": 3,
+            "label": "Harvested between 23 October and 4 November 2026",
+            "color": "#21918c"
+          },
+          {
+            "value": 4,
+            "label": "Rice, no harvest seen by 4 November 2026",
+            "color": "#fde725"
+          },
+          {
+            "value": 5,
+            "label": "Fell before 29 September 2026",
+            "color": "#b8a3d8"
+          },
+          {
+            "value": 6,
+            "label": "Not rice",
+            "color": "#d9d9d9"
+          }
+        ]
+      },
+      "items": [
+        {
+          "url": "tarn-taran/harvest-wave.tif",
+          "bytes": 195475
+        }
+      ]
+    }
+  ],
+  "stacks": [
+    {
+      "layer": "hh",
+      "url": "tarn-taran/stack_hh.tif",
+      "band_dates": [
+        "2025-11-21",
+        "2025-12-03",
+        "2025-12-15",
+        "2025-12-27",
+        "2026-01-08",
+        "2026-01-20",
+        "2026-02-01",
+        "2026-02-25",
+        "2026-03-09",
+        "2026-03-21",
+        "2026-04-26",
+        "2026-05-08",
+        "2026-05-20",
+        "2026-06-01",
+        "2026-06-13",
+        "2026-06-25",
+        "2026-07-19",
+        "2026-08-12",
+        "2026-08-24",
+        "2026-09-17",
+        "2026-09-29",
+        "2026-10-11",
+        "2026-10-23",
+        "2026-11-04"
+      ],
+      "encoding": {
+        "type": "linear-uint8",
+        "nodata": 0,
+        "lo": -35.0,
+        "hi": 5.0
+      },
+      "resolution_m": 65.4,
+      "bytes": 4817544
+    },
+    {
+      "layer": "hv",
+      "url": "tarn-taran/stack_hv.tif",
+      "band_dates": [
+        "2025-11-21",
+        "2025-12-03",
+        "2025-12-15",
+        "2025-12-27",
+        "2026-01-08",
+        "2026-01-20",
+        "2026-02-01",
+        "2026-02-25",
+        "2026-03-09",
+        "2026-03-21",
+        "2026-04-26",
+        "2026-05-08",
+        "2026-05-20",
+        "2026-06-01",
+        "2026-06-13",
+        "2026-06-25",
+        "2026-07-19",
+        "2026-08-12",
+        "2026-08-24",
+        "2026-09-17",
+        "2026-09-29",
+        "2026-10-11",
+        "2026-10-23",
+        "2026-11-04"
+      ],
+      "encoding": {
+        "type": "linear-uint8",
+        "nodata": 0,
+        "lo": -35.0,
+        "hi": 5.0
+      },
+      "resolution_m": 65.4,
+      "bytes": 4538211
+    }
+  ],
+  "stats": "tarn-taran/stats.json",
+  "overlays": [
+    {
+      "id": "fires",
+      "title": "Fire detections (VIIRS, NASA FIRMS)",
+      "kind": "points",
+      "url": "tarn-taran/fires.geojson",
+      "description": "Each dot is one VIIRS fire detection: a 375 m pixel that a satellite flagged as holding at least one fire at the time of its pass, drawn at the pixel's centre. It is not a fire's exact place, its size or a count of burning fields, and fires that burn between passes or under thick smoke or cloud can be missed.",
+      "method": "VIIRS 375 m active fire detections from NASA FIRMS (area API; sources VIIRS_NOAA20_NRT, VIIRS_NOAA21_NRT, VIIRS_SNPP_NRT) with UTC dates from 2026-09-15 to 2026-11-14, inside the site box. A detection found in two sources (same satellite, UTC date and time, latitude and longitude) is kept once, from the source listed first (0 dropped). Coordinates rounded to 5 decimals. Details: docs/METHODS.md, section 6.",
+      "credit": "We acknowledge the use of data and/or imagery from NASA's Fire Information for Resource Management System (FIRMS) (https://earthdata.nasa.gov/firms), part of NASA's Land, Atmosphere Near real-time Capability for Earth observations (LANCE) (https://earthdata.nasa.gov/lance), and NASA's Earth Science Data and Information System (ESDIS).",
+      "date_property": "date",
+      "date_range": [
+        "2026-09-15",
+        "2026-11-14"
+      ],
+      "fields": [
+        {
+          "name": "date",
+          "label": "Date of the pass (UTC)"
+        },
+        {
+          "name": "time_utc",
+          "label": "Time of the pass (UTC)"
+        },
+        {
+          "name": "satellite",
+          "label": "Satellite"
+        },
+        {
+          "name": "confidence",
+          "label": "Detection confidence"
+        },
+        {
+          "name": "frp_mw",
+          "label": "Fire radiative power",
+          "unit": "MW"
+        },
+        {
+          "name": "daynight",
+          "label": "Day or night pass"
+        },
+        {
+          "name": "source",
+          "label": "FIRMS source"
+        }
+      ],
+      "count": 452,
+      "color": "#d55e00",
+      "bytes": 107858
+    }
+  ],
+  "story": [
+    {
+      "id": "two-dances",
+      "title": "Punjab's fields dance twice a year",
+      "text": "Wheat in winter, rice in the monsoon. The second dance ends in fire.",
+      "layer": "hh",
+      "date": "2025-11-21",
+      "view": {
+        "center": [
+          74.93,
+          31.21
+        ],
+        "zoom": 4.6
+      }
+    },
+    {
+      "id": "where",
+      "title": "One place, a pass every 12 days",
+      "text": "This is about 29 by 29 km, mostly farmland, in southern Tarn Taran, Punjab, and across the Sutlej river in Ferozepur district. NISAR passes over it every 12 days, at about a quarter to six in the morning. Its radar needs no daylight and sees through haze and cloud.",
+      "layer": "hh",
+      "date": "2025-11-21"
+    },
+    {
+      "id": "reading-radar",
+      "title": "How to read the picture",
+      "text": "Brighter means more of the radar signal came back. Buildings are bright: the town of Patti is one of the pale patches. Calm water sends the signal away and looks black: the dark ribbons are rivers, the Sutlej among them, and the edge of the Harike wetland. The fields in between are the part that changes.",
+      "layer": "hh",
+      "date": "2025-11-21",
+      "view": {
+        "center": [
+          74.9,
+          31.23
+        ],
+        "zoom": 11.2
+      }
+    },
+    {
+      "id": "the-year",
+      "title": "The year, pass by pass",
+      "text": "Watch the fields. They brighten as the wheat grows from December to March, darken when it is cut in April, dip again when the paddies are flooded in June, and brighten strongly as the rice grows. We read these two rises as the two crops.",
+      "layer": "hh",
+      "date": "2026-09-29"
+    },
+    {
+      "id": "june-flood",
+      "title": "June, the fields become mirrors",
+      "text": "Before rice is planted the fields are flooded. Smooth water reflects the radar away from the satellite, so a flooded paddy looks dark.",
+      "layer": "hh",
+      "date": "2026-06-25"
+    },
+    {
+      "id": "harvest",
+      "title": "October, the rice comes off",
+      "text": "The same fields in HV, the part of the signal that leafy plants scatter. We expect it to rise as the rice fills in and to fall when the crop is cut. Watch for fields that turn dark from one pass to the next: we read that sharp fall as the harvest. In HV most of the rice does so between 23 October and 4 November.",
+      "layer": "hv",
+      "date": "2026-11-04"
+    },
+    {
+      "id": "the-wave",
+      "title": "The harvest wave",
+      "text": "Each 100 m cell of rice is coloured by the pair of passes in which its HV first fell sharply; by 4 November that is about two thirds of the rice. Yellow means the radar saw no sharp fall, not that the rice still stood: officials reported more of the harvest done, and an optical check on Copernicus Sentinel-2 data suggests that about half to four fifths of the yellow cells had lost their green by then (three of its dates look hazy, and greenness alone cannot tell a cut field from a ripe one). The same check suggests the map's order is right: the later it dates a cell's harvest, the greener that cell still was in early October. Contains modified Copernicus Sentinel data 2026.",
+      "layer": "harvest-wave"
+    },
+    {
+      "id": "the-fires",
+      "title": "Then the fires",
+      "text": "Each dot is a 375 m square in which a VIIRS satellite instrument flagged at least one fire, between 15 September and 14 November 2026 (NASA FIRMS). At the peak of the burning, from 24 October to 4 November, fire detections were denser on rice the map calls harvested between 23 October and 4 November than on land that is not rice, but the map's harvest dates do not sort them. From 5 to 14 November the detection densities of the rice classes could not be told apart, so our guess that fires follow the newest harvest is not supported.",
+      "layer": "harvest-wave",
+      "overlays": [
+        "fires"
+      ]
+    },
+    {
+      "id": "what-next",
+      "title": "What NISAR could do next",
+      "text": "These are ideas, not results. A harvest map made after every pass could show the teams that send out straw machines where the rice came off since the last pass. The same radar could follow the sowing of the wheat, test whether burned stubble looks different from unburned, and keep a crop calendar where monsoon clouds hide the fields from optical satellites.",
+      "layer": "harvest-wave"
+    },
+    {
+      "id": "explore",
+      "title": "Now look for yourself",
+      "text": "What this can show is limited: one look every 12 days, one year of passes and one rice harvest, a harvest map of 100 m cells that hold several fields, and an analysis done after the fires. Click any field to see its year as a curve.",
+      "layer": "hh",
+      "date": "2026-11-04"
+    }
+  ]
+}

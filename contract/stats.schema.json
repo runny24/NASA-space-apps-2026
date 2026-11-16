@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/runny24/NASA-space-apps-2026/contract/stats.schema.json",
+  "title": "Site statistics",
+  "description": "Small numbers the app charts: one file per site, referenced by `stats` in the manifest. Every series says how it was computed, so a teammate can answer 'where does this number come from?'.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "site", "series"],
+  "properties": {
+    "schema": { "const": 1 },
+    "site": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$" },
+    "series": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "unit", "region", "method", "points"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$" },
+          "title": { "type": "string", "minLength": 1 },
+          "unit": { "type": "string", "description": "e.g. 'dB', 'km2', '%'. Empty string if unitless." },
+          "layer": { "type": "string", "description": "id of the layer this series was derived from, when there is one." },
+          "region": { "type": "string", "minLength": 1, "description": "What area the number covers, in words: which box or polygon, on which grid, and which pixels count." },
+          "method": { "type": "string", "minLength": 1, "description": "How the number was computed, in one or two plain sentences." },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["date", "value"],
+              "properties": {
+                "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+                "value": { "type": ["number", "null"], "description": "null when the value could not be computed for this date (shown as a gap, never interpolated)." },
+                "n": { "type": "integer", "minimum": 0, "description": "Number of valid pixels behind the value." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "bars": {
+      "type": "array",
+      "description": "Comparisons across categories instead of across dates, for example a rate for each class of a classified map. Optional.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "unit", "region", "method", "categories"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$" },
+          "title": { "type": "string", "minLength": 1 },
+          "unit": { "type": "string", "description": "e.g. 'detections per km2', '%'. Empty string if unitless." },
+          "layer": { "type": "string", "description": "id of the classified layer whose classes the categories are, when there is one." },
+          "region": { "type": "string", "minLength": 1, "description": "What area and period the numbers cover, in words." },
+          "method": { "type": "string", "minLength": 1, "description": "How the numbers and their uncertainty were computed, in one or two plain sentences." },
+          "categories": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["label", "value"],
+              "properties": {
+                "label": { "type": "string", "minLength": 1 },
+                "value": { "type": ["number", "null"], "description": "null when the value could not be computed (shown as missing, never as zero)." },
+                "low": { "type": "number", "description": "Lower end of the uncertainty interval named in `method`." },
+                "high": { "type": "number", "description": "Upper end of the uncertainty interval named in `method`." },
+                "n": { "type": "integer", "minimum": 0, "description": "Count behind the value, for example the number of detections." },
+                "class": { "type": "integer", "minimum": 1, "maximum": 255, "description": "Pixel value of the class in `layer`, when the category is a class." },
+                "note": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

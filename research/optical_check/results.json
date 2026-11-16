@@ -1,0 +1,3234 @@
+{
+ "title": "Optical cross-check of the harvest map",
+ "generator": "research/optical_check/optical_check.py, AI-written (Claude Opus 5.5, Anthropic)",
+ "run_at": "2026-11-15T05:03:13+00:00",
+ "brief": "docs/OPTICAL_CHECK_BRIEF.md",
+ "settings": {
+  "stac_url": "https://earth-search.aws.element84.com/v1",
+  "collection": "sentinel-2-l2a",
+  "first_day": "2026-09-10",
+  "last_day": "2026-11-14",
+  "tile": "43RDQ",
+  "assets": [
+   "red",
+   "nir",
+   "scl"
+  ],
+  "reflectance": {
+   "rule": "reflectance = DN * 0.0001, minus 0.1 only where earthsearch:boa_offset_applied is false on a processing baseline of 04.00 or later; the offset -0.1 that the assets' raster:bands list is not used (where the catalog says the offset is already removed it would remove it twice)",
+   "scale": 0.0001,
+   "offset_where_boa_offset_applied_true": 0.0,
+   "offset_where_boa_offset_applied_false_from_baseline_04_00": -0.1,
+   "offset_before_baseline_04_00": 0.0,
+   "raster_bands_offset_used": false
+  },
+  "offset_check": {
+   "scl": 4,
+   "red_dn_below": 1000,
+   "min_pixels": 1000,
+   "min_share": 0.01,
+   "rule": "a guard, not a definition: a scene taken as offset-free stops the run when under min_share of its vegetation pixels have a red value below red_dn_below; not checked with fewer than min_pixels vegetation pixels"
+  },
+  "split_granules": "the granules of one tile and date are mosaicked only when they share s2:datatake_id and have distinct s2:datastrip_id values with distinct sensing starts; otherwise the run stops",
+  "valid_scl": [
+   2,
+   4,
+   5,
+   6,
+   7
+  ],
+  "dropped_scl": [
+   0,
+   1,
+   3,
+   8,
+   9,
+   10,
+   11
+  ],
+  "cell_px": 10,
+  "min_valid_pixels": 50,
+  "usable_share": 0.8,
+  "rice_classes": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "quartiles": "numpy.percentile 25/50/75, default method (linear)",
+  "harvest_passes": [
+   "2026-10-11",
+   "2026-10-23",
+   "2026-11-04"
+  ],
+  "pooled_from": "2026-09-15",
+  "otsu": {
+   "range": [
+    -0.2,
+    1.0
+   ],
+   "bins": 240,
+   "function": "pipeline.harvest.otsu_threshold"
+  },
+  "strict": {
+   "classes_in_both": [
+    1,
+    2
+   ],
+   "span": [
+    "2026-10-24",
+    "2026-11-04"
+   ],
+   "quantile": 0.75,
+   "method": "inverted_cdf"
+  },
+  "cut": {
+   "green_from": "2026-09-10",
+   "cut_from": "2026-09-29"
+  },
+  "bootstrap": {
+   "block_cells": 10,
+   "replicates": 2000,
+   "seed": 20261115,
+   "percentiles": [
+    2.5,
+    97.5
+   ],
+   "percentile_method": "linear",
+   "rng": "numpy.random.default_rng(20261115), a fresh generator for each interval"
+  }
+ },
+ "inputs": {
+  "folder": "research/optical_check/inputs",
+  "sha256": {
+   "harvest_classes.tif": "d6fe5880273d8d344a8255bb7b8f87d92a4d75c0df147bd7609b31bcbb128f50",
+   "harvest.json": "0e022ee6fdf9bd718d3fcf77372a23373dbb21c94c82462dc40c0b6a634e6495",
+   "marker.json": "2c7e2b6c59bdc6040f248cb9bb71275a5169d613b5a654a4a917062f8f944a3e"
+  },
+  "site_box": [
+   74.78,
+   31.08,
+   75.08,
+   31.34
+  ],
+  "stable_box": [
+   74.8466,
+   31.2774,
+   74.8592,
+   31.2883
+  ],
+  "stable_box_where": [
+   "inside the window"
+  ],
+  "harvest_passes_all": [
+   "2026-09-17",
+   "2026-09-29",
+   "2026-10-11",
+   "2026-10-23",
+   "2026-11-04"
+  ],
+  "radar_share_harvest_pair_by_pass": {
+   "HH": {
+    "2026-10-11": 0.09941647796551123,
+    "2026-10-23": 0.22692039714335482,
+    "2026-11-04": 0.44641612959414734
+   },
+   "HV": {
+    "2026-10-11": 0.06277216512802648,
+    "2026-10-23": 0.09231841142658073,
+    "2026-11-04": 0.6791499738721477
+   }
+  }
+ },
+ "catalog": {
+  "url": "https://earth-search.aws.element84.com/v1/search",
+  "collection": "sentinel-2-l2a",
+  "bbox": [
+   74.78,
+   31.08,
+   75.08,
+   31.34
+  ],
+  "first_day": "2026-09-10",
+  "last_day": "2026-11-14",
+  "queried_at": "2026-11-15T05:01:26+00:00",
+  "items_listed": 38,
+  "left_out_other_tile": [
+   "S2A_43REQ_20260925_1_L2A",
+   "S2A_43REQ_20260925_2_L2A",
+   "S2A_43REQ_20261015_1_L2A",
+   "S2A_43REQ_20261015_2_L2A",
+   "S2A_43REQ_20261104_1_L2A",
+   "S2A_43REQ_20261104_2_L2A",
+   "S2B_43REQ_20260918_0_L2A",
+   "S2B_43REQ_20260928_0_L2A",
+   "S2B_43REQ_20261008_0_L2A",
+   "S2B_43REQ_20261018_0_L2A",
+   "S2B_43REQ_20261028_0_L2A",
+   "S2B_43REQ_20261107_0_L2A",
+   "S2C_43REQ_20260913_0_L2A",
+   "S2C_43REQ_20260923_0_L2A",
+   "S2C_43REQ_20261003_0_L2A",
+   "S2C_43REQ_20261013_0_L2A",
+   "S2C_43REQ_20261023_0_L2A",
+   "S2C_43REQ_20261102_0_L2A",
+   "S2C_43REQ_20261112_0_L2A"
+  ]
+ },
+ "scenes": [
+  {
+   "day": "2026-09-13",
+   "items": [
+    "S2C_43RDQ_20260913_0_L2A"
+   ],
+   "datatake_id": "GS2C_20260913T053641_010557_N05.12",
+   "datastrip_ids": [
+    "S2C_OPER_MSI_L2A_DS_2CPS_20260913T101758_S20260913T054851_N05.12"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "passed: 95.4% of 6415040 vegetation pixels below 1000",
+   "processing_baseline": [
+    "05.12"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.8284583499357635,
+   "vegetation_red_below_offset_share": 0.9536227365690627,
+   "vegetation_pixels": 6415040,
+   "pixels_from_each": [
+    8236746
+   ],
+   "pixels_without_data": 54,
+   "valid_pixels": 7084046,
+   "scl_codes": {
+    "3": 547942,
+    "4": 6415040,
+    "5": 497228,
+    "6": 120680,
+    "7": 51098,
+    "8": 370210,
+    "9": 234548
+   },
+   "seconds": 5.661637499986682,
+   "bytes": 44419846,
+   "read_at": "2026-11-15T05:01:32+00:00"
+  },
+  {
+   "day": "2026-09-18",
+   "items": [
+    "S2B_43RDQ_20260918_0_L2A"
+   ],
+   "datatake_id": "GS2B_20260918T053639_049795_N05.12",
+   "datastrip_ids": [
+    "S2B_OPER_MSI_L2A_DS_2BPS_20260918T092317_S20260918T054156_N05.12"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "passed: 94.5% of 6529782 vegetation pixels below 1000",
+   "processing_baseline": [
+    "05.12"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.7953463723776224,
+   "vegetation_red_below_offset_share": 0.9448886655021561,
+   "vegetation_pixels": 6529782,
+   "pixels_from_each": [
+    8236800
+   ],
+   "pixels_without_data": 0,
+   "valid_pixels": 7484182,
+   "scl_codes": {
+    "3": 233008,
+    "4": 6529782,
+    "5": 736476,
+    "6": 92872,
+    "7": 125052,
+    "8": 360188,
+    "9": 159422
+   },
+   "seconds": 6.017364300030749,
+   "bytes": 44822079,
+   "read_at": "2026-11-15T05:01:38+00:00"
+  },
+  {
+   "day": "2026-09-23",
+   "items": [
+    "S2C_43RDQ_20260923_0_L2A"
+   ],
+   "datatake_id": "GS2C_20260923T053641_010700_N05.13",
+   "datastrip_ids": [
+    "S2C_OPER_MSI_L2A_DS_2CPS_20260923T101809_S20260923T054857_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "passed: 99.3% of 4424339 vegetation pixels below 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.823995319540433,
+   "vegetation_red_below_offset_share": 0.9932202301857972,
+   "vegetation_pixels": 4424339,
+   "pixels_from_each": [
+    8236798
+   ],
+   "pixels_without_data": 2,
+   "valid_pixels": 8023299,
+   "scl_codes": {
+    "3": 76734,
+    "4": 4424339,
+    "5": 3379096,
+    "6": 157306,
+    "7": 62558,
+    "8": 88323,
+    "9": 48442
+   },
+   "seconds": 6.033758899953682,
+   "bytes": 44399750,
+   "read_at": "2026-11-15T05:01:45+00:00"
+  },
+  {
+   "day": "2026-09-25",
+   "items": [
+    "S2A_43RDQ_20260925_1_L2A",
+    "S2A_43RDQ_20260925_0_L2A"
+   ],
+   "datatake_id": "GS2A_20260925T054251_058804_N05.13",
+   "datastrip_ids": [
+    "S2A_OPER_MSI_L2A_DS_2APS_20260925T103013_S20260925T055030_N05.13",
+    "S2A_OPER_MSI_L2A_DS_2APS_20260925T090015_S20260925T054245_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "not checked: 28 vegetation pixels, under 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.42110867664150353,
+   "vegetation_red_below_offset_share": 0.0,
+   "vegetation_pixels": 28,
+   "pixels_from_each": [
+    7944167,
+    292626
+   ],
+   "pixels_without_data": 7,
+   "valid_pixels": 5526282,
+   "scl_codes": {
+    "3": 436411,
+    "4": 28,
+    "5": 4649214,
+    "6": 133358,
+    "7": 743682,
+    "8": 1331901,
+    "9": 930459,
+    "10": 11740
+   },
+   "seconds": 8.388125800003763,
+   "bytes": 65959609,
+   "read_at": "2026-11-15T05:01:54+00:00"
+  },
+  {
+   "day": "2026-09-28",
+   "items": [
+    "S2B_43RDQ_20260928_0_L2A"
+   ],
+   "datatake_id": "GS2B_20260928T053639_049938_N05.13",
+   "datastrip_ids": [
+    "S2B_OPER_MSI_L2A_DS_2BPS_20260928T093404_S20260928T054845_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "passed: 92.2% of 2363229 vegetation pixels below 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.3091784430846931,
+   "vegetation_red_below_offset_share": 0.9220249074465487,
+   "vegetation_pixels": 2363229,
+   "pixels_from_each": [
+    8236800
+   ],
+   "pixels_without_data": 0,
+   "valid_pixels": 2957922,
+   "scl_codes": {
+    "2": 4,
+    "3": 193504,
+    "4": 2363229,
+    "5": 308271,
+    "6": 20010,
+    "7": 266408,
+    "8": 1034148,
+    "9": 4041894,
+    "10": 9332
+   },
+   "seconds": 5.818022799969185,
+   "bytes": 44604690,
+   "read_at": "2026-11-15T05:02:00+00:00"
+  },
+  {
+   "day": "2026-10-03",
+   "items": [
+    "S2C_43RDQ_20261003_0_L2A"
+   ],
+   "datatake_id": "GS2C_20261003T053651_010843_N05.13",
+   "datastrip_ids": [
+    "S2C_OPER_MSI_L2A_DS_2CPS_20261003T101308_S20261003T054928_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "passed: 95.1% of 6443655 vegetation pixels below 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.7913914130962768,
+   "vegetation_red_below_offset_share": 0.9507468975294301,
+   "vegetation_pixels": 6443655,
+   "pixels_from_each": [
+    8236799
+   ],
+   "pixels_without_data": 1,
+   "valid_pixels": 8236607,
+   "scl_codes": {
+    "2": 88,
+    "4": 6443655,
+    "5": 1651096,
+    "6": 127724,
+    "7": 14044,
+    "8": 192
+   },
+   "seconds": 5.9595797000220045,
+   "bytes": 45199201,
+   "read_at": "2026-11-15T05:02:06+00:00"
+  },
+  {
+   "day": "2026-10-08",
+   "items": [
+    "S2B_43RDQ_20261008_1_L2A"
+   ],
+   "datatake_id": "GS2B_20261008T053719_050081_N05.13",
+   "datastrip_ids": [
+    "S2B_OPER_MSI_L2A_DS_2BPS_20261008T092627_S20261008T054820_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "not checked: 0 vegetation pixels, under 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.09380669677544677,
+   "vegetation_red_below_offset_share": null,
+   "vegetation_pixels": 0,
+   "pixels_from_each": [
+    8236800
+   ],
+   "pixels_without_data": 0,
+   "valid_pixels": 6961562,
+   "scl_codes": {
+    "3": 816,
+    "5": 6716368,
+    "6": 183108,
+    "7": 62086,
+    "8": 746424,
+    "9": 527998
+   },
+   "seconds": 5.18173160002334,
+   "bytes": 42585402,
+   "read_at": "2026-11-15T05:02:12+00:00"
+  },
+  {
+   "day": "2026-10-13",
+   "items": [
+    "S2C_43RDQ_20261013_0_L2A"
+   ],
+   "datatake_id": "GS2C_20261013T053801_010986_N05.13",
+   "datastrip_ids": [
+    "S2C_OPER_MSI_L2A_DS_2CPS_20261013T085210_S20261013T054458_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "passed: 93.5% of 2626452 vegetation pixels below 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.530629398375342,
+   "vegetation_red_below_offset_share": 0.9346540504071652,
+   "vegetation_pixels": 2626452,
+   "pixels_from_each": [
+    8236564
+   ],
+   "pixels_without_data": 236,
+   "valid_pixels": 5572315,
+   "scl_codes": {
+    "2": 88,
+    "3": 2604,
+    "4": 2626452,
+    "5": 2798961,
+    "6": 99582,
+    "7": 47232,
+    "8": 153375,
+    "9": 236,
+    "10": 2508034
+   },
+   "seconds": 5.67384740000125,
+   "bytes": 45494827,
+   "read_at": "2026-11-15T05:02:18+00:00"
+  },
+  {
+   "day": "2026-10-15",
+   "items": [
+    "S2A_43RDQ_20261015_1_L2A",
+    "S2A_43RDQ_20261015_0_L2A"
+   ],
+   "datatake_id": "GS2A_20261015T054241_059090_N05.13",
+   "datastrip_ids": [
+    "S2A_OPER_MSI_L2A_DS_2APS_20261015T103113_S20261015T055027_N05.13",
+    "S2A_OPER_MSI_L2A_DS_2APS_20261015T085515_S20261015T054242_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "passed: 81.7% of 131037 vegetation pixels below 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.19769894986633701,
+   "vegetation_red_below_offset_share": 0.8173111411280783,
+   "vegetation_pixels": 131037,
+   "pixels_from_each": [
+    8235681,
+    1080
+   ],
+   "pixels_without_data": 39,
+   "valid_pixels": 660905,
+   "scl_codes": {
+    "3": 1048518,
+    "4": 131037,
+    "5": 417351,
+    "6": 4289,
+    "7": 108228,
+    "8": 2088130,
+    "9": 3754745,
+    "10": 684463
+   },
+   "seconds": 8.088612099993043,
+   "bytes": 66551511,
+   "read_at": "2026-11-15T05:02:27+00:00"
+  },
+  {
+   "day": "2026-10-18",
+   "items": [
+    "S2B_43RDQ_20261018_0_L2A"
+   ],
+   "datatake_id": "GS2B_20261018T053829_050224_N05.13",
+   "datastrip_ids": [
+    "S2B_OPER_MSI_L2A_DS_2BPS_20261018T092057_S20261018T054329_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "passed: 95.1% of 2849016 vegetation pixels below 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.5289008523064943,
+   "vegetation_red_below_offset_share": 0.9510416929915452,
+   "vegetation_pixels": 2849016,
+   "pixels_from_each": [
+    8236591
+   ],
+   "pixels_without_data": 209,
+   "valid_pixels": 8236591,
+   "scl_codes": {
+    "2": 428,
+    "4": 2849016,
+    "5": 5152973,
+    "6": 196032,
+    "7": 38142
+   },
+   "seconds": 6.594661500013899,
+   "bytes": 46924288,
+   "read_at": "2026-11-15T05:02:34+00:00"
+  },
+  {
+   "day": "2026-10-23",
+   "items": [
+    "S2C_43RDQ_20261023_0_L2A"
+   ],
+   "datatake_id": "GS2C_20261023T053901_011129_N05.13",
+   "datastrip_ids": [
+    "S2C_OPER_MSI_L2A_DS_2CPS_20261023T084205_S20261023T054822_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "not checked: 0 vegetation pixels, under 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.021885562354312355,
+   "vegetation_red_below_offset_share": null,
+   "vegetation_pixels": 0,
+   "pixels_from_each": [
+    8236800
+   ],
+   "pixels_without_data": 0,
+   "valid_pixels": 8096642,
+   "scl_codes": {
+    "3": 13250,
+    "5": 7891308,
+    "6": 200726,
+    "7": 4608,
+    "8": 74056,
+    "9": 24,
+    "10": 52828
+   },
+   "seconds": 5.969020900025498,
+   "bytes": 42488761,
+   "read_at": "2026-11-15T05:02:40+00:00"
+  },
+  {
+   "day": "2026-10-28",
+   "items": [
+    "S2B_43RDQ_20261028_1_L2A"
+   ],
+   "datatake_id": "GS2B_20261028T053929_050367_N05.13",
+   "datastrip_ids": [
+    "S2B_OPER_MSI_L2A_DS_2BPS_20261028T092239_S20261028T054808_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "passed: 94.7% of 984016 vegetation pixels below 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.30436098032155007,
+   "vegetation_red_below_offset_share": 0.9471411033966928,
+   "vegetation_pixels": 984016,
+   "pixels_from_each": [
+    8236726
+   ],
+   "pixels_without_data": 74,
+   "valid_pixels": 8236726,
+   "scl_codes": {
+    "4": 984016,
+    "5": 7073961,
+    "6": 178749
+   },
+   "seconds": 6.461472700000741,
+   "bytes": 47025486,
+   "read_at": "2026-11-15T05:02:47+00:00"
+  },
+  {
+   "day": "2026-11-02",
+   "items": [
+    "S2C_43RDQ_20261102_0_L2A"
+   ],
+   "datatake_id": "GS2C_20261102T054001_011272_N05.13",
+   "datastrip_ids": [
+    "S2C_OPER_MSI_L2A_DS_2CPS_20261102T085705_S20261102T053957_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "not checked: 0 vegetation pixels, under 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.0007060994560994561,
+   "vegetation_red_below_offset_share": null,
+   "vegetation_pixels": 0,
+   "pixels_from_each": [
+    8236800
+   ],
+   "pixels_without_data": 0,
+   "valid_pixels": 8213708,
+   "scl_codes": {
+    "5": 8027578,
+    "6": 186130,
+    "8": 11988,
+    "11": 11104
+   },
+   "seconds": 5.237812799983658,
+   "bytes": 43490615,
+   "read_at": "2026-11-15T05:02:52+00:00"
+  },
+  {
+   "day": "2026-11-04",
+   "items": [
+    "S2A_43RDQ_20261104_1_L2A",
+    "S2A_43RDQ_20261104_0_L2A"
+   ],
+   "datatake_id": "GS2A_20261104T054241_059376_N05.13",
+   "datastrip_ids": [
+    "S2A_OPER_MSI_L2A_DS_2APS_20261104T102251_S20261104T055022_N05.13",
+    "S2A_OPER_MSI_L2A_DS_2APS_20261104T085202_S20261104T054237_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "passed: 99.9% of 92158 vegetation pixels below 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.14724166057727073,
+   "vegetation_red_below_offset_share": 0.9993489442045184,
+   "vegetation_pixels": 92158,
+   "pixels_from_each": [
+    7454722,
+    32337
+   ],
+   "pixels_without_data": 749741,
+   "valid_pixels": 7480033,
+   "scl_codes": {
+    "3": 6848,
+    "4": 92158,
+    "5": 7190417,
+    "6": 185864,
+    "7": 11594,
+    "8": 178
+   },
+   "seconds": 6.806845800019801,
+   "bytes": 56584672,
+   "read_at": "2026-11-15T05:03:00+00:00"
+  },
+  {
+   "day": "2026-11-07",
+   "items": [
+    "S2B_43RDQ_20261107_0_L2A"
+   ],
+   "datatake_id": "GS2B_20261107T054029_050510_N05.13",
+   "datastrip_ids": [
+    "S2B_OPER_MSI_L2A_DS_2BPS_20261107T091553_S20261107T054750_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "passed: 97.5% of 558146 vegetation pixels below 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.3148211347024355,
+   "vegetation_red_below_offset_share": 0.9749742898811422,
+   "vegetation_pixels": 558146,
+   "pixels_from_each": [
+    8236785
+   ],
+   "pixels_without_data": 15,
+   "valid_pixels": 8236749,
+   "scl_codes": {
+    "4": 558146,
+    "5": 7473774,
+    "6": 204805,
+    "7": 24,
+    "8": 36
+   },
+   "seconds": 5.952353900007438,
+   "bytes": 46288156,
+   "read_at": "2026-11-15T05:03:06+00:00"
+  },
+  {
+   "day": "2026-11-12",
+   "items": [
+    "S2C_43RDQ_20261112_0_L2A"
+   ],
+   "datatake_id": "GS2C_20261112T054051_011415_N05.13",
+   "datastrip_ids": [
+    "S2C_OPER_MSI_L2A_DS_2CPS_20261112T084606_S20261112T054715_N05.13"
+   ],
+   "scale": 0.0001,
+   "offset": 0.0,
+   "offset_check": "not checked: 0 vegetation pixels, under 1000",
+   "processing_baseline": [
+    "05.13"
+   ],
+   "boa_offset_applied": [
+    "True"
+   ],
+   "raster_bands_offset": [
+    -0.1
+   ],
+   "red_below_offset_share": 0.15656241831283443,
+   "vegetation_red_below_offset_share": null,
+   "vegetation_pixels": 0,
+   "pixels_from_each": [
+    8236453
+   ],
+   "pixels_without_data": 347,
+   "valid_pixels": 1604291,
+   "scl_codes": {
+    "3": 601305,
+    "5": 1563963,
+    "6": 40304,
+    "7": 24,
+    "8": 2921962,
+    "9": 2699963,
+    "10": 408932
+   },
+   "seconds": 5.772209300019313,
+   "bytes": 39136983,
+   "read_at": "2026-11-15T05:03:12+00:00"
+  }
+ ],
+ "analysis": {
+  "dates": [
+   {
+    "day": "2026-09-13",
+    "items": [
+     "S2C_43RDQ_20260913_0_L2A"
+    ],
+    "share_rice_with_value": 0.9061356906462289,
+    "usable": true,
+    "cells_with_value": 71074,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-09-18",
+    "items": [
+     "S2B_43RDQ_20260918_0_L2A"
+    ],
+    "share_rice_with_value": 0.9249477442954189,
+    "usable": true,
+    "cells_with_value": 75099,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-09-23",
+    "items": [
+     "S2C_43RDQ_20260923_0_L2A"
+    ],
+    "share_rice_with_value": 0.9816451837658945,
+    "usable": true,
+    "cells_with_value": 80306,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-09-25",
+    "items": [
+     "S2A_43RDQ_20260925_1_L2A",
+     "S2A_43RDQ_20260925_0_L2A"
+    ],
+    "share_rice_with_value": 0.7063229402543111,
+    "usable": false,
+    "cells_with_value": 55486,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-09-28",
+    "items": [
+     "S2B_43RDQ_20260928_0_L2A"
+    ],
+    "share_rice_with_value": 0.3912645880508622,
+    "usable": false,
+    "cells_with_value": 29681,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-10-03",
+    "items": [
+     "S2C_43RDQ_20261003_0_L2A"
+    ],
+    "share_rice_with_value": 1.0,
+    "usable": true,
+    "cells_with_value": 82367,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-10-08",
+    "items": [
+     "S2B_43RDQ_20261008_1_L2A"
+    ],
+    "share_rice_with_value": 0.8411862044939906,
+    "usable": true,
+    "cells_with_value": 69588,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-10-13",
+    "items": [
+     "S2C_43RDQ_20261013_0_L2A"
+    ],
+    "share_rice_with_value": 0.6591621668698833,
+    "usable": false,
+    "cells_with_value": 55768,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-10-15",
+    "items": [
+     "S2A_43RDQ_20261015_1_L2A",
+     "S2A_43RDQ_20261015_0_L2A"
+    ],
+    "share_rice_with_value": 0.08646141787145097,
+    "usable": false,
+    "cells_with_value": 6568,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-10-18",
+    "items": [
+     "S2B_43RDQ_20261018_0_L2A"
+    ],
+    "share_rice_with_value": 1.0,
+    "usable": true,
+    "cells_with_value": 82368,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-10-23",
+    "items": [
+     "S2C_43RDQ_20261023_0_L2A"
+    ],
+    "share_rice_with_value": 0.9813621320327469,
+    "usable": true,
+    "cells_with_value": 81017,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-10-28",
+    "items": [
+     "S2B_43RDQ_20261028_1_L2A"
+    ],
+    "share_rice_with_value": 1.0,
+    "usable": true,
+    "cells_with_value": 82368,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-11-02",
+    "items": [
+     "S2C_43RDQ_20261102_0_L2A"
+    ],
+    "share_rice_with_value": 0.9992814840620101,
+    "usable": true,
+    "cells_with_value": 82156,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-11-04",
+    "items": [
+     "S2A_43RDQ_20261104_1_L2A",
+     "S2A_43RDQ_20261104_0_L2A"
+    ],
+    "share_rice_with_value": 0.9033704929454799,
+    "usable": true,
+    "cells_with_value": 74813,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-11-07",
+    "items": [
+     "S2B_43RDQ_20261107_0_L2A"
+    ],
+    "share_rice_with_value": 1.0,
+    "usable": true,
+    "cells_with_value": 82368,
+    "cells_with_value_but_no_ndvi": 0
+   },
+   {
+    "day": "2026-11-12",
+    "items": [
+     "S2C_43RDQ_20261112_0_L2A"
+    ],
+    "share_rice_with_value": 0.20281745340533008,
+    "usable": false,
+    "cells_with_value": 16067,
+    "cells_with_value_but_no_ndvi": 0
+   }
+  ],
+  "usable_days": [
+   "2026-09-13",
+   "2026-09-18",
+   "2026-09-23",
+   "2026-10-03",
+   "2026-10-08",
+   "2026-10-18",
+   "2026-10-23",
+   "2026-10-28",
+   "2026-11-02",
+   "2026-11-04",
+   "2026-11-07"
+  ],
+  "rice_cells": 45928,
+  "group_cells": {
+   "HH": {
+    "1": 4566,
+    "2": 5856,
+    "3": 10081,
+    "4": 25136,
+    "5": 289,
+    "not rice": 36378,
+    "stable target box": 156
+   },
+   "HV": {
+    "1": 2883,
+    "2": 1357,
+    "3": 26952,
+    "4": 13818,
+    "5": 918,
+    "not rice": 36378,
+    "stable target box": 156
+   }
+  },
+  "ndvi_by_class": {
+   "HH": {
+    "2026-09-13": {
+     "1": {
+      "n": 4148,
+      "median": 0.8014448703944528,
+      "q1": 0.7697035283819689,
+      "q3": 0.8243939255301425
+     },
+     "2": {
+      "n": 5408,
+      "median": 0.8293101367766389,
+      "q1": 0.7998496245322526,
+      "q3": 0.8550014884774382
+     },
+     "3": {
+      "n": 9192,
+      "median": 0.8317314182824944,
+      "q1": 0.7972378610279229,
+      "q3": 0.8667012222255541
+     },
+     "4": {
+      "n": 22639,
+      "median": 0.8178996468517277,
+      "q1": 0.779811458722367,
+      "q3": 0.8527104987726867
+     },
+     "5": {
+      "n": 230,
+      "median": 0.7255450804312797,
+      "q1": 0.6815195620963517,
+      "q3": 0.7661729067867016
+     },
+     "not rice": {
+      "n": 29395,
+      "median": 0.6999699333227215,
+      "q1": 0.5290158512881733,
+      "q3": 0.7837776683688257
+     },
+     "stable target box": {
+      "n": 60,
+      "median": 0.14324942564347248,
+      "q1": 0.08944571219038723,
+      "q3": 0.2682862831874697
+     }
+    },
+    "2026-09-18": {
+     "1": {
+      "n": 4261,
+      "median": 0.7829257598252268,
+      "q1": 0.7443724163444043,
+      "q3": 0.8113545083045408
+     },
+     "2": {
+      "n": 5439,
+      "median": 0.8061664505719954,
+      "q1": 0.773329966349995,
+      "q3": 0.8280956865162261
+     },
+     "3": {
+      "n": 9256,
+      "median": 0.8040319676534773,
+      "q1": 0.769794157334253,
+      "q3": 0.8280971984826688
+     },
+     "4": {
+      "n": 23246,
+      "median": 0.7981185396449493,
+      "q1": 0.7573398787370461,
+      "q3": 0.8261468177914943
+     },
+     "5": {
+      "n": 279,
+      "median": 0.6527510737516433,
+      "q1": 0.4672509595255938,
+      "q3": 0.7241087706613163
+     },
+     "not rice": {
+      "n": 32556,
+      "median": 0.6752185035184617,
+      "q1": 0.48651752986162977,
+      "q3": 0.7619081272316285
+     },
+     "stable target box": {
+      "n": 101,
+      "median": 0.2505850359898002,
+      "q1": 0.1361124784215307,
+      "q3": 0.3670211509851305
+     }
+    },
+    "2026-09-23": {
+     "1": {
+      "n": 4479,
+      "median": 0.69572781567119,
+      "q1": 0.6505754762175193,
+      "q3": 0.7351326879285982
+     },
+     "2": {
+      "n": 5774,
+      "median": 0.7603142684245361,
+      "q1": 0.7198320404120462,
+      "q3": 0.7920547094589098
+     },
+     "3": {
+      "n": 9869,
+      "median": 0.7650757182463852,
+      "q1": 0.7234544389421927,
+      "q3": 0.7975882823874926
+     },
+     "4": {
+      "n": 24682,
+      "median": 0.7530071685500656,
+      "q1": 0.7037152214499401,
+      "q3": 0.7910232539754329
+     },
+     "5": {
+      "n": 281,
+      "median": 0.47678112143883655,
+      "q1": 0.3391317636818483,
+      "q3": 0.582816609395097
+     },
+     "not rice": {
+      "n": 35159,
+      "median": 0.6430293364981641,
+      "q1": 0.4555852942492547,
+      "q3": 0.7280018628226848
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.2738522435948628,
+      "q1": 0.16724874810780896,
+      "q3": 0.3904827354717405
+     }
+    },
+    "2026-10-03": {
+     "1": {
+      "n": 4566,
+      "median": 0.5465635429107234,
+      "q1": 0.4772556261321075,
+      "q3": 0.6027323995282671
+     },
+     "2": {
+      "n": 5856,
+      "median": 0.664672025313551,
+      "q1": 0.6066174745169156,
+      "q3": 0.7169421379986515
+     },
+     "3": {
+      "n": 10081,
+      "median": 0.698118317269795,
+      "q1": 0.6197621917312539,
+      "q3": 0.7654536366398447
+     },
+     "4": {
+      "n": 25136,
+      "median": 0.6761138751017464,
+      "q1": 0.5974681576049421,
+      "q3": 0.7465920887182323
+     },
+     "5": {
+      "n": 289,
+      "median": 0.2323033738545387,
+      "q1": 0.17433860192168069,
+      "q3": 0.3218432995194875
+     },
+     "not rice": {
+      "n": 36377,
+      "median": 0.5819625714959209,
+      "q1": 0.39331582975745133,
+      "q3": 0.6920358340876418
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.2547619099539267,
+      "q1": 0.1504601284401053,
+      "q3": 0.35147676704353675
+     }
+    },
+    "2026-10-08": {
+     "1": {
+      "n": 4298,
+      "median": 0.3186324093611085,
+      "q1": 0.2714816155505125,
+      "q3": 0.3688293564378108
+     },
+     "2": {
+      "n": 5153,
+      "median": 0.43752974635788505,
+      "q1": 0.39715104335603846,
+      "q3": 0.475313496400284
+     },
+     "3": {
+      "n": 7907,
+      "median": 0.44915442473443756,
+      "q1": 0.39789891996467885,
+      "q3": 0.494816487427981
+     },
+     "4": {
+      "n": 21002,
+      "median": 0.44025340456844336,
+      "q1": 0.3859803271275569,
+      "q3": 0.49192407413667794
+     },
+     "5": {
+      "n": 274,
+      "median": 0.2089997140194485,
+      "q1": 0.1694937821082265,
+      "q3": 0.25085653568972965
+     },
+     "not rice": {
+      "n": 30892,
+      "median": 0.4016447237135998,
+      "q1": 0.31086702183206133,
+      "q3": 0.4685766566286864
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.20468421159315764,
+      "q1": 0.14438862525572965,
+      "q3": 0.26574547057480513
+     }
+    },
+    "2026-10-18": {
+     "1": {
+      "n": 4566,
+      "median": 0.2347179211273671,
+      "q1": 0.19420246500616356,
+      "q3": 0.2848052307305666
+     },
+     "2": {
+      "n": 5856,
+      "median": 0.36125403061199485,
+      "q1": 0.2812135243764765,
+      "q3": 0.45733824693535496
+     },
+     "3": {
+      "n": 10081,
+      "median": 0.47093373079989115,
+      "q1": 0.3647340935200189,
+      "q3": 0.5719212743954761
+     },
+     "4": {
+      "n": 25136,
+      "median": 0.448094031579667,
+      "q1": 0.3438145379987748,
+      "q3": 0.5660645265440155
+     },
+     "5": {
+      "n": 289,
+      "median": 0.22705683767400858,
+      "q1": 0.1499627941586828,
+      "q3": 0.29115276415275665
+     },
+     "not rice": {
+      "n": 36378,
+      "median": 0.4511866003058612,
+      "q1": 0.3073802235615822,
+      "q3": 0.5998152504522289
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.2626637528837311,
+      "q1": 0.15605480834644686,
+      "q3": 0.39118855247412365
+     }
+    },
+    "2026-10-23": {
+     "1": {
+      "n": 4444,
+      "median": 0.1708326912883048,
+      "q1": 0.14070257744794834,
+      "q3": 0.1945567942977901
+     },
+     "2": {
+      "n": 5777,
+      "median": 0.20223661128882464,
+      "q1": 0.18159513614113545,
+      "q3": 0.2246102720161305
+     },
+     "3": {
+      "n": 9967,
+      "median": 0.23148248509631972,
+      "q1": 0.20269003582455708,
+      "q3": 0.26795068633337316
+     },
+     "4": {
+      "n": 24603,
+      "median": 0.232021607124307,
+      "q1": 0.19980969422224631,
+      "q3": 0.2772216955865521
+     },
+     "5": {
+      "n": 281,
+      "median": 0.1970558749777721,
+      "q1": 0.14716114094985136,
+      "q3": 0.2624095169937937
+     },
+     "not rice": {
+      "n": 35883,
+      "median": 0.24467283344192256,
+      "q1": 0.1937353942112269,
+      "q3": 0.3077370523386017
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.17342715834922035,
+      "q1": 0.11825170915342764,
+      "q3": 0.2306428959107317
+     }
+    },
+    "2026-10-28": {
+     "1": {
+      "n": 4566,
+      "median": 0.2068445240557299,
+      "q1": 0.17507340745080135,
+      "q3": 0.24452030942597333
+     },
+     "2": {
+      "n": 5856,
+      "median": 0.21566778997450353,
+      "q1": 0.196746605804423,
+      "q3": 0.24472143219136777
+     },
+     "3": {
+      "n": 10081,
+      "median": 0.27297658423323773,
+      "q1": 0.23629725874560423,
+      "q3": 0.32148989565447095
+     },
+     "4": {
+      "n": 25136,
+      "median": 0.292982902532525,
+      "q1": 0.250959669725716,
+      "q3": 0.3568253903172077
+     },
+     "5": {
+      "n": 289,
+      "median": 0.2952643121371401,
+      "q1": 0.18381590819271182,
+      "q3": 0.45086997660787975
+     },
+     "not rice": {
+      "n": 36378,
+      "median": 0.3355558016021941,
+      "q1": 0.25266603035318047,
+      "q3": 0.45302932419439346
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.26248298720677504,
+      "q1": 0.16212540347613813,
+      "q3": 0.3869601852040174
+     }
+    },
+    "2026-11-02": {
+     "1": {
+      "n": 4565,
+      "median": 0.10228608682641124,
+      "q1": 0.07248083593850368,
+      "q3": 0.13556197742406836
+     },
+     "2": {
+      "n": 5856,
+      "median": 0.12015760209316564,
+      "q1": 0.07950162349460659,
+      "q3": 0.15029591550223872
+     },
+     "3": {
+      "n": 10081,
+      "median": 0.14964290219465512,
+      "q1": 0.0990989852127388,
+      "q3": 0.17283976844229645
+     },
+     "4": {
+      "n": 25124,
+      "median": 0.1574444928010811,
+      "q1": 0.12696205640318298,
+      "q3": 0.1830125869225508
+     },
+     "5": {
+      "n": 269,
+      "median": 0.18767957453698236,
+      "q1": 0.10513897488244439,
+      "q3": 0.28048507829757546
+     },
+     "not rice": {
+      "n": 36199,
+      "median": 0.1753535971712227,
+      "q1": 0.1313549392787777,
+      "q3": 0.22391531246048563
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.13840361564619036,
+      "q1": 0.08654020803515144,
+      "q3": 0.20993861355508583
+     }
+    },
+    "2026-11-04": {
+     "1": {
+      "n": 4448,
+      "median": 0.1328326129702546,
+      "q1": 0.10209207167619841,
+      "q3": 0.1706049857390391
+     },
+     "2": {
+      "n": 5456,
+      "median": 0.14495907177689188,
+      "q1": 0.10816223401439372,
+      "q3": 0.17894432682043032
+     },
+     "3": {
+      "n": 8957,
+      "median": 0.1655068673406152,
+      "q1": 0.11509352574408845,
+      "q3": 0.1965767389907211
+     },
+     "4": {
+      "n": 22347,
+      "median": 0.19356045646344758,
+      "q1": 0.15544866609628508,
+      "q3": 0.2295651843614715
+     },
+     "5": {
+      "n": 282,
+      "median": 0.29919514250226587,
+      "q1": 0.1450966598376964,
+      "q3": 0.4225754985116721
+     },
+     "not rice": {
+      "n": 33261,
+      "median": 0.22688773456218317,
+      "q1": 0.17067044821187938,
+      "q3": 0.30519257889955925
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.1625720675792407,
+      "q1": 0.09994238390612012,
+      "q3": 0.22899370079158618
+     }
+    },
+    "2026-11-07": {
+     "1": {
+      "n": 4566,
+      "median": 0.1524642158194414,
+      "q1": 0.12471613044710804,
+      "q3": 0.2012420272549818
+     },
+     "2": {
+      "n": 5856,
+      "median": 0.1610303011032097,
+      "q1": 0.12978421258133377,
+      "q3": 0.19578882237838655
+     },
+     "3": {
+      "n": 10081,
+      "median": 0.17316177289018503,
+      "q1": 0.133841573978504,
+      "q3": 0.20768353097493078
+     },
+     "4": {
+      "n": 25136,
+      "median": 0.21645070205314354,
+      "q1": 0.16954671966226842,
+      "q3": 0.26034031487281234
+     },
+     "5": {
+      "n": 289,
+      "median": 0.3780021556188276,
+      "q1": 0.14671427999153028,
+      "q3": 0.5569868971930827
+     },
+     "not rice": {
+      "n": 36378,
+      "median": 0.2693516439723741,
+      "q1": 0.1972057268086645,
+      "q3": 0.371388558331903
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.23398195576854297,
+      "q1": 0.1451896152134027,
+      "q3": 0.35859237009646083
+     }
+    }
+   },
+   "HV": {
+    "2026-09-13": {
+     "1": {
+      "n": 2582,
+      "median": 0.7944244835910175,
+      "q1": 0.760658414772899,
+      "q3": 0.8218458347127564
+     },
+     "2": {
+      "n": 1245,
+      "median": 0.8284425021211245,
+      "q1": 0.799522544151166,
+      "q3": 0.8569029615321148
+     },
+     "3": {
+      "n": 24695,
+      "median": 0.8190965635383253,
+      "q1": 0.7856155342363527,
+      "q3": 0.849077890929282
+     },
+     "4": {
+      "n": 12306,
+      "median": 0.8308220770590619,
+      "q1": 0.7926221938737558,
+      "q3": 0.8697069665100035
+     },
+     "5": {
+      "n": 789,
+      "median": 0.7495562376347467,
+      "q1": 0.6954717552627594,
+      "q3": 0.8058048617238127
+     },
+     "not rice": {
+      "n": 29395,
+      "median": 0.6999699333227215,
+      "q1": 0.5290158512881733,
+      "q3": 0.7837776683688257
+     },
+     "stable target box": {
+      "n": 60,
+      "median": 0.14324942564347248,
+      "q1": 0.08944571219038723,
+      "q3": 0.2682862831874697
+     }
+    },
+    "2026-09-18": {
+     "1": {
+      "n": 2705,
+      "median": 0.7756461630935684,
+      "q1": 0.7347705418967788,
+      "q3": 0.8077955856842577
+     },
+     "2": {
+      "n": 1305,
+      "median": 0.8043797901735295,
+      "q1": 0.7698142865973736,
+      "q3": 0.8272510189797853
+     },
+     "3": {
+      "n": 24559,
+      "median": 0.7974049667216018,
+      "q1": 0.760334713470953,
+      "q3": 0.8233938568456417
+     },
+     "4": {
+      "n": 13032,
+      "median": 0.8078050074799035,
+      "q1": 0.7721526872505137,
+      "q3": 0.8327475618841869
+     },
+     "5": {
+      "n": 880,
+      "median": 0.6837059734545845,
+      "q1": 0.5263237385194925,
+      "q3": 0.7688128204338658
+     },
+     "not rice": {
+      "n": 32556,
+      "median": 0.6752185035184617,
+      "q1": 0.48651752986162977,
+      "q3": 0.7619081272316285
+     },
+     "stable target box": {
+      "n": 101,
+      "median": 0.2505850359898002,
+      "q1": 0.1361124784215307,
+      "q3": 0.3670211509851305
+     }
+    },
+    "2026-09-23": {
+     "1": {
+      "n": 2811,
+      "median": 0.6867170201850836,
+      "q1": 0.6322181203287638,
+      "q3": 0.7349460919715072
+     },
+     "2": {
+      "n": 1322,
+      "median": 0.7360854399579682,
+      "q1": 0.6900421339415037,
+      "q3": 0.7735698379736908
+     },
+     "3": {
+      "n": 26523,
+      "median": 0.7516779043833556,
+      "q1": 0.7065985896436708,
+      "q3": 0.787112306703698
+     },
+     "4": {
+      "n": 13547,
+      "median": 0.7656687347952947,
+      "q1": 0.7187820888715357,
+      "q3": 0.8025887922745519
+     },
+     "5": {
+      "n": 882,
+      "median": 0.5391203557549828,
+      "q1": 0.39936142686514586,
+      "q3": 0.6896174250845157
+     },
+     "not rice": {
+      "n": 35159,
+      "median": 0.6430293364981641,
+      "q1": 0.4555852942492547,
+      "q3": 0.7280018628226848
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.2738522435948628,
+      "q1": 0.16724874810780896,
+      "q3": 0.3904827354717405
+     }
+    },
+    "2026-10-03": {
+     "1": {
+      "n": 2883,
+      "median": 0.5237904731423695,
+      "q1": 0.428108533061979,
+      "q3": 0.6030905352500494
+     },
+     "2": {
+      "n": 1357,
+      "median": 0.6335499845249151,
+      "q1": 0.5657472904773725,
+      "q3": 0.69598703083987
+     },
+     "3": {
+      "n": 26952,
+      "median": 0.6599993068024907,
+      "q1": 0.5882608959642,
+      "q3": 0.7265888807533819
+     },
+     "4": {
+      "n": 13818,
+      "median": 0.7118493204026146,
+      "q1": 0.6320121248035102,
+      "q3": 0.7772546401004781
+     },
+     "5": {
+      "n": 918,
+      "median": 0.3717673754124426,
+      "q1": 0.25163174514658215,
+      "q3": 0.5539913523043023
+     },
+     "not rice": {
+      "n": 36377,
+      "median": 0.5819625714959209,
+      "q1": 0.39331582975745133,
+      "q3": 0.6920358340876418
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.2547619099539267,
+      "q1": 0.1504601284401053,
+      "q3": 0.35147676704353675
+     }
+    },
+    "2026-10-08": {
+     "1": {
+      "n": 2705,
+      "median": 0.30046331091301737,
+      "q1": 0.2539563618760014,
+      "q3": 0.35671795224720304
+     },
+     "2": {
+      "n": 1311,
+      "median": 0.4181632467450695,
+      "q1": 0.3687817646654049,
+      "q3": 0.4662534966236924
+     },
+     "3": {
+      "n": 21779,
+      "median": 0.4283188767074504,
+      "q1": 0.37763401315549405,
+      "q3": 0.47464201617901547
+     },
+     "4": {
+      "n": 11997,
+      "median": 0.4618311278480694,
+      "q1": 0.40848776225983446,
+      "q3": 0.5109338408546685
+     },
+     "5": {
+      "n": 842,
+      "median": 0.2735600018797885,
+      "q1": 0.21610169338617002,
+      "q3": 0.3578223720616602
+     },
+     "not rice": {
+      "n": 30892,
+      "median": 0.4016447237135998,
+      "q1": 0.31086702183206133,
+      "q3": 0.4685766566286864
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.20468421159315764,
+      "q1": 0.14438862525572965,
+      "q3": 0.26574547057480513
+     }
+    },
+    "2026-10-18": {
+     "1": {
+      "n": 2883,
+      "median": 0.24046412432079628,
+      "q1": 0.19162180967048378,
+      "q3": 0.31436013848008226
+     },
+     "2": {
+      "n": 1357,
+      "median": 0.29502737234666615,
+      "q1": 0.23359352242124473,
+      "q3": 0.3929640824783232
+     },
+     "3": {
+      "n": 26952,
+      "median": 0.4055028938144022,
+      "q1": 0.31163766186683173,
+      "q3": 0.5113715411935524
+     },
+     "4": {
+      "n": 13818,
+      "median": 0.5071895652675888,
+      "q1": 0.38159527953110267,
+      "q3": 0.6229050634464341
+     },
+     "5": {
+      "n": 918,
+      "median": 0.32909206420556847,
+      "q1": 0.24160956321781413,
+      "q3": 0.4535716438308509
+     },
+     "not rice": {
+      "n": 36378,
+      "median": 0.4511866003058612,
+      "q1": 0.3073802235615822,
+      "q3": 0.5998152504522289
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.2626637528837311,
+      "q1": 0.15605480834644686,
+      "q3": 0.39118855247412365
+     }
+    },
+    "2026-10-23": {
+     "1": {
+      "n": 2793,
+      "median": 0.17449216849011379,
+      "q1": 0.14275571910334256,
+      "q3": 0.20849746451992324
+     },
+     "2": {
+      "n": 1347,
+      "median": 0.19854511478910838,
+      "q1": 0.17875235470490805,
+      "q3": 0.22123574402326224
+     },
+     "3": {
+      "n": 26445,
+      "median": 0.21477553975132802,
+      "q1": 0.18817477794082904,
+      "q3": 0.24762705458039402
+     },
+     "4": {
+      "n": 13589,
+      "median": 0.25019203335893775,
+      "q1": 0.21154207566536068,
+      "q3": 0.29888950145703713
+     },
+     "5": {
+      "n": 898,
+      "median": 0.22887809193856395,
+      "q1": 0.18662570266505102,
+      "q3": 0.28122754770397934
+     },
+     "not rice": {
+      "n": 35883,
+      "median": 0.24467283344192256,
+      "q1": 0.1937353942112269,
+      "q3": 0.3077370523386017
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.17342715834922035,
+      "q1": 0.11825170915342764,
+      "q3": 0.2306428959107317
+     }
+    },
+    "2026-10-28": {
+     "1": {
+      "n": 2883,
+      "median": 0.21327298427973784,
+      "q1": 0.1769336881116098,
+      "q3": 0.26531755751072594
+     },
+     "2": {
+      "n": 1357,
+      "median": 0.20495625781110513,
+      "q1": 0.1843899807635545,
+      "q3": 0.23164207392320565
+     },
+     "3": {
+      "n": 26952,
+      "median": 0.2596528438395066,
+      "q1": 0.2217494170511217,
+      "q3": 0.3026282937767505
+     },
+     "4": {
+      "n": 13818,
+      "median": 0.31542647852707534,
+      "q1": 0.2625248125784819,
+      "q3": 0.39282942425236833
+     },
+     "5": {
+      "n": 918,
+      "median": 0.31956296815636587,
+      "q1": 0.24343385450019084,
+      "q3": 0.4383866505148116
+     },
+     "not rice": {
+      "n": 36378,
+      "median": 0.3355558016021941,
+      "q1": 0.25266603035318047,
+      "q3": 0.45302932419439346
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.26248298720677504,
+      "q1": 0.16212540347613813,
+      "q3": 0.3869601852040174
+     }
+    },
+    "2026-11-02": {
+     "1": {
+      "n": 2882,
+      "median": 0.1108033056020877,
+      "q1": 0.07637747391048419,
+      "q3": 0.1513976679441919
+     },
+     "2": {
+      "n": 1357,
+      "median": 0.10779646673013865,
+      "q1": 0.06738139051124091,
+      "q3": 0.14439496598889148
+     },
+     "3": {
+      "n": 26952,
+      "median": 0.1410916770959149,
+      "q1": 0.1010873520943517,
+      "q3": 0.16757423635966637
+     },
+     "4": {
+      "n": 13811,
+      "median": 0.16432496993858597,
+      "q1": 0.13477325372920523,
+      "q3": 0.1898978599911026
+     },
+     "5": {
+      "n": 893,
+      "median": 0.18767957453698236,
+      "q1": 0.13810782644687145,
+      "q3": 0.2629901331125892
+     },
+     "not rice": {
+      "n": 36199,
+      "median": 0.1753535971712227,
+      "q1": 0.1313549392787777,
+      "q3": 0.22391531246048563
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.13840361564619036,
+      "q1": 0.08654020803515144,
+      "q3": 0.20993861355508583
+     }
+    },
+    "2026-11-04": {
+     "1": {
+      "n": 2797,
+      "median": 0.1446403324003808,
+      "q1": 0.10614715299273478,
+      "q3": 0.19406498270887623
+     },
+     "2": {
+      "n": 1328,
+      "median": 0.13972121404968427,
+      "q1": 0.10121706339108424,
+      "q3": 0.17695005762628707
+     },
+     "3": {
+      "n": 24197,
+      "median": 0.164637579580632,
+      "q1": 0.12375360562562931,
+      "q3": 0.19581678366469488
+     },
+     "4": {
+      "n": 12300,
+      "median": 0.20634181787313138,
+      "q1": 0.16576587617836458,
+      "q3": 0.2422827395759249
+     },
+     "5": {
+      "n": 868,
+      "median": 0.2700094887395157,
+      "q1": 0.1750869867991985,
+      "q3": 0.3897091080200754
+     },
+     "not rice": {
+      "n": 33261,
+      "median": 0.22688773456218317,
+      "q1": 0.17067044821187938,
+      "q3": 0.30519257889955925
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.1625720675792407,
+      "q1": 0.09994238390612012,
+      "q3": 0.22899370079158618
+     }
+    },
+    "2026-11-07": {
+     "1": {
+      "n": 2883,
+      "median": 0.16658804350267803,
+      "q1": 0.1268954402136964,
+      "q3": 0.23631376181379532
+     },
+     "2": {
+      "n": 1357,
+      "median": 0.15049878529540003,
+      "q1": 0.12270560824185452,
+      "q3": 0.1861699655750539
+     },
+     "3": {
+      "n": 26952,
+      "median": 0.1797998435337582,
+      "q1": 0.14059774691386653,
+      "q3": 0.2178827381298902
+     },
+     "4": {
+      "n": 13818,
+      "median": 0.22655802132861458,
+      "q1": 0.17806080881887665,
+      "q3": 0.2698208481820519
+     },
+     "5": {
+      "n": 918,
+      "median": 0.32817502477478644,
+      "q1": 0.1900735220937208,
+      "q3": 0.49453254457600776
+     },
+     "not rice": {
+      "n": 36378,
+      "median": 0.2693516439723741,
+      "q1": 0.1972057268086645,
+      "q3": 0.371388558331903
+     },
+     "stable target box": {
+      "n": 156,
+      "median": 0.23398195576854297,
+      "q1": 0.1451896152134027,
+      "q3": 0.35859237009646083
+     }
+    }
+   }
+  },
+  "thresholds": {
+   "T_pooled": {
+    "threshold": 0.465,
+    "values": 442369,
+    "days": [
+     "2026-09-18",
+     "2026-09-23",
+     "2026-10-03",
+     "2026-10-08",
+     "2026-10-18",
+     "2026-10-23",
+     "2026-10-28",
+     "2026-11-02",
+     "2026-11-04",
+     "2026-11-07"
+    ],
+    "reason": null
+   },
+   "T_strict": {
+    "threshold": 0.19454382826475847,
+    "values": 9505,
+    "days": [
+     "2026-10-28",
+     "2026-11-02",
+     "2026-11-04"
+    ],
+    "reason": null,
+    "cells": 3193
+   }
+  },
+  "pass_days": {
+   "2026-10-11": {
+    "on_or_before": "2026-10-08",
+    "on_or_after": "2026-10-18"
+   },
+   "2026-10-23": {
+    "on_or_before": "2026-10-23",
+    "on_or_after": "2026-10-23"
+   },
+   "2026-11-04": {
+    "on_or_before": "2026-11-04",
+    "on_or_after": "2026-11-04"
+   }
+  },
+  "last_usable_day": "2026-11-07",
+  "tables": {
+   "T_pooled": {
+    "no_harvest_seen": [
+     {
+      "polarization": "HH",
+      "day_kind": "on_or_before 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 25136,
+      "cut": 24997,
+      "not_cut": 29,
+      "never_green": 110,
+      "share_cut": 0.9944700827498408,
+      "share_not_cut": 0.001153723742838956,
+      "share_never_green": 0.0043761935073201785
+     },
+     {
+      "polarization": "HH",
+      "day_kind": "on_or_after 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 25136,
+      "cut": 24997,
+      "not_cut": 29,
+      "never_green": 110,
+      "share_cut": 0.9944700827498408,
+      "share_not_cut": 0.001153723742838956,
+      "share_never_green": 0.0043761935073201785
+     },
+     {
+      "polarization": "HH",
+      "day_kind": "last usable date",
+      "day": "2026-11-07",
+      "cells": 25136,
+      "cut": 24997,
+      "not_cut": 37,
+      "never_green": 102,
+      "share_cut": 0.9944700827498408,
+      "share_not_cut": 0.0014719923615531508,
+      "share_never_green": 0.004057924888605983
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "on_or_before 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 13818,
+      "cut": 13735,
+      "not_cut": 25,
+      "never_green": 58,
+      "share_cut": 0.9939933420176581,
+      "share_not_cut": 0.0018092343320306847,
+      "share_never_green": 0.004197423650311188
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "on_or_after 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 13818,
+      "cut": 13735,
+      "not_cut": 25,
+      "never_green": 58,
+      "share_cut": 0.9939933420176581,
+      "share_not_cut": 0.0018092343320306847,
+      "share_never_green": 0.004197423650311188
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "last usable date",
+      "day": "2026-11-07",
+      "cells": 13818,
+      "cut": 13735,
+      "not_cut": 29,
+      "never_green": 54,
+      "share_cut": 0.9939933420176581,
+      "share_not_cut": 0.002098711825155594,
+      "share_never_green": 0.0039079461571862786
+     }
+    ],
+    "cut_share_by_pass": [
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_before",
+      "day": "2026-10-08",
+      "cells": 45928,
+      "cut": 25805,
+      "not_cut": 19892,
+      "never_green": 231,
+      "share_cut": 0.5618576902978575,
+      "share_not_cut": 0.4331126981362132,
+      "share_never_green": 0.005029611565929281,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.09941647796551123,
+       "HV": 0.06277216512802648
+      },
+      "official": "no figure found"
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_after",
+      "day": "2026-10-18",
+      "cells": 45928,
+      "cut": 32385,
+      "not_cut": 13356,
+      "never_green": 187,
+      "share_cut": 0.7051254136909946,
+      "share_not_cut": 0.29080299599372933,
+      "share_never_green": 0.004071590315276085,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.09941647796551123,
+       "HV": 0.06277216512802648
+      },
+      "official": "no figure found"
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_before",
+      "day": "2026-10-23",
+      "cells": 45928,
+      "cut": 45378,
+      "not_cut": 363,
+      "never_green": 187,
+      "share_cut": 0.988024734366835,
+      "share_not_cut": 0.00790367531788887,
+      "share_never_green": 0.004071590315276085,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.22692039714335482,
+       "HV": 0.09231841142658073
+      },
+      "official": "Punjab 34.82 % harvested till 23 October; Tarn Taran district 73 %, Amritsar 83 %, in the same report without a date of their own (PTI, 24 October)"
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_after",
+      "day": "2026-10-23",
+      "cells": 45928,
+      "cut": 45378,
+      "not_cut": 363,
+      "never_green": 187,
+      "share_cut": 0.988024734366835,
+      "share_not_cut": 0.00790367531788887,
+      "share_never_green": 0.004071590315276085,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.22692039714335482,
+       "HV": 0.09231841142658073
+      },
+      "official": "Punjab 34.82 % harvested till 23 October; Tarn Taran district 73 %, Amritsar 83 %, in the same report without a date of their own (PTI, 24 October)"
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_before",
+      "day": "2026-11-04",
+      "cells": 45928,
+      "cut": 45742,
+      "not_cut": 35,
+      "never_green": 151,
+      "share_cut": 0.9959501828949661,
+      "share_not_cut": 0.0007620623584741334,
+      "share_never_green": 0.003287754746559833,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.44641612959414734,
+       "HV": 0.6791499738721477
+      },
+      "official": "Punjab 85.10 % as of 4 November (Punjab Pollution Control Board, ANI, 5 November); more than 90 % of Tarn Taran and Amritsar together (PTI, 2 November, without a date of its own)"
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_after",
+      "day": "2026-11-04",
+      "cells": 45928,
+      "cut": 45742,
+      "not_cut": 35,
+      "never_green": 151,
+      "share_cut": 0.9959501828949661,
+      "share_not_cut": 0.0007620623584741334,
+      "share_never_green": 0.003287754746559833,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.44641612959414734,
+       "HV": 0.6791499738721477
+      },
+      "official": "Punjab 85.10 % as of 4 November (Punjab Pollution Control Board, ANI, 5 November); more than 90 % of Tarn Taran and Amritsar together (PTI, 2 November, without a date of its own)"
+     }
+    ],
+    "pair_ending_on_pass": [
+     {
+      "pass": "2026-10-11",
+      "day": "2026-10-18",
+      "polarization": "HH",
+      "class": 1,
+      "cells": 4566,
+      "cut": 4541,
+      "not_cut": 16,
+      "never_green": 9,
+      "share_cut": 0.9945247481384144,
+      "share_not_cut": 0.003504161191414805,
+      "share_never_green": 0.0019710906701708277
+     },
+     {
+      "pass": "2026-10-11",
+      "day": "2026-10-18",
+      "polarization": "HV",
+      "class": 1,
+      "cells": 2883,
+      "cut": 2758,
+      "not_cut": 118,
+      "never_green": 7,
+      "share_cut": 0.9566423864030523,
+      "share_not_cut": 0.04092958723551856,
+      "share_never_green": 0.002428026361429067
+     },
+     {
+      "pass": "2026-10-23",
+      "day": "2026-10-23",
+      "polarization": "HH",
+      "class": 2,
+      "cells": 5856,
+      "cut": 5832,
+      "not_cut": 22,
+      "never_green": 2,
+      "share_cut": 0.9959016393442623,
+      "share_not_cut": 0.003756830601092896,
+      "share_never_green": 0.00034153005464480874
+     },
+     {
+      "pass": "2026-10-23",
+      "day": "2026-10-23",
+      "polarization": "HV",
+      "class": 2,
+      "cells": 1357,
+      "cut": 1355,
+      "not_cut": 1,
+      "never_green": 1,
+      "share_cut": 0.9985261606484893,
+      "share_not_cut": 0.0007369196757553427,
+      "share_never_green": 0.0007369196757553427
+     },
+     {
+      "pass": "2026-11-04",
+      "day": "2026-11-04",
+      "polarization": "HH",
+      "class": 3,
+      "cells": 10081,
+      "cut": 10070,
+      "not_cut": 0,
+      "never_green": 11,
+      "share_cut": 0.998908838408888,
+      "share_not_cut": 0.0,
+      "share_never_green": 0.001091161591111993
+     },
+     {
+      "pass": "2026-11-04",
+      "day": "2026-11-04",
+      "polarization": "HV",
+      "class": 3,
+      "cells": 26952,
+      "cut": 26901,
+      "not_cut": 2,
+      "never_green": 49,
+      "share_cut": 0.9981077471059662,
+      "share_not_cut": 7.420599584446424e-05,
+      "share_never_green": 0.0018180468981893736
+     }
+    ],
+    "agreement": [
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_before",
+      "day": "2026-10-08",
+      "polarization": "HH",
+      "cells_used": 45442,
+      "cells_agree": 23840,
+      "agreement": 0.5246247964438185,
+      "interval_95": [
+       0.5049699342559785,
+       0.5454156686903068
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 231,
+      "both_say_harvested": 4253,
+      "both_say_not": 19587,
+      "radar_harvested_optical_not": 302,
+      "radar_not_optical_cut": 21300
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_before",
+      "day": "2026-10-08",
+      "polarization": "HV",
+      "cells_used": 44848,
+      "cells_agree": 22116,
+      "agreement": 0.4931323581876561,
+      "interval_95": [
+       0.471121034718891,
+       0.5147458144324879
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 231,
+      "both_say_harvested": 2611,
+      "both_say_not": 19505,
+      "radar_harvested_optical_not": 264,
+      "radar_not_optical_cut": 22468
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_after",
+      "day": "2026-10-18",
+      "polarization": "HH",
+      "cells_used": 45482,
+      "cells_agree": 17875,
+      "agreement": 0.3930126203772921,
+      "interval_95": [
+       0.3782868329861165,
+       0.4077733497942398
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 187,
+      "both_say_harvested": 4541,
+      "both_say_not": 13334,
+      "radar_harvested_optical_not": 16,
+      "radar_not_optical_cut": 27591
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_after",
+      "day": "2026-10-18",
+      "polarization": "HV",
+      "cells_used": 44877,
+      "cells_agree": 15894,
+      "agreement": 0.3541680593622568,
+      "interval_95": [
+       0.33863837300313215,
+       0.36968516204253
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 187,
+      "both_say_harvested": 2758,
+      "both_say_not": 13136,
+      "radar_harvested_optical_not": 118,
+      "radar_not_optical_cut": 28865
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_before",
+      "day": "2026-10-23",
+      "polarization": "HH",
+      "cells_used": 45482,
+      "cells_agree": 10726,
+      "agreement": 0.23582955894639637,
+      "interval_95": [
+       0.22441591780473558,
+       0.24749612070466565
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 187,
+      "both_say_harvested": 10389,
+      "both_say_not": 337,
+      "radar_harvested_optical_not": 22,
+      "radar_not_optical_cut": 34734
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_before",
+      "day": "2026-10-23",
+      "polarization": "HV",
+      "cells_used": 44877,
+      "cells_agree": 4578,
+      "agreement": 0.1020121665886757,
+      "interval_95": [
+       0.09419358308378924,
+       0.11024066742949426
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 187,
+      "both_say_harvested": 4227,
+      "both_say_not": 351,
+      "radar_harvested_optical_not": 5,
+      "radar_not_optical_cut": 40294
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_after",
+      "day": "2026-10-23",
+      "polarization": "HH",
+      "cells_used": 45482,
+      "cells_agree": 10726,
+      "agreement": 0.23582955894639637,
+      "interval_95": [
+       0.22441591780473558,
+       0.24749612070466565
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 187,
+      "both_say_harvested": 10389,
+      "both_say_not": 337,
+      "radar_harvested_optical_not": 22,
+      "radar_not_optical_cut": 34734
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_after",
+      "day": "2026-10-23",
+      "polarization": "HV",
+      "cells_used": 44877,
+      "cells_agree": 4578,
+      "agreement": 0.1020121665886757,
+      "interval_95": [
+       0.09419358308378924,
+       0.11024066742949426
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 187,
+      "both_say_harvested": 4227,
+      "both_say_not": 351,
+      "radar_harvested_optical_not": 5,
+      "radar_not_optical_cut": 40294
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_before",
+      "day": "2026-11-04",
+      "polarization": "HH",
+      "cells_used": 45508,
+      "cells_agree": 20511,
+      "agreement": 0.4507119627318274,
+      "interval_95": [
+       0.4380900109266309,
+       0.4623155849122695
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 151,
+      "both_say_harvested": 20482,
+      "both_say_not": 29,
+      "radar_harvested_optical_not": 0,
+      "radar_not_optical_cut": 24997
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_before",
+      "day": "2026-11-04",
+      "polarization": "HV",
+      "cells_used": 44898,
+      "cells_agree": 31161,
+      "agreement": 0.6940398236001604,
+      "interval_95": [
+       0.6810076794505947,
+       0.7067701512444546
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 151,
+      "both_say_harvested": 31136,
+      "both_say_not": 25,
+      "radar_harvested_optical_not": 2,
+      "radar_not_optical_cut": 13735
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_after",
+      "day": "2026-11-04",
+      "polarization": "HH",
+      "cells_used": 45508,
+      "cells_agree": 20511,
+      "agreement": 0.4507119627318274,
+      "interval_95": [
+       0.4380900109266309,
+       0.4623155849122695
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 151,
+      "both_say_harvested": 20482,
+      "both_say_not": 29,
+      "radar_harvested_optical_not": 0,
+      "radar_not_optical_cut": 24997
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_after",
+      "day": "2026-11-04",
+      "polarization": "HV",
+      "cells_used": 44898,
+      "cells_agree": 31161,
+      "agreement": 0.6940398236001604,
+      "interval_95": [
+       0.6810076794505947,
+       0.7067701512444546
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 151,
+      "both_say_harvested": 31136,
+      "both_say_not": 25,
+      "radar_harvested_optical_not": 2,
+      "radar_not_optical_cut": 13735
+     }
+    ],
+    "back_to_green": [
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_before",
+      "day": "2026-10-08",
+      "cut_cells": 25805,
+      "measured": 25567,
+      "back_to_green": 4751,
+      "share": 0.18582547815543474,
+      "no_value_next_day": 238,
+      "cut_on_last_usable_day": 0
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_after",
+      "day": "2026-10-18",
+      "cut_cells": 32385,
+      "measured": 32122,
+      "back_to_green": 4751,
+      "share": 0.14790486271091463,
+      "no_value_next_day": 263,
+      "cut_on_last_usable_day": 0
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_before",
+      "day": "2026-10-23",
+      "cut_cells": 45378,
+      "measured": 45115,
+      "back_to_green": 6353,
+      "share": 0.14081790978610217,
+      "no_value_next_day": 263,
+      "cut_on_last_usable_day": 0
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_after",
+      "day": "2026-10-23",
+      "cut_cells": 45378,
+      "measured": 45115,
+      "back_to_green": 6353,
+      "share": 0.14081790978610217,
+      "no_value_next_day": 263,
+      "cut_on_last_usable_day": 0
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_before",
+      "day": "2026-11-04",
+      "cut_cells": 45742,
+      "measured": 45478,
+      "back_to_green": 6471,
+      "share": 0.14228857909318793,
+      "no_value_next_day": 264,
+      "cut_on_last_usable_day": 0
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_after",
+      "day": "2026-11-04",
+      "cut_cells": 45742,
+      "measured": 45478,
+      "back_to_green": 6471,
+      "share": 0.14228857909318793,
+      "no_value_next_day": 264,
+      "cut_on_last_usable_day": 0
+     }
+    ],
+    "cut_day_counts": {
+     "2026-10-03": 3242,
+     "2026-10-08": 22563,
+     "2026-10-18": 6580,
+     "2026-10-23": 12993,
+     "2026-10-28": 121,
+     "2026-11-02": 243,
+     "2026-11-04": 0,
+     "2026-11-07": 2
+    }
+   },
+   "T_strict": {
+    "no_harvest_seen": [
+     {
+      "polarization": "HH",
+      "day_kind": "on_or_before 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 25136,
+      "cut": 21045,
+      "not_cut": 4077,
+      "never_green": 14,
+      "share_cut": 0.8372453851050287,
+      "share_not_cut": 0.16219764481222151,
+      "share_never_green": 0.0005569700827498409
+     },
+     {
+      "polarization": "HH",
+      "day_kind": "on_or_after 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 25136,
+      "cut": 21045,
+      "not_cut": 4077,
+      "never_green": 14,
+      "share_cut": 0.8372453851050287,
+      "share_not_cut": 0.16219764481222151,
+      "share_never_green": 0.0005569700827498409
+     },
+     {
+      "polarization": "HH",
+      "day_kind": "last usable date",
+      "day": "2026-11-07",
+      "cells": 25136,
+      "cut": 21133,
+      "not_cut": 3989,
+      "never_green": 14,
+      "share_cut": 0.8407463399108848,
+      "share_not_cut": 0.15869669000636538,
+      "share_never_green": 0.0005569700827498409
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "on_or_before 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 13818,
+      "cut": 10905,
+      "not_cut": 2902,
+      "never_green": 11,
+      "share_cut": 0.7891880156317846,
+      "share_not_cut": 0.21001592126212187,
+      "share_never_green": 0.0007960631060935012
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "on_or_after 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 13818,
+      "cut": 10905,
+      "not_cut": 2902,
+      "never_green": 11,
+      "share_cut": 0.7891880156317846,
+      "share_not_cut": 0.21001592126212187,
+      "share_never_green": 0.0007960631060935012
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "last usable date",
+      "day": "2026-11-07",
+      "cells": 13818,
+      "cut": 10960,
+      "not_cut": 2847,
+      "never_green": 11,
+      "share_cut": 0.7931683311622522,
+      "share_not_cut": 0.20603560573165436,
+      "share_never_green": 0.0007960631060935012
+     }
+    ],
+    "cut_share_by_pass": [
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_before",
+      "day": "2026-10-08",
+      "cells": 45928,
+      "cut": 342,
+      "not_cut": 45551,
+      "never_green": 35,
+      "share_cut": 0.00744643790280439,
+      "share_not_cut": 0.9917914997387215,
+      "share_never_green": 0.0007620623584741334,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.09941647796551123,
+       "HV": 0.06277216512802648
+      },
+      "official": "no figure found"
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_after",
+      "day": "2026-10-18",
+      "cells": 45928,
+      "cut": 2051,
+      "not_cut": 43852,
+      "never_green": 25,
+      "share_cut": 0.04465685420658422,
+      "share_not_cut": 0.9547988155373628,
+      "share_never_green": 0.0005443302560529525,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.09941647796551123,
+       "HV": 0.06277216512802648
+      },
+      "official": "no figure found"
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_before",
+      "day": "2026-10-23",
+      "cells": 45928,
+      "cut": 13013,
+      "not_cut": 32890,
+      "never_green": 25,
+      "share_cut": 0.2833347848806828,
+      "share_not_cut": 0.7161208848632642,
+      "share_never_green": 0.0005443302560529525,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.22692039714335482,
+       "HV": 0.09231841142658073
+      },
+      "official": "Punjab 34.82 % harvested till 23 October; Tarn Taran district 73 %, Amritsar 83 %, in the same report without a date of their own (PTI, 24 October)"
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_after",
+      "day": "2026-10-23",
+      "cells": 45928,
+      "cut": 13013,
+      "not_cut": 32890,
+      "never_green": 25,
+      "share_cut": 0.2833347848806828,
+      "share_not_cut": 0.7161208848632642,
+      "share_never_green": 0.0005443302560529525,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.22692039714335482,
+       "HV": 0.09231841142658073
+      },
+      "official": "Punjab 34.82 % harvested till 23 October; Tarn Taran district 73 %, Amritsar 83 %, in the same report without a date of their own (PTI, 24 October)"
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_before",
+      "day": "2026-11-04",
+      "cells": 45928,
+      "cut": 40810,
+      "not_cut": 5103,
+      "never_green": 15,
+      "share_cut": 0.8885647099808396,
+      "share_not_cut": 0.11110869186552866,
+      "share_never_green": 0.00032659815363177147,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.44641612959414734,
+       "HV": 0.6791499738721477
+      },
+      "official": "Punjab 85.10 % as of 4 November (Punjab Pollution Control Board, ANI, 5 November); more than 90 % of Tarn Taran and Amritsar together (PTI, 2 November, without a date of its own)"
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_after",
+      "day": "2026-11-04",
+      "cells": 45928,
+      "cut": 40810,
+      "not_cut": 5103,
+      "never_green": 15,
+      "share_cut": 0.8885647099808396,
+      "share_not_cut": 0.11110869186552866,
+      "share_never_green": 0.00032659815363177147,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.44641612959414734,
+       "HV": 0.6791499738721477
+      },
+      "official": "Punjab 85.10 % as of 4 November (Punjab Pollution Control Board, ANI, 5 November); more than 90 % of Tarn Taran and Amritsar together (PTI, 2 November, without a date of its own)"
+     }
+    ],
+    "pair_ending_on_pass": [
+     {
+      "pass": "2026-10-11",
+      "day": "2026-10-18",
+      "polarization": "HH",
+      "class": 1,
+      "cells": 4566,
+      "cut": 1193,
+      "not_cut": 3373,
+      "never_green": 0,
+      "share_cut": 0.26127901883486643,
+      "share_not_cut": 0.7387209811651336,
+      "share_never_green": 0.0
+     },
+     {
+      "pass": "2026-10-11",
+      "day": "2026-10-18",
+      "polarization": "HV",
+      "class": 1,
+      "cells": 2883,
+      "cut": 837,
+      "not_cut": 2046,
+      "never_green": 0,
+      "share_cut": 0.2903225806451613,
+      "share_not_cut": 0.7096774193548387,
+      "share_never_green": 0.0
+     },
+     {
+      "pass": "2026-10-23",
+      "day": "2026-10-23",
+      "polarization": "HH",
+      "class": 2,
+      "cells": 5856,
+      "cut": 2331,
+      "not_cut": 3525,
+      "never_green": 0,
+      "share_cut": 0.3980532786885246,
+      "share_not_cut": 0.6019467213114754,
+      "share_never_green": 0.0
+     },
+     {
+      "pass": "2026-10-23",
+      "day": "2026-10-23",
+      "polarization": "HV",
+      "class": 2,
+      "cells": 1357,
+      "cut": 607,
+      "not_cut": 750,
+      "never_green": 0,
+      "share_cut": 0.447310243183493,
+      "share_not_cut": 0.552689756816507,
+      "share_never_green": 0.0
+     },
+     {
+      "pass": "2026-11-04",
+      "day": "2026-11-04",
+      "polarization": "HH",
+      "class": 3,
+      "cells": 10081,
+      "cut": 9406,
+      "not_cut": 675,
+      "never_green": 0,
+      "share_cut": 0.9330423569090368,
+      "share_not_cut": 0.06695764309096319,
+      "share_never_green": 0.0
+     },
+     {
+      "pass": "2026-11-04",
+      "day": "2026-11-04",
+      "polarization": "HV",
+      "class": 3,
+      "cells": 26952,
+      "cut": 25293,
+      "not_cut": 1656,
+      "never_green": 3,
+      "share_cut": 0.938446126447017,
+      "share_not_cut": 0.06144256455921639,
+      "share_never_green": 0.00011130899376669635
+     }
+    ],
+    "agreement": [
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_before",
+      "day": "2026-10-08",
+      "polarization": "HH",
+      "cells_used": 45613,
+      "cells_agree": 41022,
+      "agreement": 0.8993488698397387,
+      "interval_95": [
+       0.8905069866143333,
+       0.9082361826666837
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 35,
+      "both_say_harvested": 100,
+      "both_say_not": 40922,
+      "radar_harvested_optical_not": 4466,
+      "radar_not_optical_cut": 125
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_before",
+      "day": "2026-10-08",
+      "polarization": "HV",
+      "cells_used": 44985,
+      "cells_agree": 42147,
+      "agreement": 0.9369123041013672,
+      "interval_95": [
+       0.9302582584265078,
+       0.9430299967709017
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 35,
+      "both_say_harvested": 118,
+      "both_say_not": 42029,
+      "radar_harvested_optical_not": 2765,
+      "radar_not_optical_cut": 73
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_after",
+      "day": "2026-10-18",
+      "polarization": "HH",
+      "cells_used": 45623,
+      "cells_agree": 41540,
+      "agreement": 0.9105056660017974,
+      "interval_95": [
+       0.9034884880046187,
+       0.917669987643757
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 25,
+      "both_say_harvested": 1193,
+      "both_say_not": 40347,
+      "radar_harvested_optical_not": 3373,
+      "radar_not_optical_cut": 710
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_after",
+      "day": "2026-10-18",
+      "polarization": "HV",
+      "cells_used": 44994,
+      "cells_agree": 41935,
+      "agreement": 0.9320131573098636,
+      "interval_95": [
+       0.9264854017673433,
+       0.937462365575513
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 25,
+      "both_say_harvested": 837,
+      "both_say_not": 41098,
+      "radar_harvested_optical_not": 2046,
+      "radar_not_optical_cut": 1013
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_before",
+      "day": "2026-10-23",
+      "polarization": "HH",
+      "cells_used": 45623,
+      "cells_agree": 33852,
+      "agreement": 0.7419941696074348,
+      "interval_95": [
+       0.7322893567630213,
+       0.7520534117878193
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 25,
+      "both_say_harvested": 5738,
+      "both_say_not": 28114,
+      "radar_harvested_optical_not": 4684,
+      "radar_not_optical_cut": 7087
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_before",
+      "day": "2026-10-23",
+      "polarization": "HV",
+      "cells_used": 44994,
+      "cells_agree": 33195,
+      "agreement": 0.737765035338045,
+      "interval_95": [
+       0.7242655040868662,
+       0.7515395487252136
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 25,
+      "both_say_harvested": 2557,
+      "both_say_not": 30638,
+      "radar_harvested_optical_not": 1683,
+      "radar_not_optical_cut": 10116
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_after",
+      "day": "2026-10-23",
+      "polarization": "HH",
+      "cells_used": 45623,
+      "cells_agree": 33852,
+      "agreement": 0.7419941696074348,
+      "interval_95": [
+       0.7322893567630213,
+       0.7520534117878193
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 25,
+      "both_say_harvested": 5738,
+      "both_say_not": 28114,
+      "radar_harvested_optical_not": 4684,
+      "radar_not_optical_cut": 7087
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_after",
+      "day": "2026-10-23",
+      "polarization": "HV",
+      "cells_used": 44994,
+      "cells_agree": 33195,
+      "agreement": 0.737765035338045,
+      "interval_95": [
+       0.7242655040868662,
+       0.7515395487252136
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 25,
+      "both_say_harvested": 2557,
+      "both_say_not": 30638,
+      "radar_harvested_optical_not": 1683,
+      "radar_not_optical_cut": 10116
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_before",
+      "day": "2026-11-04",
+      "polarization": "HH",
+      "cells_used": 45625,
+      "cells_agree": 23627,
+      "agreement": 0.5178520547945206,
+      "interval_95": [
+       0.5066119582465366,
+       0.5287158935499963
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 15,
+      "both_say_harvested": 19550,
+      "both_say_not": 4077,
+      "radar_harvested_optical_not": 953,
+      "radar_not_optical_cut": 21045
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_before",
+      "day": "2026-11-04",
+      "polarization": "HV",
+      "cells_used": 44996,
+      "cells_agree": 32203,
+      "agreement": 0.7156858387412215,
+      "interval_95": [
+       0.705093281684072,
+       0.7261037619305167
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 15,
+      "both_say_harvested": 29301,
+      "both_say_not": 2902,
+      "radar_harvested_optical_not": 1888,
+      "radar_not_optical_cut": 10905
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_after",
+      "day": "2026-11-04",
+      "polarization": "HH",
+      "cells_used": 45625,
+      "cells_agree": 23627,
+      "agreement": 0.5178520547945206,
+      "interval_95": [
+       0.5066119582465366,
+       0.5287158935499963
+      ],
+      "left_out_fell_before": 289,
+      "left_out_never_green": 15,
+      "both_say_harvested": 19550,
+      "both_say_not": 4077,
+      "radar_harvested_optical_not": 953,
+      "radar_not_optical_cut": 21045
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_after",
+      "day": "2026-11-04",
+      "polarization": "HV",
+      "cells_used": 44996,
+      "cells_agree": 32203,
+      "agreement": 0.7156858387412215,
+      "interval_95": [
+       0.705093281684072,
+       0.7261037619305167
+      ],
+      "left_out_fell_before": 918,
+      "left_out_never_green": 15,
+      "both_say_harvested": 29301,
+      "both_say_not": 2902,
+      "radar_harvested_optical_not": 1888,
+      "radar_not_optical_cut": 10905
+     }
+    ],
+    "back_to_green": [
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_before",
+      "day": "2026-10-08",
+      "cut_cells": 342,
+      "measured": 338,
+      "back_to_green": 113,
+      "share": 0.3343195266272189,
+      "no_value_next_day": 4,
+      "cut_on_last_usable_day": 0
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_after",
+      "day": "2026-10-18",
+      "cut_cells": 2051,
+      "measured": 2012,
+      "back_to_green": 160,
+      "share": 0.07952286282306163,
+      "no_value_next_day": 39,
+      "cut_on_last_usable_day": 0
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_before",
+      "day": "2026-10-23",
+      "cut_cells": 13013,
+      "measured": 12974,
+      "back_to_green": 8425,
+      "share": 0.6493756744257746,
+      "no_value_next_day": 39,
+      "cut_on_last_usable_day": 0
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_after",
+      "day": "2026-10-23",
+      "cut_cells": 13013,
+      "measured": 12974,
+      "back_to_green": 8425,
+      "share": 0.6493756744257746,
+      "no_value_next_day": 39,
+      "cut_on_last_usable_day": 0
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_before",
+      "day": "2026-11-04",
+      "cut_cells": 40810,
+      "measured": 38404,
+      "back_to_green": 17753,
+      "share": 0.46226955525466096,
+      "no_value_next_day": 2406,
+      "cut_on_last_usable_day": 0
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_after",
+      "day": "2026-11-04",
+      "cut_cells": 40810,
+      "measured": 38404,
+      "back_to_green": 17753,
+      "share": 0.46226955525466096,
+      "no_value_next_day": 2406,
+      "cut_on_last_usable_day": 0
+     }
+    ],
+    "cut_day_counts": {
+     "2026-10-03": 192,
+     "2026-10-08": 150,
+     "2026-10-18": 1709,
+     "2026-10-23": 10962,
+     "2026-10-28": 776,
+     "2026-11-02": 26811,
+     "2026-11-04": 210,
+     "2026-11-07": 148
+    }
+   }
+  }
+ },
+ "limits": [
+  "An optical index sees green, not stems: ripening, weeds, a second crop and smoke haze all move it.",
+  "A 100 m cell holds several fields.",
+  "Cloud and smoke leave gaps, so \"cut by day D\" depends on which dates are usable.",
+  "Sentinel-2 passes at about 11:00 local time and NISAR at 05:43, days apart.",
+  "The comparison is made afterwards, like the fire check.",
+  "The marker decision (HV) is not reopened by this: it was made by a rule fixed beforehand. The numbers are reported for HH and HV without recommending a change.",
+  "T_pooled separates green from not green; ripening rice loses green before it is cut, so this threshold calls some standing, ripe rice \"cut\"."
+ ],
+ "credit": "Contains modified Copernicus Sentinel data 2026"
+}

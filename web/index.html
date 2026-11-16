@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The colour of the header band (--header-bg in src/styles.css), so a phone browser's own bar
+         continues it. -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#101820" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0d11" />
+    <!-- The name and tagline come from src/branding.ts, filled in by vite.config.ts at build time. -->
+    <meta name="description" content="__BRAND_TAGLINE__" />
+    <!-- The favicon is a small SVG drawn right here (a radar-style ring and sweep), so there is no
+         image file to fetch and no favicon 404 in the console. -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23123'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%237cc4ff' stroke-width='2'/%3E%3Cpath d='M16 16 L24 9' stroke='%23ffb000' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+    <title>__BRAND_NAME__</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

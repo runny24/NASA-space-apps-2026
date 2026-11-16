@@ -1,0 +1,35 @@
+Source: https://github.com/nasa/spaceapps/discussions/1827  ("Space Apps Connect", the organizers' forum)
+Saved: 2026-11-14, about 01:47 CST. Excerpt: the Global Organizing (GO) Team's reply only, dated Nov 5, 2026,
+marked "GO Team Answered". The question asked what teams can plan and do before the day of the event.
+
+----------------------------------------------------------------------------------------------------------
+
+Hello,
+
+We appreciate the enthusiasm of participants, but we ask that teams refrain from starting on their projects
+until the start of the official November 14-15 hackathon (Saturday, 9am local time of your Local Event; if
+Universal Event, start time is Saturday, 9am of the Team Owner's area of residence).
+
+Working ahead of the hackathon can lead to disqualification.
+
+However, before the hackathon starts, you may select a challenge to work on, review the resources, research
+the topic, and form your team based on the skills you think are needed.
+
+We encourage all participants to utilize the full 2 days (November 14-15) to build their projects - working
+until the deadline.
+
+In order to be eligible for Global Awards, you must use at least one NASA data source that is included with
+the Resources of each challenge. Beyond that, all other NASA data and Space Agency Partner data included in
+the Resources is strongly encouraged, but optional to use. All sources, including the NASA data, must be
+cited as a reference in the project submission.
+
+When you submit your project, you must list all of the data, resources, and tools that you used in your
+project. Resources should include any code, text, and images (even if they are open source or freely
+available) that you used when creating your project. If you are using any copyrighted materials, make sure
+you have permission to use them.
+
+Third party materials are allowed as long as you follow the above guidelines. If you are interested in
+Global Awards, you must use at least one NASA resource in your project. The data is available in the
+Resources tab of each Challenge: https://www.spaceappschallenge.org/2026/challenges/
+
+Thank you.

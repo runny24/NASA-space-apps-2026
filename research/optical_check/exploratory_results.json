@@ -1,0 +1,1314 @@
+{
+ "label": "EXPLORATORY, ADDED AFTER SEEING THE DATA; not a result of the method fixed in the brief",
+ "generator": "research/optical_check/exploratory_unit_check.py, AI-written (Claude Opus 5.5, Anthropic)",
+ "run_at": "2026-11-15T05:08:58+00:00",
+ "vegetation_pixels": {
+  "2026-09-13": 6415040,
+  "2026-09-18": 6529782,
+  "2026-09-23": 4424339,
+  "2026-09-25": 28,
+  "2026-09-28": 2363229,
+  "2026-10-03": 6443655,
+  "2026-10-08": 0,
+  "2026-10-13": 2626452,
+  "2026-10-15": 131037,
+  "2026-10-18": 2849016,
+  "2026-10-23": 0,
+  "2026-10-28": 984016,
+  "2026-11-02": 0,
+  "2026-11-04": 92158,
+  "2026-11-07": 558146,
+  "2026-11-12": 0
+ },
+ "dark_targets": {
+  "2026-09-13": {
+   "water_scl6": {
+    "red": {
+     "n": 120680,
+     "p1": 241.0,
+     "median": 1483.0,
+     "share_below_1000": 0.3571594298972489
+    },
+    "nir": {
+     "n": 120680,
+     "p1": 70.0,
+     "median": 604.0,
+     "share_below_1000": 0.81219754723235
+    }
+   },
+   "all_pixels": {
+    "red": {
+     "n": 8236746,
+     "p1": 83.0,
+     "median": 402.0,
+     "share_below_1000": 0.8284583499357635
+    },
+    "nir": {
+     "n": 8236746,
+     "p1": 402.0,
+     "median": 3691.0,
+     "share_below_1000": 0.038868261811156976
+    }
+   }
+  },
+  "2026-09-18": {
+   "water_scl6": {
+    "red": {
+     "n": 92872,
+     "p1": 459.0,
+     "median": 1558.0,
+     "share_below_1000": 0.27474373331036267
+    },
+    "nir": {
+     "n": 92872,
+     "p1": 515.0,
+     "median": 992.0,
+     "share_below_1000": 0.5072357653544664
+    }
+   },
+   "all_pixels": {
+    "red": {
+     "n": 8236800,
+     "p1": 219.0,
+     "median": 497.0,
+     "share_below_1000": 0.7953463723776224
+    },
+    "nir": {
+     "n": 8236800,
+     "p1": 840.0,
+     "median": 4015.0,
+     "share_below_1000": 0.017792225135975136
+    }
+   }
+  },
+  "2026-09-23": {
+   "water_scl6": {
+    "red": {
+     "n": 157306,
+     "p1": 245.0,
+     "median": 969.0,
+     "share_below_1000": 0.5130827813306549
+    },
+    "nir": {
+     "n": 157306,
+     "p1": 144.0,
+     "median": 946.0,
+     "share_below_1000": 0.5191664653605076
+    }
+   },
+   "all_pixels": {
+    "red": {
+     "n": 8236798,
+     "p1": 266.0,
+     "median": 588.0,
+     "share_below_1000": 0.823995319540433
+    },
+    "nir": {
+     "n": 8236798,
+     "p1": 595.0,
+     "median": 3779.0,
+     "share_below_1000": 0.02420928618135348
+    }
+   }
+  },
+  "2026-10-03": {
+   "water_scl6": {
+    "red": {
+     "n": 127724,
+     "p1": 126.0,
+     "median": 1242.0,
+     "share_below_1000": 0.38204252920359527
+    },
+    "nir": {
+     "n": 127724,
+     "p1": 150.0,
+     "median": 570.0,
+     "share_below_1000": 0.7910572797594814
+    }
+   },
+   "all_pixels": {
+    "red": {
+     "n": 8236799,
+     "p1": 229.0,
+     "median": 695.0,
+     "share_below_1000": 0.7913914130962768
+    },
+    "nir": {
+     "n": 8236799,
+     "p1": 469.0,
+     "median": 3313.0,
+     "share_below_1000": 0.03004880900942223
+    }
+   }
+  },
+  "2026-10-08": {
+   "water_scl6": {
+    "red": {
+     "n": 183108,
+     "p1": 796.0,
+     "median": 1205.0,
+     "share_below_1000": 0.18482534897437577
+    },
+    "nir": {
+     "n": 183108,
+     "p1": 1060.0,
+     "median": 1749.0,
+     "share_below_1000": 0.00014745396159643488
+    }
+   },
+   "all_pixels": {
+    "red": {
+     "n": 8236800,
+     "p1": 853.0,
+     "median": 1293.0,
+     "share_below_1000": 0.09380669677544677
+    },
+    "nir": {
+     "n": 8236800,
+     "p1": 1265.0,
+     "median": 3191.0,
+     "share_below_1000": 1.9546425796425796e-05
+    }
+   }
+  },
+  "2026-10-18": {
+   "water_scl6": {
+    "red": {
+     "n": 196032,
+     "p1": 1.0,
+     "median": 1094.0,
+     "share_below_1000": 0.47716189193601044
+    },
+    "nir": {
+     "n": 196032,
+     "p1": 1.0,
+     "median": 192.0,
+     "share_below_1000": 0.9078364756774404
+    }
+   },
+   "all_pixels": {
+    "red": {
+     "n": 8236591,
+     "p1": 75.0,
+     "median": 963.0,
+     "share_below_1000": 0.5289008523064943
+    },
+    "nir": {
+     "n": 8236591,
+     "p1": 53.0,
+     "median": 2759.0,
+     "share_below_1000": 0.03592323571730101
+    }
+   }
+  },
+  "2026-10-23": {
+   "water_scl6": {
+    "red": {
+     "n": 200726,
+     "p1": 925.0,
+     "median": 1323.0,
+     "share_below_1000": 0.05378476131642139
+    },
+    "nir": {
+     "n": 200726,
+     "p1": 793.0,
+     "median": 1863.0,
+     "share_below_1000": 0.10590556280701055
+    }
+   },
+   "all_pixels": {
+    "red": {
+     "n": 8236800,
+     "p1": 928.0,
+     "median": 1667.0,
+     "share_below_1000": 0.021885562354312355
+    },
+    "nir": {
+     "n": 8236800,
+     "p1": 1115.0,
+     "median": 2769.0,
+     "share_below_1000": 0.003996212121212121
+    }
+   }
+  },
+  "2026-10-28": {
+   "water_scl6": {
+    "red": {
+     "n": 178749,
+     "p1": 72.0,
+     "median": 663.0,
+     "share_below_1000": 0.8250451750779025
+    },
+    "nir": {
+     "n": 178749,
+     "p1": 1.0,
+     "median": 150.0,
+     "share_below_1000": 0.8862986646079138
+    }
+   },
+   "all_pixels": {
+    "red": {
+     "n": 8236726,
+     "p1": 192.0,
+     "median": 1296.0,
+     "share_below_1000": 0.30436098032155007
+    },
+    "nir": {
+     "n": 8236726,
+     "p1": 127.0,
+     "median": 2605.0,
+     "share_below_1000": 0.03821821922933943
+    }
+   }
+  },
+  "2026-11-02": {
+   "water_scl6": {
+    "red": {
+     "n": 186130,
+     "p1": 1011.0,
+     "median": 1541.0,
+     "share_below_1000": 0.007526997259979584
+    },
+    "nir": {
+     "n": 186130,
+     "p1": 825.0,
+     "median": 2052.0,
+     "share_below_1000": 0.08625154461935207
+    }
+   },
+   "all_pixels": {
+    "red": {
+     "n": 8236800,
+     "p1": 1154.0,
+     "median": 1814.0,
+     "share_below_1000": 0.0007060994560994561
+    },
+    "nir": {
+     "n": 8236800,
+     "p1": 1151.0,
+     "median": 2605.0,
+     "share_below_1000": 0.003780472999222999
+    }
+   }
+  },
+  "2026-11-04": {
+   "water_scl6": {
+    "red": {
+     "n": 185864,
+     "p1": 439.0,
+     "median": 853.0,
+     "share_below_1000": 0.5726176128782335
+    },
+    "nir": {
+     "n": 185864,
+     "p1": 316.0,
+     "median": 682.0,
+     "share_below_1000": 0.6197596091766022
+    }
+   },
+   "all_pixels": {
+    "red": {
+     "n": 7487059,
+     "p1": 537.0,
+     "median": 1376.0,
+     "share_below_1000": 0.14724166057727073
+    },
+    "nir": {
+     "n": 7487059,
+     "p1": 529.0,
+     "median": 2190.0,
+     "share_below_1000": 0.037669397289376245
+    }
+   }
+  },
+  "2026-11-07": {
+   "water_scl6": {
+    "red": {
+     "n": 204805,
+     "p1": 115.0,
+     "median": 852.0,
+     "share_below_1000": 0.6866287444154195
+    },
+    "nir": {
+     "n": 204805,
+     "p1": 1.0,
+     "median": 260.0,
+     "share_below_1000": 0.8641537071848832
+    }
+   },
+   "all_pixels": {
+    "red": {
+     "n": 8236785,
+     "p1": 236.0,
+     "median": 1172.0,
+     "share_below_1000": 0.3148211347024355
+    },
+    "nir": {
+     "n": 8236785,
+     "p1": 197.0,
+     "median": 1936.0,
+     "share_below_1000": 0.06989899578537014
+    }
+   }
+  }
+ },
+ "cell_mean_shifts": [
+  {
+   "day": "2026-10-08",
+   "minus": "2026-10-03",
+   "red_median": 505.635,
+   "nir_median": -160.01999999999998,
+   "red_by_quarter": [
+    [
+     461.9,
+     440.9,
+     498.5,
+     500.2
+    ],
+    [
+     577.0,
+     481.6,
+     465.3,
+     486.0
+    ],
+    [
+     912.8,
+     589.2,
+     488.3,
+     457.6
+    ],
+    [
+     787.2,
+     907.0,
+     660.0,
+     530.3
+    ]
+   ],
+   "nir_by_quarter": [
+    [
+     -248.0,
+     -115.3,
+     -142.2,
+     -160.3
+    ],
+    [
+     -199.0,
+     -178.1,
+     -195.8,
+     -208.3
+    ],
+    [
+     -30.1,
+     -161.4,
+     -193.3,
+     -197.2
+    ],
+    [
+     262.8,
+     100.3,
+     -83.8,
+     -178.7
+    ]
+   ]
+  },
+  {
+   "day": "2026-10-08",
+   "minus": "2026-10-18",
+   "red_median": 285.59,
+   "nir_median": 366.20000000000005,
+   "red_by_quarter": [
+    [
+     225.2,
+     230.8,
+     215.4,
+     246.1
+    ],
+    [
+     307.6,
+     172.1,
+     194.2,
+     207.2
+    ],
+    [
+     653.2,
+     248.0,
+     323.8,
+     301.0
+    ],
+    [
+     531.0,
+     644.4,
+     561.3,
+     353.6
+    ]
+   ],
+   "nir_by_quarter": [
+    [
+     310.2,
+     285.0,
+     225.9,
+     229.9
+    ],
+    [
+     362.9,
+     347.3,
+     334.4,
+     295.1
+    ],
+    [
+     683.1,
+     417.1,
+     367.2,
+     268.0
+    ],
+    [
+     959.1,
+     852.3,
+     578.6,
+     482.3
+    ]
+   ]
+  },
+  {
+   "day": "2026-10-23",
+   "minus": "2026-10-18",
+   "red_median": 639.13,
+   "nir_median": -2.580000000000382,
+   "red_by_quarter": [
+    [
+     534.6,
+     543.3,
+     462.9,
+     281.4
+    ],
+    [
+     598.8,
+     597.2,
+     595.4,
+     482.4
+    ],
+    [
+     709.9,
+     639.2,
+     660.6,
+     591.5
+    ],
+    [
+     953.2,
+     947.4,
+     852.6,
+     802.6
+    ]
+   ],
+   "nir_by_quarter": [
+    [
+     -9.5,
+     -32.4,
+     -66.7,
+     -114.5
+    ],
+    [
+     -4.5,
+     -27.9,
+     -52.6,
+     -55.1
+    ],
+    [
+     77.9,
+     -12.0,
+     1.9,
+     -31.6
+    ],
+    [
+     65.9,
+     76.0,
+     60.8,
+     -6.4
+    ]
+   ]
+  },
+  {
+   "day": "2026-10-23",
+   "minus": "2026-10-28",
+   "red_median": 339.3700000000001,
+   "nir_median": 122.92000000000007,
+   "red_by_quarter": [
+    [
+     352.6,
+     288.8,
+     198.2,
+     189.6
+    ],
+    [
+     368.6,
+     288.8,
+     292.4,
+     219.9
+    ],
+    [
+     438.3,
+     387.2,
+     465.8,
+     307.7
+    ],
+    [
+     519.9,
+     382.8,
+     504.3,
+     350.9
+    ]
+   ],
+   "nir_by_quarter": [
+    [
+     119.4,
+     48.5,
+     62.6,
+     70.3
+    ],
+    [
+     144.2,
+     76.0,
+     133.8,
+     61.2
+    ],
+    [
+     163.3,
+     136.7,
+     141.6,
+     13.1
+    ],
+    [
+     231.8,
+     159.3,
+     226.2,
+     187.2
+    ]
+   ]
+  },
+  {
+   "day": "2026-11-02",
+   "minus": "2026-10-28",
+   "red_median": 542.77,
+   "nir_median": 68.53500000000008,
+   "red_by_quarter": [
+    [
+     538.9,
+     501.5,
+     377.3,
+     480.2
+    ],
+    [
+     493.3,
+     474.6,
+     513.2,
+     501.8
+    ],
+    [
+     479.7,
+     451.4,
+     591.1,
+     653.1
+    ],
+    [
+     689.5,
+     678.6,
+     796.2,
+     705.2
+    ]
+   ],
+   "nir_by_quarter": [
+    [
+     125.1,
+     2.6,
+     -79.5,
+     140.1
+    ],
+    [
+     -3.7,
+     -29.8,
+     14.8,
+     34.8
+    ],
+    [
+     -17.2,
+     25.7,
+     95.1,
+     39.7
+    ],
+    [
+     132.8,
+     160.6,
+     217.3,
+     161.8
+    ]
+   ]
+  },
+  {
+   "day": "2026-11-02",
+   "minus": "2026-11-07",
+   "red_median": 591.685,
+   "nir_median": 413.4649999999999,
+   "red_by_quarter": [
+    [
+     638.8,
+     592.8,
+     550.8,
+     499.0
+    ],
+    [
+     576.9,
+     611.7,
+     594.4,
+     540.0
+    ],
+    [
+     627.2,
+     532.5,
+     597.1,
+     677.7
+    ],
+    [
+     633.6,
+     647.8,
+     664.5,
+     588.2
+    ]
+   ],
+   "nir_by_quarter": [
+    [
+     487.3,
+     417.5,
+     405.9,
+     308.1
+    ],
+    [
+     440.8,
+     412.1,
+     421.7,
+     412.8
+    ],
+    [
+     469.3,
+     368.2,
+     378.5,
+     405.0
+    ],
+    [
+     446.9,
+     454.3,
+     437.3,
+     411.1
+    ]
+   ]
+  }
+ ],
+ "sensitivity_without_unchecked_dates": {
+  "rule": "the run's scenes without the dates with fewer than OFFSET_CHECK_MIN_PIXELS (1000) vegetation pixels (SCL 4) in the window, the offset guard's own rule; then optical_check.analyse unchanged (thresholds recomputed by the brief's rules on the remaining usable dates)",
+  "dates_left_out": [
+   "2026-09-25",
+   "2026-10-08",
+   "2026-10-23",
+   "2026-11-02",
+   "2026-11-12"
+  ],
+  "usable_days": [
+   "2026-09-13",
+   "2026-09-18",
+   "2026-09-23",
+   "2026-10-03",
+   "2026-10-18",
+   "2026-10-28",
+   "2026-11-04",
+   "2026-11-07"
+  ],
+  "pass_days": {
+   "2026-10-11": {
+    "on_or_before": "2026-10-03",
+    "on_or_after": "2026-10-18"
+   },
+   "2026-10-23": {
+    "on_or_before": "2026-10-18",
+    "on_or_after": "2026-10-28"
+   },
+   "2026-11-04": {
+    "on_or_before": "2026-11-04",
+    "on_or_after": "2026-11-04"
+   }
+  },
+  "thresholds": {
+   "T_pooled": {
+    "threshold": 0.48000000000000004,
+    "values": 312768,
+    "days": [
+     "2026-09-18",
+     "2026-09-23",
+     "2026-10-03",
+     "2026-10-18",
+     "2026-10-28",
+     "2026-11-04",
+     "2026-11-07"
+    ],
+    "reason": null
+   },
+   "T_strict": {
+    "threshold": 0.2111044766006462,
+    "values": 6313,
+    "days": [
+     "2026-10-28",
+     "2026-11-04"
+    ],
+    "reason": null,
+    "cells": 3193
+   }
+  },
+  "tables": {
+   "T_pooled": {
+    "no_harvest_seen": [
+     {
+      "polarization": "HH",
+      "day_kind": "on_or_before 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 25136,
+      "cut": 24576,
+      "not_cut": 431,
+      "never_green": 129,
+      "share_cut": 0.9777211966900063,
+      "share_not_cut": 0.017146721833227244,
+      "share_never_green": 0.005132081476766391
+     },
+     {
+      "polarization": "HH",
+      "day_kind": "on_or_after 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 25136,
+      "cut": 24576,
+      "not_cut": 431,
+      "never_green": 129,
+      "share_cut": 0.9777211966900063,
+      "share_not_cut": 0.017146721833227244,
+      "share_never_green": 0.005132081476766391
+     },
+     {
+      "polarization": "HH",
+      "day_kind": "last usable date",
+      "day": "2026-11-07",
+      "cells": 25136,
+      "cut": 24780,
+      "not_cut": 240,
+      "never_green": 116,
+      "share_cut": 0.9858370464672184,
+      "share_not_cut": 0.009548058561425843,
+      "share_never_green": 0.004614894971355824
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "on_or_before 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 13818,
+      "cut": 13416,
+      "not_cut": 335,
+      "never_green": 67,
+      "share_cut": 0.9709075119409466,
+      "share_not_cut": 0.024243740049211173,
+      "share_never_green": 0.004848748009842235
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "on_or_after 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 13818,
+      "cut": 13416,
+      "not_cut": 335,
+      "never_green": 67,
+      "share_cut": 0.9709075119409466,
+      "share_not_cut": 0.024243740049211173,
+      "share_never_green": 0.004848748009842235
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "last usable date",
+      "day": "2026-11-07",
+      "cells": 13818,
+      "cut": 13602,
+      "not_cut": 155,
+      "never_green": 61,
+      "share_cut": 0.9843682153712549,
+      "share_not_cut": 0.011217252858590245,
+      "share_never_green": 0.004414531770154871
+     }
+    ],
+    "cut_share_by_pass": [
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_before",
+      "day": "2026-10-03",
+      "cells": 45928,
+      "cut": 3671,
+      "not_cut": 42001,
+      "never_green": 256,
+      "share_cut": 0.07992945479881554,
+      "share_not_cut": 0.9144966033792022,
+      "share_never_green": 0.005573941821982233,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.09941647796551123,
+       "HV": 0.06277216512802648
+      },
+      "official": "no figure found"
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_after",
+      "day": "2026-10-18",
+      "cells": 45928,
+      "cut": 29035,
+      "not_cut": 16684,
+      "never_green": 209,
+      "share_cut": 0.6321851593798989,
+      "share_not_cut": 0.36326423967949834,
+      "share_never_green": 0.004550600940602683,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.09941647796551123,
+       "HV": 0.06277216512802648
+      },
+      "official": "no figure found"
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_before",
+      "day": "2026-10-18",
+      "cells": 45928,
+      "cut": 29035,
+      "not_cut": 16684,
+      "never_green": 209,
+      "share_cut": 0.6321851593798989,
+      "share_not_cut": 0.36326423967949834,
+      "share_never_green": 0.004550600940602683,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.22692039714335482,
+       "HV": 0.09231841142658073
+      },
+      "official": "Punjab 34.82 % harvested till 23 October; Tarn Taran district 73 %, Amritsar 83 %, in the same report without a date of their own (PTI, 24 October)"
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_after",
+      "day": "2026-10-28",
+      "cells": 45928,
+      "cut": 44008,
+      "not_cut": 1742,
+      "never_green": 178,
+      "share_cut": 0.9581954363351333,
+      "share_not_cut": 0.03792893224176973,
+      "share_never_green": 0.0038756314230970214,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.22692039714335482,
+       "HV": 0.09231841142658073
+      },
+      "official": "Punjab 34.82 % harvested till 23 October; Tarn Taran district 73 %, Amritsar 83 %, in the same report without a date of their own (PTI, 24 October)"
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_before",
+      "day": "2026-11-04",
+      "cells": 45928,
+      "cut": 45283,
+      "not_cut": 469,
+      "never_green": 176,
+      "share_cut": 0.9859562793938338,
+      "share_not_cut": 0.010211635603553388,
+      "share_never_green": 0.0038320850026127853,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.44641612959414734,
+       "HV": 0.6791499738721477
+      },
+      "official": "Punjab 85.10 % as of 4 November (Punjab Pollution Control Board, ANI, 5 November); more than 90 % of Tarn Taran and Amritsar together (PTI, 2 November, without a date of its own)"
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_after",
+      "day": "2026-11-04",
+      "cells": 45928,
+      "cut": 45283,
+      "not_cut": 469,
+      "never_green": 176,
+      "share_cut": 0.9859562793938338,
+      "share_not_cut": 0.010211635603553388,
+      "share_never_green": 0.0038320850026127853,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.44641612959414734,
+       "HV": 0.6791499738721477
+      },
+      "official": "Punjab 85.10 % as of 4 November (Punjab Pollution Control Board, ANI, 5 November); more than 90 % of Tarn Taran and Amritsar together (PTI, 2 November, without a date of its own)"
+     }
+    ],
+    "pair_ending_on_pass": [
+     {
+      "pass": "2026-10-11",
+      "day": "2026-10-18",
+      "polarization": "HH",
+      "class": 1,
+      "cells": 4566,
+      "cut": 4510,
+      "not_cut": 45,
+      "never_green": 11,
+      "share_cut": 0.9877354358300482,
+      "share_not_cut": 0.00985545335085414,
+      "share_never_green": 0.0024091108190976785
+     },
+     {
+      "pass": "2026-10-11",
+      "day": "2026-10-18",
+      "polarization": "HV",
+      "class": 1,
+      "cells": 2883,
+      "cut": 2700,
+      "not_cut": 173,
+      "never_green": 10,
+      "share_cut": 0.9365244536940687,
+      "share_not_cut": 0.06000693721817551,
+      "share_never_green": 0.00346860908775581
+     },
+     {
+      "pass": "2026-10-23",
+      "day": "2026-10-28",
+      "polarization": "HH",
+      "class": 2,
+      "cells": 5856,
+      "cut": 5836,
+      "not_cut": 17,
+      "never_green": 3,
+      "share_cut": 0.9965846994535519,
+      "share_not_cut": 0.0029030054644808745,
+      "share_never_green": 0.0005122950819672131
+     },
+     {
+      "pass": "2026-10-23",
+      "day": "2026-10-28",
+      "polarization": "HV",
+      "class": 2,
+      "cells": 1357,
+      "cut": 1349,
+      "not_cut": 6,
+      "never_green": 2,
+      "share_cut": 0.9941046425939573,
+      "share_not_cut": 0.004421518054532056,
+      "share_never_green": 0.0014738393515106854
+     },
+     {
+      "pass": "2026-11-04",
+      "day": "2026-11-04",
+      "polarization": "HH",
+      "class": 3,
+      "cells": 10081,
+      "cut": 10047,
+      "not_cut": 22,
+      "never_green": 12,
+      "share_cut": 0.9966273187183811,
+      "share_not_cut": 0.002182323182223986,
+      "share_never_green": 0.0011903580993949012
+     },
+     {
+      "pass": "2026-11-04",
+      "day": "2026-11-04",
+      "polarization": "HV",
+      "class": 3,
+      "cells": 26952,
+      "cut": 26800,
+      "not_cut": 96,
+      "never_green": 56,
+      "share_cut": 0.9943603443158208,
+      "share_not_cut": 0.003561887800534283,
+      "share_never_green": 0.0020777678836449986
+     }
+    ],
+    "cut_day_counts": {
+     "2026-10-03": 3671,
+     "2026-10-18": 25364,
+     "2026-10-28": 14973,
+     "2026-11-04": 1275,
+     "2026-11-07": 227
+    }
+   },
+   "T_strict": {
+    "no_harvest_seen": [
+     {
+      "polarization": "HH",
+      "day_kind": "on_or_before 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 25136,
+      "cut": 14438,
+      "not_cut": 10682,
+      "never_green": 16,
+      "share_cut": 0.5743952896244431,
+      "share_not_cut": 0.42496817313812857,
+      "share_never_green": 0.0006365372374283895
+     },
+     {
+      "polarization": "HH",
+      "day_kind": "on_or_after 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 25136,
+      "cut": 14438,
+      "not_cut": 10682,
+      "never_green": 16,
+      "share_cut": 0.5743952896244431,
+      "share_not_cut": 0.42496817313812857,
+      "share_never_green": 0.0006365372374283895
+     },
+     {
+      "polarization": "HH",
+      "day_kind": "last usable date",
+      "day": "2026-11-07",
+      "cells": 25136,
+      "cut": 16332,
+      "not_cut": 8788,
+      "never_green": 16,
+      "share_cut": 0.6497453851050287,
+      "share_not_cut": 0.349618077657543,
+      "share_never_green": 0.0006365372374283895
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "on_or_before 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 13818,
+      "cut": 6697,
+      "not_cut": 7110,
+      "never_green": 11,
+      "share_cut": 0.4846576928643798,
+      "share_not_cut": 0.5145462440295268,
+      "share_never_green": 0.0007960631060935012
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "on_or_after 2026-11-04",
+      "day": "2026-11-04",
+      "cells": 13818,
+      "cut": 6697,
+      "not_cut": 7110,
+      "never_green": 11,
+      "share_cut": 0.4846576928643798,
+      "share_not_cut": 0.5145462440295268,
+      "share_never_green": 0.0007960631060935012
+     },
+     {
+      "polarization": "HV",
+      "day_kind": "last usable date",
+      "day": "2026-11-07",
+      "cells": 13818,
+      "cut": 7737,
+      "not_cut": 6070,
+      "never_green": 11,
+      "share_cut": 0.5599218410768563,
+      "share_not_cut": 0.43928209581705024,
+      "share_never_green": 0.0007960631060935012
+     }
+    ],
+    "cut_share_by_pass": [
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_before",
+      "day": "2026-10-03",
+      "cells": 45928,
+      "cut": 264,
+      "not_cut": 45618,
+      "never_green": 46,
+      "share_cut": 0.005748127503919178,
+      "share_not_cut": 0.9932503048249434,
+      "share_never_green": 0.0010015676711374326,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.09941647796551123,
+       "HV": 0.06277216512802648
+      },
+      "official": "no figure found"
+     },
+     {
+      "pass": "2026-10-11",
+      "side": "on_or_after",
+      "day": "2026-10-18",
+      "cells": 45928,
+      "cut": 2924,
+      "not_cut": 42975,
+      "never_green": 29,
+      "share_cut": 0.06366486674795332,
+      "share_not_cut": 0.9357037101550253,
+      "share_never_green": 0.0006314230970214248,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.09941647796551123,
+       "HV": 0.06277216512802648
+      },
+      "official": "no figure found"
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_before",
+      "day": "2026-10-18",
+      "cells": 45928,
+      "cut": 2924,
+      "not_cut": 42975,
+      "never_green": 29,
+      "share_cut": 0.06366486674795332,
+      "share_not_cut": 0.9357037101550253,
+      "share_never_green": 0.0006314230970214248,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.22692039714335482,
+       "HV": 0.09231841142658073
+      },
+      "official": "Punjab 34.82 % harvested till 23 October; Tarn Taran district 73 %, Amritsar 83 %, in the same report without a date of their own (PTI, 24 October)"
+     },
+     {
+      "pass": "2026-10-23",
+      "side": "on_or_after",
+      "day": "2026-10-28",
+      "cells": 45928,
+      "cut": 8989,
+      "not_cut": 36918,
+      "never_green": 21,
+      "share_cut": 0.1957193868663996,
+      "share_not_cut": 0.8038233757185159,
+      "share_never_green": 0.00045723741508448007,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.22692039714335482,
+       "HV": 0.09231841142658073
+      },
+      "official": "Punjab 34.82 % harvested till 23 October; Tarn Taran district 73 %, Amritsar 83 %, in the same report without a date of their own (PTI, 24 October)"
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_before",
+      "day": "2026-11-04",
+      "cells": 45928,
+      "cut": 31886,
+      "not_cut": 14024,
+      "never_green": 18,
+      "share_cut": 0.6942605817801777,
+      "share_not_cut": 0.3053475004354642,
+      "share_never_green": 0.00039191778435812574,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.44641612959414734,
+       "HV": 0.6791499738721477
+      },
+      "official": "Punjab 85.10 % as of 4 November (Punjab Pollution Control Board, ANI, 5 November); more than 90 % of Tarn Taran and Amritsar together (PTI, 2 November, without a date of its own)"
+     },
+     {
+      "pass": "2026-11-04",
+      "side": "on_or_after",
+      "day": "2026-11-04",
+      "cells": 45928,
+      "cut": 31886,
+      "not_cut": 14024,
+      "never_green": 18,
+      "share_cut": 0.6942605817801777,
+      "share_not_cut": 0.3053475004354642,
+      "share_never_green": 0.00039191778435812574,
+      "no_value_at_all": 0,
+      "radar_share_harvest_pair_by_pass": {
+       "HH": 0.44641612959414734,
+       "HV": 0.6791499738721477
+      },
+      "official": "Punjab 85.10 % as of 4 November (Punjab Pollution Control Board, ANI, 5 November); more than 90 % of Tarn Taran and Amritsar together (PTI, 2 November, without a date of its own)"
+     }
+    ],
+    "pair_ending_on_pass": [
+     {
+      "pass": "2026-10-11",
+      "day": "2026-10-18",
+      "polarization": "HH",
+      "class": 1,
+      "cells": 4566,
+      "cut": 1640,
+      "not_cut": 2926,
+      "never_green": 0,
+      "share_cut": 0.3591765221200175,
+      "share_not_cut": 0.6408234778799825,
+      "share_never_green": 0.0
+     },
+     {
+      "pass": "2026-10-11",
+      "day": "2026-10-18",
+      "polarization": "HV",
+      "class": 1,
+      "cells": 2883,
+      "cut": 1081,
+      "not_cut": 1801,
+      "never_green": 1,
+      "share_cut": 0.374956642386403,
+      "share_not_cut": 0.6246964967048214,
+      "share_never_green": 0.000346860908775581
+     },
+     {
+      "pass": "2026-10-23",
+      "day": "2026-10-28",
+      "polarization": "HH",
+      "class": 2,
+      "cells": 5856,
+      "cut": 2627,
+      "not_cut": 3229,
+      "never_green": 0,
+      "share_cut": 0.4485997267759563,
+      "share_not_cut": 0.5514002732240437,
+      "share_never_green": 0.0
+     },
+     {
+      "pass": "2026-10-23",
+      "day": "2026-10-28",
+      "polarization": "HV",
+      "class": 2,
+      "cells": 1357,
+      "cut": 804,
+      "not_cut": 553,
+      "never_green": 0,
+      "share_cut": 0.5924834193072955,
+      "share_not_cut": 0.4075165806927045,
+      "share_never_green": 0.0
+     },
+     {
+      "pass": "2026-11-04",
+      "day": "2026-11-04",
+      "polarization": "HH",
+      "class": 3,
+      "cells": 10081,
+      "cut": 7878,
+      "not_cut": 2203,
+      "never_green": 0,
+      "share_cut": 0.7814700922527527,
+      "share_not_cut": 0.2185299077472473,
+      "share_never_green": 0.0
+     },
+     {
+      "pass": "2026-11-04",
+      "day": "2026-11-04",
+      "polarization": "HV",
+      "class": 3,
+      "cells": 26952,
+      "cut": 21055,
+      "not_cut": 5893,
+      "never_green": 4,
+      "share_cut": 0.7812036212525972,
+      "share_not_cut": 0.21864796675571385,
+      "share_never_green": 0.00014841199168892847
+     }
+    ],
+    "cut_day_counts": {
+     "2026-10-03": 264,
+     "2026-10-18": 2660,
+     "2026-10-28": 6065,
+     "2026-11-04": 22897,
+     "2026-11-07": 3148
+    }
+   }
+  }
+ },
+ "credit": "Contains modified Copernicus Sentinel data 2026"
+}

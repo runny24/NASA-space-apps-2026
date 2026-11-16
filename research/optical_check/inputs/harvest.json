@@ -1,0 +1,486 @@
+{
+  "site": "tarn-taran",
+  "method": "Cells: mean of linear gamma-naught power over cell_m x cell_m blocks of the processed rasters (the product's own grid); only cells whose centres lie inside the site box take part (the processed window is the slightly larger UTM rectangle around the box; the cells outside the box have no class); a cell needs at least half of its pixels valid on a date, otherwise it has no value on that date; edge rows and columns that do not fill a block are left out. Rice: rise = 10*log10(mean power over the peak dates) minus the lowest 10*log10(power) over the flood dates, in HH, for cells valid on every flood and peak date; a cell is rice when its rise is at least the rice threshold (the site file's number, or Otsu's threshold on the rise of all those cells, from a histogram of 400 bins from -10 to 30 dB with rises outside that range counted in the end bins; when several thresholds split equally well, the middle of them). Stable cells: cells whose centres lie in a stable box and that are not rice. Change, per polarization: 10*log10(later/earlier) of the cell power for each consecutive pair of the passes, on cells valid on every pass of the list (the same cells for every pair). Threshold, per polarization: the more negative of (a) the lowest, over all pairs, of the false_alarm quantile of the change on stable cells and (b) the false_alarm quantile of the change on rice cells in the first pair, which comes before the harvest; a quantile is the smallest observed change with at least that share of the cells at or below it (numpy's inverted_cdf), so at most that share fall below it. A cell falls when its change is below the threshold. Harvest pair of a rice cell: the first pair from the second on whose change is below the threshold; none: no harvest seen; below it already in the first pair: fell before the first harvest pass; a rice cell not valid on every pass: no data.",
+  "settings": {
+    "cell_m": 100.0,
+    "marker": "HV",
+    "flood_dates": [
+      "2026-06-13",
+      "2026-06-25",
+      "2026-07-19"
+    ],
+    "peak_dates": [
+      "2026-08-24",
+      "2026-09-17",
+      "2026-09-29"
+    ],
+    "passes": [
+      "2026-09-17",
+      "2026-09-29",
+      "2026-10-11",
+      "2026-10-23",
+      "2026-11-04"
+    ],
+    "false_alarm": 0.02,
+    "rice_rise_db": "auto",
+    "stable_boxes": [
+      [
+        74.8466,
+        31.2774,
+        74.8592,
+        31.2883
+      ]
+    ],
+    "stable_boxes_from": "stable_target"
+  },
+  "grid": {
+    "crs": "EPSG:32643",
+    "transform": [
+      100.0,
+      0.0,
+      479010.0,
+      0.0,
+      -100.0,
+      3467310.0
+    ],
+    "shape": [
+      288,
+      286
+    ],
+    "cell_m": 100.0,
+    "pixels_per_cell_side": 5,
+    "processed_resolution_m": 20.0
+  },
+  "stable_boxes": [
+    {
+      "bbox": [
+        74.8466,
+        31.2774,
+        74.8592,
+        31.2883
+      ],
+      "where": "inside the window"
+    }
+  ],
+  "cells": {
+    "total": 82368,
+    "in_site_box": 82306,
+    "with_rise": 82306,
+    "cell_area_km2": 0.01
+  },
+  "rice": {
+    "threshold_db": 7.400000000000002,
+    "threshold_source": "otsu",
+    "otsu": {
+      "range_db": [
+        -10.0,
+        30.0
+      ],
+      "bins": 400
+    },
+    "cells": 45928,
+    "area_km2": 459.28000000000003,
+    "share_of_cells_with_rise": 0.5580152115277136,
+    "not_rice_cells": 36378
+  },
+  "stable": {
+    "cells_in_boxes": 156,
+    "rice_cells_in_boxes": 2,
+    "no_rise_cells_in_boxes": 0,
+    "cells": 154
+  },
+  "pairs": [
+    [
+      "2026-09-17",
+      "2026-09-29"
+    ],
+    [
+      "2026-09-29",
+      "2026-10-11"
+    ],
+    [
+      "2026-10-11",
+      "2026-10-23"
+    ],
+    [
+      "2026-10-23",
+      "2026-11-04"
+    ]
+  ],
+  "polarizations": {
+    "HH": {
+      "threshold": {
+        "threshold_db": -3.5204829192025597,
+        "used": "stable",
+        "stable_reference_db": -3.5204829192025597,
+        "rice_reference_db": -2.391819716508123,
+        "stable_quantile_by_pair_db": [
+          -1.971811604993929,
+          -3.5204829192025597,
+          -1.3138393342958388,
+          -1.5127243318854529
+        ],
+        "stable_cells": 154,
+        "rice_cells": 45928,
+        "stable_share_below_by_pair": [
+          0.0,
+          0.01948051948051948,
+          0.006493506493506494,
+          0.0
+        ],
+        "rice_share_below_by_pair": [
+          0.00629245775997213,
+          0.09996080822156418,
+          0.13699703884340708,
+          0.25394095105382336
+        ]
+      },
+      "classes": {
+        "harvest_pair_cells": [
+          4566,
+          5856,
+          10081
+        ],
+        "no_harvest_cells": 25136,
+        "fell_before_cells": 289,
+        "not_rice_cells": 36378,
+        "rice_no_data_cells": 0
+      },
+      "cumulative": {
+        "counted_cells": 45928,
+        "by_pass": [
+          {
+            "date": "2026-10-11",
+            "cells": 4566,
+            "share": 0.09941647796551123
+          },
+          {
+            "date": "2026-10-23",
+            "cells": 10422,
+            "share": 0.22692039714335482
+          },
+          {
+            "date": "2026-11-04",
+            "cells": 20503,
+            "share": 0.44641612959414734
+          }
+        ]
+      },
+      "came_back": {
+        "margin_db": 1.7602414596012799,
+        "cells_evaluated": 10422,
+        "cells_came_back": 181,
+        "share": 0.01736710804068317,
+        "cells_not_evaluated": 10081
+      },
+      "abrupt_falls": {
+        "min_total_fall_db": 4.0,
+        "cells": 38875,
+        "median": 0.5283584142279091,
+        "quartiles": [
+          0.4459228176663327,
+          0.6306851035916317
+        ],
+        "share_over_half": 0.5842315112540193
+      },
+      "rice_mean_db_by_pass": [
+        -4.553251866989195,
+        -4.962443876445023,
+        -6.531537217538416,
+        -8.373934326677,
+        -10.575645262940137
+      ],
+      "stable_mean_db_by_pass": [
+        -3.3689339729845216,
+        -4.0165705078666845,
+        -4.172293394465122,
+        -4.306179397359821,
+        -4.507109754665729
+      ]
+    },
+    "HV": {
+      "threshold": {
+        "threshold_db": -1.5935343908246118,
+        "used": "rice",
+        "stable_reference_db": -1.4085617953599385,
+        "rice_reference_db": -1.5935343908246118,
+        "stable_quantile_by_pair_db": [
+          -1.2583202503590822,
+          -1.0936122170618745,
+          -0.7444531429462948,
+          -1.4085617953599385
+        ],
+        "stable_cells": 154,
+        "rice_cells": 45928,
+        "stable_share_below_by_pair": [
+          0.012987012987012988,
+          0.012987012987012988,
+          0.0,
+          0.01948051948051948
+        ],
+        "rice_share_below_by_pair": [
+          0.019987807002264414,
+          0.06425274342449051,
+          0.03089618533356558,
+          0.6580952795680195
+        ]
+      },
+      "classes": {
+        "harvest_pair_cells": [
+          2883,
+          1357,
+          26952
+        ],
+        "no_harvest_cells": 13818,
+        "fell_before_cells": 918,
+        "not_rice_cells": 36378,
+        "rice_no_data_cells": 0
+      },
+      "cumulative": {
+        "counted_cells": 45928,
+        "by_pass": [
+          {
+            "date": "2026-10-11",
+            "cells": 2883,
+            "share": 0.06277216512802648
+          },
+          {
+            "date": "2026-10-23",
+            "cells": 4240,
+            "share": 0.09231841142658073
+          },
+          {
+            "date": "2026-11-04",
+            "cells": 31192,
+            "share": 0.6791499738721477
+          }
+        ]
+      },
+      "came_back": {
+        "margin_db": 0.7967671954123059,
+        "cells_evaluated": 4240,
+        "cells_came_back": 1500,
+        "share": 0.35377358490566035,
+        "cells_not_evaluated": 26952
+      },
+      "abrupt_falls": {
+        "min_total_fall_db": 4.0,
+        "cells": 4473,
+        "median": 0.8690141488442118,
+        "quartiles": [
+          0.6907636389100886,
+          1.0737001881793702
+        ],
+        "share_over_half": 0.9441090990386765
+      },
+      "rice_mean_db_by_pass": [
+        -16.67323820638159,
+        -16.416774062426892,
+        -16.58480278288726,
+        -15.876741335493065,
+        -17.98667579810347
+      ],
+      "stable_mean_db_by_pass": [
+        -11.168730876432413,
+        -11.50788862558018,
+        -11.455889652629885,
+        -11.39839940665393,
+        -11.522213680966951
+      ]
+    }
+  },
+  "cross_table": {
+    "rows": "HH",
+    "columns": "HV",
+    "values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      0
+    ],
+    "counts": [
+      [
+        2007,
+        133,
+        1842,
+        529,
+        55,
+        0
+      ],
+      [
+        68,
+        985,
+        3582,
+        1181,
+        40,
+        0
+      ],
+      [
+        125,
+        46,
+        9344,
+        457,
+        109,
+        0
+      ],
+      [
+        663,
+        188,
+        12162,
+        11638,
+        485,
+        0
+      ],
+      [
+        20,
+        5,
+        22,
+        13,
+        229,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  "classes": [
+    {
+      "value": 1,
+      "class": "harvest pair",
+      "pair": [
+        "2026-09-29",
+        "2026-10-11"
+      ],
+      "label": "Harvested between 29 September and 11 October 2026"
+    },
+    {
+      "value": 2,
+      "class": "harvest pair",
+      "pair": [
+        "2026-10-11",
+        "2026-10-23"
+      ],
+      "label": "Harvested between 11 October and 23 October 2026"
+    },
+    {
+      "value": 3,
+      "class": "harvest pair",
+      "pair": [
+        "2026-10-23",
+        "2026-11-04"
+      ],
+      "label": "Harvested between 23 October and 4 November 2026"
+    },
+    {
+      "value": 4,
+      "class": "no harvest seen",
+      "label": "Rice, no harvest seen by 4 November 2026"
+    },
+    {
+      "value": 5,
+      "class": "fell before",
+      "pair": [
+        "2026-09-17",
+        "2026-09-29"
+      ],
+      "label": "Fell before 29 September 2026"
+    },
+    {
+      "value": 6,
+      "class": "not rice",
+      "label": "Not rice"
+    },
+    {
+      "value": 0,
+      "class": "no data",
+      "label": "No data: centre outside the site box, not valid on a flood or peak date, or rice not valid on every pass"
+    }
+  ],
+  "raster": {
+    "file": "harvest_classes.tif",
+    "bands": [
+      "HH",
+      "HV"
+    ],
+    "nodata": 0
+  },
+  "inputs": {
+    "method": "Cells: mean of linear gamma-naught power over cell_m x cell_m blocks of the processed rasters (the product's own grid); only cells whose centres lie inside the site box take part (the processed window is the slightly larger UTM rectangle around the box; the cells outside the box have no class); a cell needs at least half of its pixels valid on a date, otherwise it has no value on that date; edge rows and columns that do not fill a block are left out. Rice: rise = 10*log10(mean power over the peak dates) minus the lowest 10*log10(power) over the flood dates, in HH, for cells valid on every flood and peak date; a cell is rice when its rise is at least the rice threshold (the site file's number, or Otsu's threshold on the rise of all those cells, from a histogram of 400 bins from -10 to 30 dB with rises outside that range counted in the end bins; when several thresholds split equally well, the middle of them). Stable cells: cells whose centres lie in a stable box and that are not rice. Change, per polarization: 10*log10(later/earlier) of the cell power for each consecutive pair of the passes, on cells valid on every pass of the list (the same cells for every pair). Threshold, per polarization: the more negative of (a) the lowest, over all pairs, of the false_alarm quantile of the change on stable cells and (b) the false_alarm quantile of the change on rice cells in the first pair, which comes before the harvest; a quantile is the smallest observed change with at least that share of the cells at or below it (numpy's inverted_cdf), so at most that share fall below it. A cell falls when its change is below the threshold. Harvest pair of a rice cell: the first pair from the second on whose change is below the threshold; none: no harvest seen; below it already in the first pair: fell before the first harvest pass; a rice cell not valid on every pass: no data.",
+    "settings": {
+      "cell_m": 100.0,
+      "marker": "HV",
+      "flood_dates": [
+        "2026-06-13",
+        "2026-06-25",
+        "2026-07-19"
+      ],
+      "peak_dates": [
+        "2026-08-24",
+        "2026-09-17",
+        "2026-09-29"
+      ],
+      "passes": [
+        "2026-09-17",
+        "2026-09-29",
+        "2026-10-11",
+        "2026-10-23",
+        "2026-11-04"
+      ],
+      "false_alarm": 0.02,
+      "rice_rise_db": "auto",
+      "stable_boxes": [
+        [
+          74.8466,
+          31.2774,
+          74.8592,
+          31.2883
+        ]
+      ],
+      "stable_boxes_from": "stable_target"
+    },
+    "constants": {
+      "min_cell_valid": 0.5,
+      "otsu_range_db": [
+        -10.0,
+        30.0
+      ],
+      "otsu_bins": 400,
+      "large_fall_db": 4.0,
+      "quantile": "inverted_cdf"
+    },
+    "polarizations": [
+      "HH",
+      "HV"
+    ],
+    "dates": [
+      "2026-06-13",
+      "2026-06-25",
+      "2026-07-19",
+      "2026-08-24",
+      "2026-09-17",
+      "2026-09-29",
+      "2026-10-11",
+      "2026-10-23",
+      "2026-11-04"
+    ],
+    "sources": [
+      "{\"mask_convention\":\"subswath-1-to-5\",\"min_valid_fraction\":0.5,\"polarizations\":[\"HH\",\"HV\"],\"power_floor\":1e-05,\"window\":{\"bbox\":[74.78,31.08,75.08,31.34],\"frequency\":\"A\",\"granule\":\"NISAR_L2_PR_GCOV_022_156_A_017_4005_DHDH_A_20260613T001313_20260613T001348_P05023_N_F_J_001\",\"terms\":[\"HHHH\",\"HVHV\"],\"url\":\"https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_022_156_A_017_4005_DHDH_A_20260613T001313_20260613T001348_P05023_N_F_J_001/NISAR_L2_PR_GCOV_022_156_A_017_4005_DHDH_A_20260613T001313_20260613T001348_P05023_N_F_J_001.h5\"},\"working_resolution_m\":20.0}",
+      "{\"mask_convention\":\"subswath-1-to-5\",\"min_valid_fraction\":0.5,\"polarizations\":[\"HH\",\"HV\"],\"power_floor\":1e-05,\"window\":{\"bbox\":[74.78,31.08,75.08,31.34],\"frequency\":\"A\",\"granule\":\"NISAR_L2_PR_GCOV_023_156_A_017_4005_DHDH_A_20260625T001313_20260625T001347_P05023_N_F_J_002\",\"terms\":[\"HHHH\",\"HVHV\"],\"url\":\"https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_023_156_A_017_4005_DHDH_A_20260625T001313_20260625T001347_P05023_N_F_J_002/NISAR_L2_PR_GCOV_023_156_A_017_4005_DHDH_A_20260625T001313_20260625T001347_P05023_N_F_J_002.h5\"},\"working_resolution_m\":20.0}",
+      "{\"mask_convention\":\"subswath-1-to-5\",\"min_valid_fraction\":0.5,\"polarizations\":[\"HH\",\"HV\"],\"power_floor\":1e-05,\"window\":{\"bbox\":[74.78,31.08,75.08,31.34],\"frequency\":\"A\",\"granule\":\"NISAR_L2_PR_GCOV_025_156_A_017_4005_DHDH_A_20260719T001311_20260719T001346_P05023_N_F_J_001\",\"terms\":[\"HHHH\",\"HVHV\"],\"url\":\"https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_025_156_A_017_4005_DHDH_A_20260719T001311_20260719T001346_P05023_N_F_J_001/NISAR_L2_PR_GCOV_025_156_A_017_4005_DHDH_A_20260719T001311_20260719T001346_P05023_N_F_J_001.h5\"},\"working_resolution_m\":20.0}",
+      "{\"mask_convention\":\"subswath-1-to-5\",\"min_valid_fraction\":0.5,\"polarizations\":[\"HH\",\"HV\"],\"power_floor\":1e-05,\"window\":{\"bbox\":[74.78,31.08,75.08,31.34],\"frequency\":\"A\",\"granule\":\"NISAR_L2_PR_GCOV_028_156_A_017_4005_DHDH_A_20260824T001309_20260824T001344_P05023_N_F_J_001\",\"terms\":[\"HHHH\",\"HVHV\"],\"url\":\"https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_156_A_017_4005_DHDH_A_20260824T001309_20260824T001344_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_156_A_017_4005_DHDH_A_20260824T001309_20260824T001344_P05023_N_F_J_001.h5\"},\"working_resolution_m\":20.0}",
+      "{\"mask_convention\":\"subswath-1-to-5\",\"min_valid_fraction\":0.5,\"polarizations\":[\"HH\",\"HV\"],\"power_floor\":1e-05,\"window\":{\"bbox\":[74.78,31.08,75.08,31.34],\"frequency\":\"A\",\"granule\":\"NISAR_L2_PR_GCOV_030_156_A_017_4005_DHDH_A_20260917T001309_20260917T001344_P05023_N_F_J_001\",\"terms\":[\"HHHH\",\"HVHV\"],\"url\":\"https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_030_156_A_017_4005_DHDH_A_20260917T001309_20260917T001344_P05023_N_F_J_001/NISAR_L2_PR_GCOV_030_156_A_017_4005_DHDH_A_20260917T001309_20260917T001344_P05023_N_F_J_001.h5\"},\"working_resolution_m\":20.0}",
+      "{\"mask_convention\":\"subswath-1-to-5\",\"min_valid_fraction\":0.5,\"polarizations\":[\"HH\",\"HV\"],\"power_floor\":1e-05,\"window\":{\"bbox\":[74.78,31.08,75.08,31.34],\"frequency\":\"A\",\"granule\":\"NISAR_L2_PR_GCOV_031_156_A_017_4005_DHDH_A_20260929T001309_20260929T001344_P05023_N_F_J_001\",\"terms\":[\"HHHH\",\"HVHV\"],\"url\":\"https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_031_156_A_017_4005_DHDH_A_20260929T001309_20260929T001344_P05023_N_F_J_001/NISAR_L2_PR_GCOV_031_156_A_017_4005_DHDH_A_20260929T001309_20260929T001344_P05023_N_F_J_001.h5\"},\"working_resolution_m\":20.0}",
+      "{\"mask_convention\":\"subswath-1-to-5\",\"min_valid_fraction\":0.5,\"polarizations\":[\"HH\",\"HV\"],\"power_floor\":1e-05,\"window\":{\"bbox\":[74.78,31.08,75.08,31.34],\"frequency\":\"A\",\"granule\":\"NISAR_L2_PR_GCOV_032_156_A_017_4005_DHDH_A_20261011T001309_20261011T001344_P05023_N_F_J_001\",\"terms\":[\"HHHH\",\"HVHV\"],\"url\":\"https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_032_156_A_017_4005_DHDH_A_20261011T001309_20261011T001344_P05023_N_F_J_001/NISAR_L2_PR_GCOV_032_156_A_017_4005_DHDH_A_20261011T001309_20261011T001344_P05023_N_F_J_001.h5\"},\"working_resolution_m\":20.0}",
+      "{\"mask_convention\":\"subswath-1-to-5\",\"min_valid_fraction\":0.5,\"polarizations\":[\"HH\",\"HV\"],\"power_floor\":1e-05,\"window\":{\"bbox\":[74.78,31.08,75.08,31.34],\"frequency\":\"A\",\"granule\":\"NISAR_L2_PR_GCOV_033_156_A_017_4005_DHDH_A_20261023T001309_20261023T001344_P05036_N_F_J_001\",\"terms\":[\"HHHH\",\"HVHV\"],\"url\":\"https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_V1/NISAR_L2_PR_GCOV_033_156_A_017_4005_DHDH_A_20261023T001309_20261023T001344_P05036_N_F_J_001/NISAR_L2_PR_GCOV_033_156_A_017_4005_DHDH_A_20261023T001309_20261023T001344_P05036_N_F_J_001.h5\"},\"working_resolution_m\":20.0}",
+      "{\"mask_convention\":\"subswath-1-to-5\",\"min_valid_fraction\":0.5,\"polarizations\":[\"HH\",\"HV\"],\"power_floor\":1e-05,\"window\":{\"bbox\":[74.78,31.08,75.08,31.34],\"frequency\":\"A\",\"granule\":\"NISAR_L2_PR_GCOV_034_156_A_017_4005_DHDH_A_20261104T001309_20261104T001344_P05036_N_F_J_001\",\"terms\":[\"HHHH\",\"HVHV\"],\"url\":\"https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_V1/NISAR_L2_PR_GCOV_034_156_A_017_4005_DHDH_A_20261104T001309_20261104T001344_P05036_N_F_J_001/NISAR_L2_PR_GCOV_034_156_A_017_4005_DHDH_A_20261104T001309_20261104T001344_P05036_N_F_J_001.h5\"},\"working_resolution_m\":20.0}"
+    ]
+  }
+}

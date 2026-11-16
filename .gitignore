@@ -1,0 +1,45 @@
+# --- Secrets: credentials never go in the repository -------------------------
+.env
+.env.*
+!.env.example
+.netrc
+_netrc
+*.pem
+
+# --- Pipeline working data ---------------------------------------------------
+# Raw downloads and intermediate rasters stay local. Only web-ready outputs
+# under web/public/data/ are committed.
+/work/
+# Half-written files left behind when a pipeline run is interrupted.
+.*.partial.*
+*.h5
+*.hdf5
+*.nc
+
+# --- Python ------------------------------------------------------------------
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# --- Node --------------------------------------------------------------------
+node_modules/
+web/dist/
+*.tsbuildinfo
+web/test-results/
+web/playwright-report/
+
+# --- OS, editors, logs -------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.Rhistory
+*.log

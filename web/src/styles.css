@@ -1,0 +1,1982 @@
+/* Before the Smoke: the interface around the map. One hand-written stylesheet, no framework.
+   web/DESIGN.md describes the system: the tokens below, and how a panel, a button, a switch, a
+   chart and a legend entry should look. To restyle the whole app, change the tokens.
+
+   Sections: 1 tokens, 2 base, 3 focus, 4 layout, 5 panels and text, 6 controls, 7 dates and
+   timeline, 8 legend, 9 at a point, 10 charts and statistics, 11 the About dialog, 12 states,
+   13 on the map, 14 touch and phone widths, 15 dark theme, 16 contrast themes, 17 reduced motion. */
+
+/* ---- 1. Tokens ---------------------------------------------------------------------------- */
+
+:root {
+  /* Surfaces and text. Tests compute the contrast of these pairs (tests/unit/colours.test.ts and
+     tests/unit/theme.test.ts), so every colour here stays a six-digit hex value. */
+  --bg: #f1f3f5; /* the page, and the column behind the panels */
+  --panel: #ffffff; /* panels, controls, the dialog */
+  --inset: #f4f6f8; /* quiet areas inside a panel: notes, chart frames, a readout */
+  --text: #171b21;
+  --muted: #55606b; /* secondary text: 4.5:1 on all three surfaces */
+  --line: #dfe3e8; /* hairlines that only separate */
+  --control-line: #7f8994; /* the edge of a control or a frame: 3:1 on all three surfaces */
+
+  /* Roles. Ink is what you press, blue is what the interface draws from data, amber is where
+     you are (the date on screen, keyboard focus, the point read on the map). */
+  --accent: #171b21;
+  --accent-hover: #323a44;
+  --accent-text: #ffffff;
+  --link: #0b5cad;
+  --data: #0b5cad;
+  --highlight: #ffb000;
+  --focus: #ffb000;
+  /* Edges the amber focus ring: amber alone is only 1.8:1 on white, dark alone vanishes on a dark
+     radar image; together one of the two always stands out (tests/unit/colours.test.ts). */
+  --focus-edge: #171b21;
+  --notice-bg: #fff4d6;
+  --notice-line: #b07a00;
+  /* Warning text. Darker than --notice-line, which is only 3.7:1 on white: body text needs 4.5:1,
+     on the panel and on --notice-bg. */
+  --warning: #7a5200;
+  --error: #a3261a;
+  --error-bg: #fdeceb;
+  --tick-available: #0b5cad;
+  --tick-missing: #59636e;
+  /* The bars of the statistics panel (components/BarsFigure.tsx): one neutral slate blue for every
+     row, neither red nor green, 3:1 on the panel and 3:1 under the whisker, which is drawn in the
+     text colour (tests/unit/colours.test.ts, tests/unit/theme.test.ts). */
+  --bar: #7289ab;
+  /* The outline the map draws round an overlay's dots (map/overlayLayers.ts), for the pictures of
+     that dot in the page. The same in every theme, as the map is. */
+  --dot-rim: #1b1f24;
+
+  /* The header band. It is dark in every theme: the name reads as a title above the map. */
+  --header-bg: #101820;
+  --header-text: #f5f6f8;
+  --header-muted: #b4bcc6;
+  --header-line: #6f7985;
+  --header-ring: #7cc4ff;
+  /* Text on MapLibre's own controls, which stay white in every theme (the credit line). */
+  --map-ink: #171b21;
+
+  /* Type: system fonts only (no font file to load, no licence to list). */
+  --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', Arial, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Mono', 'Segoe UI Mono', 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  --fs-caption: 0.8rem; /* 12 px: field labels, keys, credits, methods */
+  --fs-small: 0.8667rem; /* 13 px: secondary text, tables, notes */
+  --fs-body: 1rem; /* 15 px */
+  --fs-title: 1.0667rem; /* 16 px: panel titles */
+  --fs-site: 1.2rem; /* 18 px: the place's title */
+  --fs-brand: 1.3333rem; /* 20 px: the name */
+
+  /* Space (a 4 px step), radii, shadows, sizes. */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --radius-s: 4px; /* swatches, the colour scale */
+  --radius: 8px; /* controls, notes, chart frames */
+  --radius-l: 12px; /* panels, the dialog */
+  --shadow-1: 0 1px 2px rgb(16 24 32 / 6%), 0 1px 3px rgb(16 24 32 / 8%);
+  --shadow-2: 0 2px 6px rgb(16 24 32 / 14%), 0 6px 16px rgb(16 24 32 / 12%);
+  --shadow-3: 0 12px 32px rgb(8 12 18 / 28%), 0 2px 8px rgb(8 12 18 / 16%);
+  --control-h: 36px; /* 44 px on touch screens and phone widths (section 14) */
+  --side-width: clamp(360px, 30vw, 400px);
+
+  color-scheme: light dark;
+  font-family: var(--font-ui);
+  font-size: 93.75%; /* 15 px at the browser's default size; follows a larger setting */
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ---- 2. Base ------------------------------------------------------------------------------ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--fs-title);
+  font-weight: 700;
+  margin: 0 0 var(--sp-2);
+}
+
+h3 {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  margin: var(--sp-4) 0 var(--sp-1);
+}
+
+p {
+  margin: 6px 0;
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 2px;
+}
+
+/* ---- 3. Focus ----------------------------------------------------------------------------- */
+
+/* A clearly visible focus ring for keyboard users on every control: amber with a dark edge inside
+   and outside (the shadow shows 0-2 px and 5-7 px out, the outline 2-5 px), so it reads on white
+   panels, on the dark header and on dark radar images alike. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 7px var(--focus-edge);
+}
+
+/* The same ring on MapLibre's own buttons. maplibre-gl.css, with more specific selectors, removes
+   the outline, so these rules need the extra #map to win. */
+#map .maplibregl-ctrl button:focus-visible,
+#map .maplibregl-ctrl-attrib-button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 7px var(--focus-edge);
+}
+
+/* A link in the credit line: on a small map the line scrolls inside itself and would clip a ring
+   drawn outside the link, so the link is filled amber with a dark rim inside its own box. */
+#map .maplibregl-ctrl-attrib-inner a:focus-visible {
+  outline: 2px solid var(--focus-edge);
+  outline-offset: -2px;
+  box-shadow: none;
+  background: var(--focus);
+}
+
+/* The map itself takes keyboard focus (arrow keys move it). Its box clips anything drawn outside
+   it, so its ring is drawn just inside the edge instead, in the same three bands. Contrast themes
+   (forced colours) remove box shadows, but they give the transparent outline a system colour, so
+   a ring still shows there. */
+#map .maplibregl-canvas:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+#map:has(.maplibregl-canvas:focus-visible)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 2px var(--focus-edge),
+    inset 0 0 0 5px var(--focus),
+    inset 0 0 0 7px var(--focus-edge);
+  outline: 3px solid transparent;
+  outline-offset: -5px;
+}
+
+/* A browser without :has() (Firefox before 121) drops the rule above whole: there the canvas keeps
+   an amber outline of its own, drawn inside its edge. */
+@supports not selector(:has(*)) {
+  #map .maplibregl-canvas:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: -5px;
+  }
+}
+
+/* The About title takes focus when the dialog opens, as a starting point; it is not a control. */
+.about h2:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ---- 4. Layout: header, notice, map and side column ---------------------------------------- */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: 10px var(--sp-4);
+  background: var(--header-bg);
+  color: var(--header-text);
+}
+
+/* The name, then the tagline beside it where there is room and under it where there is not. */
+.brand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 14px;
+  row-gap: 2px;
+  min-width: 0;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: var(--fs-brand);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* The mark before the name: a ring and a sweep, the shapes of the favicon (index.html), drawn
+   here in CSS. Decoration only: it carries no information and a contrast theme shows the ring. */
+.brand h1::before {
+  content: '';
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-right: 10px;
+  vertical-align: -0.14em;
+  border: 2px solid var(--header-ring);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--highlight) 0 1.5px, transparent 2px),
+    conic-gradient(from 300deg, transparent 0deg, rgb(255 176 0 / 85%) 80deg, transparent 81deg);
+}
+
+/* The tagline is smaller than the name, so the header stays compact on a phone. */
+.tagline {
+  margin: 0;
+  color: var(--header-muted);
+  font-size: var(--fs-small);
+  line-height: 1.35;
+}
+
+/* About, on the dark band: an outlined button in the header's own colours. */
+.header button.secondary {
+  flex: none;
+  background: transparent;
+  color: var(--header-text);
+  border-color: var(--header-line);
+}
+
+/* The sample notice: always on screen while a sample site is shown, in every layout. */
+.notice {
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--notice-bg);
+  border-bottom: 2px solid var(--notice-line);
+  font-size: var(--fs-small);
+  line-height: 1.4;
+}
+
+/* scroll-padding (here and on .side): when Tab scrolls a control into view at the edge of the
+   column, its focus ring is not cut off there. */
+.main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  scroll-padding-block: var(--sp-3);
+}
+
+.map-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  /* A size container, so that what is drawn on the map can be sized by the map's height (cqh) and
+     tell a narrow map from a wide one. Its size never came from its content: the map and the notes
+     on it are positioned absolutely, and the strip under a short map is outside it. */
+  container-type: size;
+}
+
+/* MapLibre's credit line (the attribution control) is expanded when the map loads and folds when
+   the map is first dragged. MapLibre turns to this compact line on a map 640 px wide or less; the app
+   asks for it at every width (compact: true in MapView.tsx). Long credits, such as the fire
+   overlay's, made the expanded line cover half of a phone's map, and nearly all of a phone's map held
+   sideways (124 of 132 px at 667 x 375). On a narrow map (640 px or less, MapLibre's own width) and on
+   a short one (400 px or less) the expanded line takes at most 35 % of the map's height (its 2 px
+   padding above and below included) and the rest scrolls inside it. MapLibre lists the shortest
+   credit first, so the site's own credit stays in view at the top; the legend carries every credit
+   in full. A wide map of ordinary height keeps the line as MapLibre draws it. */
+@container (width <= 640px) or (height <= 400px) {
+  #map .maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-inner {
+    max-height: calc(35cqh - 4px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+/* An id selector on purpose: maplibre-gl.css sets .maplibregl-map { position: relative }. A class
+   rule here would win or lose by which stylesheet comes last, and where it lost the map collapsed
+   to zero height (seen in the pre-kickoff browser tests: research/digests/browser.md, fact F18).
+   Today maplibre-gl.css comes first in the page, because main.tsx imports App before this file. */
+#map {
+  position: absolute;
+  inset: 0;
+}
+
+/* Positioned, so that a .visually-hidden line anywhere in the column (the playback status, the
+   spoken punctuation of a bars row) stays inside it. Such a line is absolutely positioned: with no
+   positioned box round it, it hangs off the page itself, far below the window on a phone, and the
+   whole page scrolls under the header into blank space (e2e/layout.spec.ts). */
+.side {
+  position: relative;
+  width: var(--side-width);
+  overflow-y: auto;
+  padding: var(--sp-3);
+  background: var(--bg);
+  border-left: 1px solid var(--line);
+  scrollbar-width: thin;
+  scrollbar-color: var(--control-line) transparent;
+  scroll-padding-block: var(--sp-3);
+}
+
+.side > * {
+  margin-top: 0;
+  margin-bottom: var(--sp-3);
+}
+
+.side > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---- 5. Panels and text -------------------------------------------------------------------- */
+
+/* A panel: one subject (the place and its controls, the legend, a point, the statistics), under
+   one h2. New panels use the same class and nothing else. */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 14px var(--sp-4) var(--sp-4);
+  box-shadow: var(--shadow-1);
+}
+
+.panel > :first-child {
+  margin-top: 0;
+}
+
+.panel > :last-child {
+  margin-bottom: 0;
+}
+
+/* The place: its title is the largest text in the column. */
+#site-title {
+  font-size: var(--fs-site);
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+.field + #site-title {
+  margin-top: 14px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: var(--fs-small);
+}
+
+/* Source, release and data credit of the place: small, but always there. Named one by one (the
+   source line follows the title or the summary; the credit carries its test id), so that another
+   muted line of this panel, "This place has no layers yet.", keeps the size of a message. */
+#site-title + .muted,
+#site-title + p:not(.muted) + .muted,
+.panel > [data-testid='site-citation'] {
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+  margin: var(--sp-1) 0;
+}
+
+/* A caution about the data (dates from more than one release): a callout, not a passing remark. */
+.warning {
+  color: var(--warning);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  margin: 10px 0;
+  padding: var(--sp-2) 10px;
+  background: var(--notice-bg);
+  border-left: 3px solid var(--notice-line);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.error {
+  color: var(--error);
+}
+
+.error pre {
+  white-space: pre-wrap;
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+}
+
+/* A small line above a title, for a count or a kind ("Step 2 of 4"). */
+.eyebrow {
+  margin: 0 0 2px;
+  color: var(--muted);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Buttons side by side: the main action last, as in the date stepper. */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+/* Read by screen readers, not shown (the playback status, components/Controls.tsx; the spoken
+   punctuation of a bars row, components/BarsFigure.tsx). Held in the column by .side, which is
+   positioned. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- 6. Controls: fields, menus, buttons, the slider ---------------------------------------- */
+
+.field {
+  margin: 14px 0 0;
+}
+
+/* The controls of the place start where its description ends. */
+.panel > p:not(.static-note) + .field {
+  margin-top: var(--sp-4);
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.field label,
+.field-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+select,
+input[type='range'] {
+  width: 100%;
+}
+
+select,
+button {
+  font: inherit;
+  min-height: var(--control-h);
+}
+
+/* A menu: the browser's own list, in the app's frame. The arrow is two small gradients, so it
+   takes the theme's colours. */
+select {
+  appearance: none;
+  padding: 0 34px 0 10px;
+  border: 1px solid var(--control-line);
+  border-radius: var(--radius);
+  background-color: var(--panel);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text) 50%), linear-gradient(135deg, var(--text) 50%, transparent 50%);
+  background-position:
+    right 17px center,
+    right 12px center;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  color: var(--text);
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+/* A button. The plain one is the main action of its group (Play, Close): ink. */
+button {
+  cursor: pointer;
+  padding: 6px 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* Every other action: outlined. */
+button.secondary {
+  background: var(--panel);
+  color: var(--accent);
+  border-color: var(--control-line);
+}
+
+/* Under the pointer. The plain button's rule is wrapped in :where(), so it weighs no more than one
+   class: a part with button rules of its own (the story's buttons on its dark panel) keeps its own
+   colours under the pointer. How a button eases between the two is in styles/motion.css. */
+@media (hover: hover) {
+  :where(button):hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  button.secondary:hover,
+  .stepper button:not(.play):not([aria-disabled='true']):hover {
+    background: var(--inset);
+    border-color: var(--accent);
+  }
+
+  .header button.secondary:hover {
+    background: rgb(255 255 255 / 12%);
+    border-color: var(--header-text);
+  }
+
+  select:hover {
+    border-color: var(--accent);
+  }
+}
+
+/* The app's button look above also reaches MapLibre's zoom buttons; its min-height stretched them
+   out of square (29 x 36 px). maplibre-gl.css sets their size but no min-height. */
+#map .maplibregl-ctrl-group button {
+  min-height: 0;
+}
+
+/* button:disabled below would fade a zoom button at the zoom limit a second time: MapLibre already
+   fades its icon. No button of the app uses the disabled attribute. */
+#map .maplibregl-ctrl button:disabled {
+  opacity: 1;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* aria-disabled: unavailable but still focusable (the date stepper, components/Controls.tsx). The
+   same faded look as above, but mixed into the colours: opacity would fade its focus ring too. */
+button[aria-disabled='true'] {
+  cursor: default;
+  background: color-mix(in srgb, var(--accent) 40%, var(--panel));
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--panel));
+}
+
+/* The slider takes the ink of the buttons. */
+input[type='range'] {
+  display: block;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* A switch: something on the map turned on or off (an overlay; components/Overlays.tsx). A real
+   checkbox with role="switch", drawn as a switch, so the keyboard, the label and screen readers work
+   as for any checkbox:
+   <label class="switch"><input type="checkbox" role="switch" /> <span>Name of the thing</span></label>
+   The label is an ordinary line of text, not a field's small label. */
+.switch,
+.field .switch {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--control-h);
+  margin: 0;
+  color: var(--text);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+
+.switch input[type='checkbox'] {
+  appearance: none;
+  flex: none;
+  position: relative;
+  width: 36px;
+  height: 20px;
+  margin: 0 2px 0 0;
+  border: 1px solid var(--control-line);
+  border-radius: 10px;
+  background: var(--panel);
+  cursor: pointer;
+}
+
+.switch input[type='checkbox']::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--control-line);
+}
+
+.switch input[type='checkbox']:checked {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.switch input[type='checkbox']:checked::before {
+  background: var(--accent-text);
+  transform: translateX(16px);
+}
+
+/* The overlay switches (components/Overlays.tsx, OverlaySwitches): each with its caption under it,
+   in line with its name. */
+.overlay-switch {
+  margin: 2px 0 6px;
+}
+
+.overlay-switch .overlay-dot {
+  margin-right: 0;
+}
+
+.overlay-caption {
+  margin: 0 0 0 46px;
+  font-size: var(--fs-small);
+  line-height: 1.4;
+}
+
+/* Empty while the overlay is off, but still rendered (no display: none): a live region that is
+   out of the accessibility tree until its text arrives is not announced. */
+.overlay-caption:empty {
+  margin: 0;
+}
+
+.overlay-switch .error {
+  margin: 2px 0 0 46px;
+  font-size: var(--fs-small);
+}
+
+/* ---- 7. Dates: the stepper and the timeline ------------------------------------------------- */
+
+/* Where the row is too narrow for the whole date (a 320 px phone), Play goes under it instead of
+   the date spilling over its neighbours. */
+.stepper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 6px;
+}
+
+/* Previous and Next: square, outlined, an arrow each. */
+.stepper button {
+  min-width: 40px;
+  padding: 0 0 2px;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.stepper button:not(.play) {
+  background: var(--panel);
+  color: var(--accent);
+  border-color: var(--control-line);
+}
+
+/* At the first or the last date: still focusable, visibly unavailable (no opacity, see above). */
+.stepper button[aria-disabled='true'] {
+  background: var(--inset);
+  color: color-mix(in srgb, var(--text) 32%, var(--panel));
+  border-color: var(--line);
+}
+
+.stepper .play {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  /* Wide enough for "Pause" (88 px), so the controls do not shift when the label changes. */
+  min-width: 6rem;
+  padding: 0 14px;
+  font-size: 1rem;
+}
+
+.play-icon {
+  width: 0.75em;
+  height: 0.75em;
+  flex: none;
+}
+
+/* The date on screen: a readout between the two arrows, never narrower than a date (ten
+   characters of the monospace face, and a little air). */
+.stepper-date {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: calc(10ch + 12px);
+  min-height: var(--control-h);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--inset);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* A neutral note inside a panel (.note); the first one says where a static layer would have its
+   date stepper. */
+.note,
+.static-note {
+  margin: 14px 0 0;
+  padding: var(--sp-2) var(--sp-3);
+  border-left: 3px solid var(--control-line);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--inset);
+  color: var(--muted);
+  font-size: var(--fs-small);
+}
+
+/* The timeline: marks placed along a true time axis. Each mark is a slim upright bar, so a year of
+   passes 12 days apart stays countable in a narrow column.
+
+   A click or a tap anywhere on the strip picks the mark nearest to it: every mark has an invisible
+   pad as tall as the strip, reaching 22 px to either side or halfway to the neighbouring mark where
+   that is nearer (--gap-before and --gap-after are fractions of the axis, set per mark by
+   components/Controls.tsx; 50cqw is half the axis). Neighbouring pads meet halfway and never
+   overlap, however crowded the dates. */
+.timeline {
+  --tl-h: 32px; /* the height of the strip */
+  --tick-w: 6px;
+  --tick-h: 16px;
+  position: relative;
+  height: var(--tl-h);
+  margin: var(--sp-2) var(--sp-3) 2px;
+  isolation: isolate;
+  container-type: inline-size;
+}
+
+.timeline-axis {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 0.5px);
+  border-top: 1px solid var(--control-line);
+  pointer-events: none;
+}
+
+/* The 1 px rim is transparent on a filled mark; a contrast theme gives it a system colour, so a
+   mark keeps its shape there. No transition: a date change never animates the marks (the buttons'
+   easing in styles/motion.css leaves .tick out as well). */
+.tick {
+  position: absolute;
+  top: calc((var(--tl-h) - var(--tick-h)) / 2);
+  width: var(--tick-w);
+  height: var(--tick-h);
+  margin-left: calc(var(--tick-w) / -2);
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid transparent;
+  border-radius: calc(var(--tick-w) / 2);
+  transition: none;
+}
+
+/* The samples in the key under the timeline take the same rim (set here, before the kinds of mark
+   below, which change it). */
+.tick-key {
+  border: 1px solid transparent;
+}
+
+.tick-available {
+  background: var(--tick-available);
+}
+
+/* The date on screen: taller, amber, with a dark rim (amber alone is 1.8:1 on a white panel). */
+.tick-current {
+  --tick-h: 24px;
+  background: var(--highlight);
+  outline: 2px solid var(--focus-edge);
+  outline-offset: 0;
+  z-index: 1;
+}
+
+/* The rule above has the same specificity as :focus-visible and comes later, so without this the
+   keyboard focus ring would vanish on the current date's mark. */
+.tick-current:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Missing passes are hatched with a dashed rim, so they read as "nothing here", not as a date. */
+.tick-missing {
+  background: repeating-linear-gradient(45deg, var(--tick-missing) 0 1.5px, transparent 1.5px 4px);
+  border: 1px dashed var(--tick-missing);
+}
+
+/* Acquired, but not in this layer: hollow. */
+.tick-not-in-layer {
+  background: var(--panel);
+  border: 1px solid var(--tick-available);
+}
+
+/* Only the pad takes clicks and taps, not the mark under it: a tap on the half of a mark's gap
+   that is nearer to its neighbour picks the neighbour. Marks that are not buttons (missing passes,
+   dates not in the layer) get the same pad, so a tap nearest to one of them picks nothing. The pad
+   hangs off the mark's padding box, 1 px inside its border box. */
+.timeline button.tick {
+  pointer-events: none;
+}
+
+.timeline .tick::after {
+  pointer-events: auto;
+  content: '';
+  position: absolute;
+  top: calc((var(--tick-h) - var(--tl-h)) / 2 - 1px);
+  bottom: calc((var(--tick-h) - var(--tl-h)) / 2 - 1px);
+  left: calc(var(--tick-w) / 2 - 1px - min(22px, var(--gap-before, 1) * 50cqw));
+  right: calc(var(--tick-w) / 2 - 1px - min(22px, var(--gap-after, 1) * 50cqw));
+  z-index: 1;
+}
+
+/* A browser without container units (before 2023) cannot size the pads: there the marks take
+   clicks and taps themselves, as any button does. */
+@supports not (width: 1cqw) {
+  .timeline button.tick {
+    pointer-events: auto;
+  }
+
+  .timeline .tick::after {
+    content: none;
+  }
+}
+
+/* Under the pointer, the mark a click would pick turns ink (anywhere on the strip, that is the
+   nearest mark). The date on screen keeps its amber. Without these rules a mark would take the
+   hover look of an ordinary button. */
+@media (hover: hover) {
+  .timeline button.tick:hover {
+    background: var(--accent);
+    border-color: transparent;
+  }
+
+  .timeline button.tick-current:hover {
+    background: var(--highlight);
+  }
+}
+
+.timeline-key {
+  margin: var(--sp-1) 0 0;
+  font-size: var(--fs-caption);
+  color: var(--muted);
+}
+
+/* The key shows each kind of mark as it is drawn on the timeline. */
+.tick-key {
+  display: inline-block;
+  position: relative;
+  width: 6px;
+  height: 12px;
+  border-radius: 3px;
+  vertical-align: -2px;
+  margin: 0 3px 0 10px;
+}
+
+.timeline-key > .tick-key:first-child {
+  margin-left: 0;
+}
+
+/* How many passes are missing stays in view under the timeline; why each is missing folds under a
+   disclosure (structure in styles/motion.css). Small print, in the scale's sizes. */
+.panel .missing-count {
+  font-size: var(--fs-caption);
+}
+
+.panel .missing-reasons > summary {
+  font-size: var(--fs-caption);
+  font-weight: 600;
+}
+
+/* Why each missing pass is missing: one line each, kept with the timeline. */
+.missing-list {
+  margin: var(--sp-2) 0 0;
+  padding: var(--sp-2) var(--sp-3) var(--sp-2) 26px;
+  border-radius: var(--radius);
+  background: var(--inset);
+  font-size: var(--fs-caption);
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.missing-list li + li {
+  margin-top: 3px;
+}
+
+/* ---- 8. Legend ------------------------------------------------------------------------------ */
+
+/* The colour scale is what the legend says: a contrast theme must not remove it. */
+.ramp {
+  height: 14px;
+  border: 1px solid var(--control-line);
+  border-radius: var(--radius-s);
+  forced-color-adjust: none;
+}
+
+.ramp-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-top: var(--sp-1);
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+}
+
+.legend-description {
+  margin-top: 10px;
+  font-size: var(--fs-small);
+}
+
+/* The method: small print under a hairline, folded under a disclosure whose summary reads at the
+   size of the other folds (styles/motion.css gives it 0.9em of the small print, under 12 px). */
+.panel .legend-method > summary,
+.panel .series-method > summary {
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+/* The method: small print under a hairline. */
+.legend > .muted {
+  margin-top: 10px;
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+}
+
+.classes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* A legend entry: a swatch, then its label; the swatch stays on the label's first line. */
+.classes li {
+  text-wrap: balance;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 3px 0;
+  font-size: var(--fs-small);
+  line-height: 1.4;
+}
+
+.swatch {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  /* A dark rim, so a light class colour (a pale yellow) does not vanish on the white panel. */
+  border: 1px solid var(--text);
+  border-radius: var(--radius-s);
+  /* A contrast theme would otherwise drop the background, and every swatch would look the same:
+     the colour is what the swatch says. The rim takes the theme's text colour there. */
+  forced-color-adjust: none;
+}
+
+/* An overlay that is switched on has an entry of its own under the layer's (components/Overlays.tsx,
+   OverlayLegendEntry): its dot and name, what it is, what it is not, its method and its credit. */
+.legend-overlay {
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-small);
+}
+
+.legend-overlay h3 {
+  display: flex;
+  align-items: center;
+  margin-top: var(--sp-1);
+}
+
+.legend-overlay .muted {
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+}
+
+/* The dot of an overlay, as the map draws it: its colour with the map's dark outline. */
+.overlay-dot {
+  display: inline-block;
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border: 1.5px solid var(--dot-rim);
+  border-radius: 50%;
+  vertical-align: -1px;
+  /* The colour is what the dot says: a contrast theme must not drop it (the rim follows the theme). */
+  forced-color-adjust: none;
+}
+
+/* ---- 9. At a point -------------------------------------------------------------------------- */
+
+/* The title carries the amber dot of the marker on the map: this panel is about that point. */
+#inspect-title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+#inspect-title::before {
+  content: '';
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--focus-edge);
+  border-radius: 50%;
+  background: var(--highlight);
+}
+
+.inspect > button {
+  width: 100%;
+  margin-top: var(--sp-1);
+}
+
+.readout {
+  margin-top: var(--sp-3);
+}
+
+.readout-where {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The value read: the one number this panel is for. It is the line after the coordinates (that
+   line carries no class of its own: tests/unit/components.test.ts matches its markup exactly), and
+   so is "Value (date): reading…", which stands in for it while another date's value is read. Both
+   have the line height of the large value, so the panel keeps its height between the two. */
+.readout-where + p:not(.error) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px var(--sp-3);
+  margin: 6px 0 0;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius);
+  background: var(--inset);
+  font-size: var(--fs-small);
+  line-height: calc(1.1333rem * 1.3);
+}
+
+/* A line height of its own, smaller than the row's: on the shared baseline the larger face would
+   otherwise push the row 2 px taller than the "reading…" line, and the panel would jump at every
+   date step. */
+.readout-where + p:not(.error) strong {
+  font-size: 1.1333rem;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The fields of a point of an overlay in the "At a point" panel (components/Overlays.tsx,
+   OverlayPointBlock): label and value, side by side. */
+.point-fields {
+  margin: var(--sp-1) 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px var(--sp-3);
+  font-size: var(--fs-small);
+}
+
+.point-fields div {
+  display: contents;
+}
+
+.point-fields dt {
+  color: var(--muted);
+}
+
+.point-fields dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.history {
+  width: 100%;
+  margin-top: var(--sp-2);
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+}
+
+.history th,
+.history td {
+  text-align: left;
+  padding: 3px var(--sp-1);
+  border-bottom: 1px solid var(--line);
+}
+
+.history th {
+  color: var(--muted);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  border-bottom-color: var(--control-line);
+}
+
+.history tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ---- 10. Charts and statistics --------------------------------------------------------------- */
+
+/* A chart: a framed figure on the quiet surface. The mark colour is --data; grid and labels are
+   quiet, and nothing is drawn that the numbers do not say. */
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--sp-2) 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--inset);
+}
+
+.chart-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.chart-label {
+  font-size: 11px;
+  fill: var(--muted);
+}
+
+.chart-line {
+  fill: none;
+  stroke: var(--data);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.chart-dot {
+  fill: var(--data);
+}
+
+/* A clipped value (a bound, not an exact number): open, so it does not read as a measured point. */
+.chart-bound {
+  fill: var(--inset);
+  stroke: var(--data);
+  stroke-width: 1.5;
+}
+
+/* One series: its name, its chart, its method. */
+.series {
+  margin: 0;
+  padding: var(--sp-3) 0 0;
+}
+
+.series + .series,
+.series + .bars,
+.bars + .bars {
+  margin-top: var(--sp-3);
+  border-top: 1px solid var(--line);
+}
+
+.series figcaption,
+.bars figcaption {
+  font-size: var(--fs-small);
+  line-height: 1.4;
+}
+
+/* The caption of a series runs title, unit and region together: the title keeps the ink, the rest
+   is quieter. */
+.series figcaption {
+  color: var(--muted);
+}
+
+.series figcaption strong {
+  color: var(--text);
+}
+
+.series > .muted {
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* An entry of `bars` (components/BarsFigure.tsx): a comparison across categories. Each row is a
+   grid: the label on the left, its drawing, numbers and note on the right; on a phone the label sits
+   above them (section 14). Every line is a border, so a contrast theme (forced colours, which drops
+   backgrounds) still draws the bar as an outlined box, the whisker, its caps and the zero line in
+   the theme's text colour. Nothing here animates. */
+.bars {
+  margin: 0;
+  padding: var(--sp-3) 0 0;
+}
+
+.bars-rows {
+  list-style: none;
+  padding: 0;
+  margin: var(--sp-1) 0 0;
+}
+
+.bars-row,
+.bars-axis-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  grid-template-areas:
+    'label track'
+    'label numbers'
+    'label note';
+  grid-template-rows: auto auto 1fr;
+  column-gap: var(--sp-2);
+}
+
+.bars-row {
+  padding: 5px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.bars-axis-row {
+  grid-template-areas: '. track';
+  grid-template-rows: auto;
+  margin-top: var(--sp-2);
+}
+
+.bars-label {
+  text-wrap: balance;
+  grid-area: label;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.bars-track,
+.bars-axis {
+  grid-area: track;
+  position: relative;
+  /* Room for a whisker's cap or the mark of a zero at either end of the scale. */
+  margin: 0 4px;
+}
+
+.bars-track {
+  height: 18px;
+}
+
+.bars-axis {
+  height: 14px;
+}
+
+.bars-tick {
+  position: absolute;
+  top: 0;
+  font-size: var(--fs-caption);
+  line-height: 14px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.bars-zero-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  margin-left: -1px;
+  border-left: 1px solid var(--muted);
+}
+
+.bars-bar {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  min-width: 1px;
+  background: var(--bar);
+  border: 1px solid var(--bar);
+}
+
+/* A value of exactly 0: a dark tick on the zero line, taller than a bar (a bar of no length would
+   not show). It reaches no further past zero than the thinnest bar (2 px with its border), so a 0
+   never looks longer than a small positive value. */
+.bars-zero-value {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  margin-left: -1px;
+  border-left: 2px solid var(--text);
+}
+
+/* From low to high: a line in the text colour with small end caps, drawn over the bar. */
+.bars-whisker {
+  position: absolute;
+  top: 50%;
+  height: 0;
+  margin-top: -1px;
+  border-top: 2px solid var(--text);
+}
+
+.bars-whisker::before,
+.bars-whisker::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  height: 10px;
+  width: 0;
+  border-left: 2px solid var(--text);
+}
+
+.bars-whisker::before {
+  left: -1px;
+}
+
+.bars-whisker::after {
+  right: -1px;
+}
+
+.bars-numbers {
+  grid-area: numbers;
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+}
+
+/* "(a to b)" and "n = 8" each stay in one piece when the line wraps. */
+.bars-interval,
+.bars-n {
+  white-space: nowrap;
+}
+
+.bars-note {
+  grid-area: note;
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.bars-region {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+}
+
+/* The scale in words, above the drawing (one scale for the figures of a unit and layer): small
+   print, like the region and the method. */
+.bars-scale {
+  margin: var(--sp-1) 0 0;
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+}
+
+/* The value of a row stands out from its interval and its count. */
+.bars-value {
+  font-weight: 600;
+}
+
+/* The method of a bars figure, folded under a native disclosure (components/BarsFigure.tsx): the
+   real methods are about 1,100 characters each and the panel repeated them in full. The marker and
+   Enter / Space are the browser's own; the focus ring is the app's (:focus-visible above). */
+.bars-method {
+  margin: 6px 0 0;
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+}
+
+.bars-method summary {
+  cursor: pointer;
+  width: fit-content;
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.bars-method p {
+  margin: var(--sp-1) 0 0;
+}
+
+/* ---- 11. The About dialog -------------------------------------------------------------------- */
+
+.about {
+  --about-pad-x: 24px;
+  --about-pad-y: 20px;
+  max-width: 640px;
+  width: calc(100% - 32px);
+  padding: var(--about-pad-y) var(--about-pad-x);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: var(--shadow-3);
+}
+
+.about::backdrop {
+  background: rgb(8 12 18 / 55%);
+}
+
+.about h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+}
+
+.about h3 {
+  margin: 18px 0 var(--sp-1);
+  font-size: var(--fs-body);
+}
+
+.about p,
+.about li {
+  font-size: 0.9333rem;
+  line-height: 1.55;
+}
+
+.about ul {
+  margin: 6px 0;
+  padding-left: 1.25rem;
+}
+
+.about li + li {
+  margin-top: var(--sp-1);
+}
+
+.about a {
+  overflow-wrap: anywhere;
+}
+
+.about form[method='dialog'] {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--sp-4);
+}
+
+/* ---- 12. States: loading, no data, errors, the crash page ------------------------------------- */
+
+/* "Loading data…" before the manifest arrives. */
+.side > .muted {
+  padding: var(--sp-3) var(--sp-1);
+}
+
+/* A problem with the data or the map: a callout between the panels. */
+.side > .error {
+  padding: 10px var(--sp-3);
+  border: 1px solid var(--error);
+  border-left-width: 3px;
+  border-radius: var(--radius);
+  background: var(--error-bg);
+  font-size: var(--fs-small);
+}
+
+.side > .error pre {
+  margin: 6px 0 0;
+}
+
+/* The page shown after a crash (components/ErrorBoundary.tsx). */
+.crash {
+  padding: var(--sp-6) var(--sp-4);
+  max-width: 720px;
+}
+
+.crash pre {
+  white-space: pre-wrap;
+  padding: 10px var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+}
+
+/* ---- 13. On the map --------------------------------------------------------------------------- */
+
+/* Notes on the map, top left, clear of MapLibre's buttons on the right (70 px: the 44 px zoom
+   buttons on a phone and their margins) and of the scale and credit line at the bottom: the tag
+   naming what the map shows, the overlay caption box, then the loading note under it, so the box
+   does not move when the note comes and goes. The box and the note are boxes with a shadow, like
+   MapLibre's own buttons. Nothing here takes a tap meant for the map, except the caption box,
+   which scrolls (on a phone it is in the strip under the map, never on it). */
+.map-notes {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  max-width: calc(100% - 70px);
+  max-height: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  pointer-events: none;
+}
+
+/* On a short map (components/useMediaQuery.ts, NOTES_UNDER_MAP_QUERY): a strip right under the map,
+   the width of the map, in the scrolling column. It is not the map, so a finger on it scrolls. */
+.map-notes-under {
+  position: static;
+  flex: none;
+  max-width: none;
+  max-height: none;
+  padding: 6px 10px;
+  align-items: stretch;
+  border-bottom: 1px solid var(--line);
+  pointer-events: auto;
+}
+
+.map-notes-under:empty {
+  display: none;
+}
+
+.map-notes-under .overlay-map-caption {
+  max-width: none;
+  overflow: visible;
+}
+
+/* "Loading the picture of <date>…" (components/PictureLoading.tsx). It appears only once the
+   picture has taken 400 ms, so a picture that loads at once does not make it flicker; the delay is
+   no motion, so it stays under reduced motion. */
+.picture-loading {
+  margin: 0;
+  padding: 4px 10px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--control-line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-2);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  pointer-events: none;
+  animation: picture-loading-delay 0s linear 400ms backwards;
+}
+
+@keyframes picture-loading-delay {
+  from,
+  to {
+    visibility: hidden;
+  }
+}
+
+/* What the map shows (components/PictureLoading.tsx, PictureShown): the layer and the date of the
+   picture drawn, first in the notes on the map and always on it, with no delay, so a screenshot
+   carries the date of its picture. One short line of plain text on a dark plate, the header's ink
+   in every theme: it reads on the light basemap and on a dark radar picture alike, and it differs
+   from the boxes under it, which come and go. The rim is transparent (a contrast theme colours it). */
+.map-showing {
+  margin: 0;
+  padding: 2px 8px;
+  background: var(--header-bg);
+  color: var(--header-text);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-2);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+/* What the dots on the map are (components/Overlays.tsx, OverlayMapCaption). Small type, so it
+   covers little of the map; scrolls on its own if several overlays make it too tall. */
+.overlay-map-caption {
+  max-width: 26rem;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px 10px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--control-line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-2);
+  font-size: var(--fs-caption);
+  line-height: 1.3;
+  pointer-events: auto;
+}
+
+.overlay-map-caption p {
+  margin: 2px 0;
+}
+
+.overlay-map-title {
+  font-weight: 600;
+}
+
+.overlay-map-note {
+  color: var(--muted);
+}
+
+/* MapLibre's own furniture, in the app's type. The credit line is never hidden or shortened. Its
+   background is MapLibre's white in every theme, so its text is dark in every theme: without this
+   it would inherit the dark theme's light text and vanish. */
+#map .maplibregl-ctrl-attrib,
+#map .maplibregl-ctrl-scale {
+  font-family: var(--font-ui);
+}
+
+#map .maplibregl-ctrl-attrib {
+  color: var(--map-ink);
+}
+
+#map .maplibregl-ctrl-group {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-2);
+}
+
+#map .maplibregl-ctrl-group button:first-child {
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+#map .maplibregl-ctrl-group button:last-child {
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
+#map .maplibregl-ctrl-group button:only-child {
+  border-radius: var(--radius);
+}
+
+/* A short map (a phone held sideways, a desktop zoomed to 200 %): two stacked zoom buttons, the
+   scale and the credit line do not fit in its height, and the scale lay over Zoom out. There the
+   two buttons sit side by side (the divider is MapLibre's own grey, on its white buttons), the
+   notes leave room for the wider pair, and on a very short map the credit line takes a quarter of
+   the height at most. Every credit stays in full in the legend. */
+@container (height <= 400px) {
+  #map .maplibregl-ctrl-top-right .maplibregl-ctrl-group {
+    display: flex;
+  }
+
+  #map .maplibregl-ctrl-top-right .maplibregl-ctrl-group button + button {
+    border-top: 0;
+    border-left: 1px solid #ddd;
+  }
+
+  #map .maplibregl-ctrl-top-right .maplibregl-ctrl-group button:first-child {
+    border-radius: var(--radius) 0 0 var(--radius);
+  }
+
+  #map .maplibregl-ctrl-top-right .maplibregl-ctrl-group button:last-child {
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+
+  .map-notes {
+    max-width: calc(100% - 118px);
+  }
+}
+
+@container (height <= 300px) {
+  #map .maplibregl-ctrl-attrib.maplibregl-compact-show .maplibregl-ctrl-attrib-inner {
+    max-height: calc(25cqh - 4px);
+  }
+}
+
+/* ---- 14. Touch screens and phone widths ------------------------------------------------------- */
+
+/* Touch screens and phone widths: every control at least 44 px, big enough for a thumb. */
+@media (max-width: 760px), (pointer: coarse) {
+  :root {
+    --control-h: 44px;
+  }
+
+  select,
+  button,
+  input[type='range'] {
+    min-height: 44px;
+  }
+
+  /* Below 16 px, iOS Safari zooms the whole page in when a menu is tapped. */
+  select {
+    font-size: 16px;
+  }
+
+  .stepper button {
+    min-width: 44px;
+  }
+
+  #map .maplibregl-ctrl-group button {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* The disclosure of a bars figure's method: a 44 px row, its text in the middle. */
+  .bars-method summary {
+    min-height: 44px;
+    box-sizing: border-box;
+    padding-block: 11px;
+  }
+
+  /* The whole row of an overlay switch takes the tap. */
+  .overlay-switch .switch {
+    min-height: 44px;
+  }
+
+  /* The timeline strip is 44 px tall, so every mark's pad is a thumb-sized target. */
+  .timeline {
+    --tl-h: 44px;
+    --tick-h: 20px;
+  }
+
+  .tick-current {
+    --tick-h: 30px;
+  }
+
+  /* Keep Close in reach while the long About text scrolls. */
+  .about form[method='dialog'] {
+    position: sticky;
+    bottom: calc(-1 * var(--about-pad-y));
+    margin: var(--sp-3) calc(-1 * var(--about-pad-x)) calc(-1 * var(--about-pad-y));
+    padding: var(--sp-2) var(--about-pad-x) var(--about-pad-y);
+    background: var(--panel);
+    border-top: 1px solid var(--line);
+  }
+}
+
+/* Phone width: the map on top, the panels below it, all in one scrolling column. */
+@media (max-width: 760px) {
+  /* The name and the buttons (About, Story) share the first row; the tagline runs under them across
+     the whole width. Beside two buttons it would break into five short lines and the header would
+     take a sixth of a phone's height. .brand steps aside (display: contents) so its two children
+     can sit in the header's own grid; it is a plain wrapper and carries no meaning. */
+  .header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: var(--sp-3);
+    padding: var(--sp-2) var(--sp-3) 10px;
+  }
+
+  .brand {
+    display: contents;
+  }
+
+  .header h1 {
+    font-size: 1.2rem;
+  }
+
+  .tagline {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin-top: 6px;
+    font-size: var(--fs-caption);
+  }
+
+  /* The header's buttons (About, Story; their wrapper comes from the story's stylesheet) in the
+     first row, beside the name. */
+  .header-actions {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .header button.secondary {
+    padding-inline: 10px;
+  }
+
+  .main {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  /* The sample notice must stay on screen; a smaller type keeps it from filling a phone. */
+  .notice {
+    font-size: var(--fs-caption);
+    padding: 6px var(--sp-3);
+  }
+
+  /* The map never fills the scrolling column: at least 7rem of the panels below it stay in view,
+     so there is always somewhere to put a finger or a mouse wheel and scroll, and a hint that there
+     is more. The 200 px floor gives way to that on short screens (landscape phones, a desktop
+     zoomed to 200%), where the map gets smaller instead. */
+  .map-wrap {
+    flex: none;
+    height: 55vh;
+    max-height: calc(100% - 7rem);
+    min-height: min(200px, calc(100% - 7rem));
+  }
+
+  .side {
+    width: 100%;
+    overflow-y: visible;
+    padding: 10px;
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .side > * {
+    margin-bottom: 10px;
+  }
+
+  .about {
+    --about-pad-x: 18px;
+    --about-pad-y: 16px;
+    width: calc(100% - 20px);
+  }
+
+  /* A bars row stacks: the label above its drawing, the numbers and the note. */
+  .bars-row,
+  .bars-axis-row {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'label'
+      'track'
+      'numbers'
+      'note';
+    grid-template-rows: auto;
+  }
+
+  .bars-axis-row {
+    grid-template-areas: 'track';
+  }
+}
+
+/* A phone held sideways: a slimmer header, so the short map gets what height there is. */
+@media (max-width: 760px) and (max-height: 500px) {
+  .header {
+    padding-block: 6px;
+  }
+}
+
+/* ---- 15. Dark theme --------------------------------------------------------------------------- */
+
+/* The interface follows the device's light or dark setting. The map does not: the basemap, the
+   radar pictures and every data colour are the same in both, and MapLibre's own buttons and credit
+   line stay light on the light basemap. Tokens change here (colours, and the shadows deeper), plus
+   a hairline under the header, which on the dark page would otherwise merge with it. Every colour
+   stays a six-digit hex value: the tests read them. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1318;
+    --panel: #1a1f26;
+    --inset: #222831;
+    --text: #e9ecf0;
+    --muted: #a4aeb9;
+    --line: #2f3741;
+    --control-line: #77828f;
+    --accent: #e9ecf0;
+    --accent-hover: #ffffff;
+    --accent-text: #12161b;
+    --link: #7db8f7;
+    --data: #7db8f7;
+    /* The focus ring's edge stays dark: the ring also lands on MapLibre's white buttons and on the
+       light basemap. On the dark panels the amber stands out by itself. */
+    --focus-edge: #0a0d11;
+    --notice-bg: #3a2b05;
+    --notice-line: #d9a520;
+    --warning: #f0c15a;
+    --error: #ff9d90;
+    --error-bg: #3b1a17;
+    --tick-available: #7db8f7;
+    --tick-missing: #8f9aa7;
+    --bar: #6b82a4;
+    --header-bg: #0a0d11;
+    --shadow-1: 0 1px 2px rgb(0 0 0 / 30%);
+    --shadow-3: 0 12px 32px rgb(0 0 0 / 55%), 0 2px 8px rgb(0 0 0 / 40%);
+  }
+
+  .header {
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+/* ---- 16. Contrast themes (forced colours) ----------------------------------------------------- */
+
+@media (forced-colors: active) {
+  .swatch {
+    border-color: CanvasText;
+  }
+
+  /* Gradients are removed here, and the menu's arrow with them: use the browser's own menu. A
+     switch's fill is removed too: use the browser's own checkbox. */
+  select {
+    appearance: auto;
+    padding-right: 10px;
+  }
+
+  .switch input[type='checkbox'] {
+    appearance: auto;
+    width: 20px;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .switch input[type='checkbox']::before {
+    content: none;
+  }
+
+  .overlay-dot {
+    border-color: CanvasText;
+  }
+
+  /* Timeline marks keep what tells them apart: an acquisition stays filled (in the theme's text
+     colour) against the hollow mark of a date this layer lacks and the dashed rim of a missing
+     pass, and the date on screen is filled in the theme's highlight colour, with its rim. The
+     marks opt out of the forced colours for this, so they name system colours themselves. */
+  .tick-available {
+    forced-color-adjust: none;
+    background: CanvasText;
+    border-color: CanvasText;
+  }
+
+  .tick-not-in-layer {
+    forced-color-adjust: none;
+    background: Canvas;
+    border-color: CanvasText;
+  }
+
+  .tick-current {
+    background: Highlight;
+    border-color: Highlight;
+    outline: 3px solid CanvasText;
+  }
+
+  .tick-current:focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 7px CanvasText;
+  }
+
+  /* Under the pointer a mark keeps the theme's colours (the hover rules of section 7 are more
+     specific than the rules above and would bring back the app's ink and amber). */
+  .timeline button.tick:hover {
+    background: CanvasText;
+    border-color: CanvasText;
+  }
+
+  .timeline button.tick-current:hover {
+    background: Highlight;
+    border-color: Highlight;
+  }
+
+  /* The header has no fill here: a line keeps it apart from what is under it. */
+  .header {
+    border-bottom: 1px solid CanvasText;
+  }
+
+  /* An unavailable button (Previous or Next at an end of the dates): greyed as the theme greys what
+     is unavailable. */
+  button[aria-disabled='true'],
+  .stepper button[aria-disabled='true'] {
+    color: GrayText;
+    border-color: GrayText;
+  }
+
+  /* Callouts lose their fill: a rim instead. */
+  .warning,
+  .note,
+  .static-note,
+  .readout-where + p:not(.error),
+  .missing-list {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* ---- 17. Reduced motion ----------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

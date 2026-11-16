@@ -1,0 +1,823 @@
+/* The guided story (docs/MOTION_AND_STORY_BRIEF.md, sections 5 and 7). Its surfaces are dark in every
+   theme, and solid behind every word, so the contrast of its text never depends on the map.
+
+   These tokens live here and not in the first :root block of styles.css, which
+   tests/unit/colours.test.ts parses. tests/unit/storyColours.test.ts computes the contrast of the
+   pairs below. Interface colours are never data colours: nothing here uses the fire dots' #d55e00 or
+   the harvest classes' viridis colours; "where you are" is the app's amber. The only other colours
+   are neutral tints of these tokens (color-mix of two of them). */
+
+:root {
+  --story-bg: #0b1016; /* the panel and the cover */
+  --story-raised: #151d26; /* chips, the secondary button */
+  --story-line: #2a3440;
+  --story-text: #eef2f6; /* about 17:1 on --story-bg */
+  --story-muted: #a9b4c0; /* about 9:1 */
+  --story-accent: #ffb000; /* the app's amber: the step you are on */
+  --story-cta-bg: #f4f6f8;
+  --story-cta-text: #0b1016;
+  --night: #0b1016; /* laid over the basemap, under the data */
+  --night-opacity: 0.72;
+  /* Two small self-hosted faces (docs/SOURCES.md), with fallbacks that are enough without them.
+     Instrument Serif has one weight: never fake a bold with it. */
+  --font-display: 'Instrument Serif', 'Iowan Old Style', Palatino, Georgia, serif;
+  --font-figures: 'Geist Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+}
+
+/* The mixed-release warning on the story's dark surfaces (the tool's --warning is for white panels).
+   A light amber, not the data's colours (no viridis class, not the fire dots). */
+:root {
+  --story-warning: #f5c56b;
+}
+
+/* ---------------------------------------------------------------------------------------------------
+   Static styles. All motion is at the end of this file, inside prefers-reduced-motion: no-preference,
+   and moves only transform and opacity. Sizes follow section 5 of the brief; nothing is under 12 px
+   (0.75rem is 11.25 px with the app's 15 px root, hence max()).
+   --------------------------------------------------------------------------------------------------- */
+
+/* The header's buttons, About then Story, together at the right. */
+.header-actions {
+  display: flex;
+  flex: none;
+  gap: 8px;
+}
+
+/* --- One dark frame: while the story is not closed the header is dark too. ------------------------
+   :where() keeps these at the weight of the header's own rules, so a later design pass that makes the
+   header dark at all times overrides them without a fight. */
+
+:where(.app[data-story]) .header {
+  background: var(--story-bg);
+  color: var(--story-text);
+  border-bottom-color: var(--story-line);
+}
+
+:where(.app[data-story]) .tagline {
+  color: var(--story-muted);
+}
+
+/* Quiet outline buttons on the dark band: the edge is 3:1 and more (--story-muted on --story-bg). */
+:where(.app[data-story]) .header button.secondary {
+  background: transparent;
+  color: var(--story-text);
+  border-color: var(--story-muted);
+}
+
+:where(.app[data-story]) .header button.secondary:hover {
+  background: var(--story-raised);
+}
+
+/* The app's amber focus ring has a dark edge, which vanishes on the story's dark surfaces: there the
+   edge is light instead (the same ring, the same bands, styles.css :focus-visible). */
+:where(.app[data-story]) .header,
+.story-panel,
+.story-cover {
+  --focus-edge: var(--story-text);
+}
+
+/* While the story is not closed (data-story is "pending" or "open"): the panel lies over the side
+   column, which stays in the page under it, asleep; the map keeps its size. */
+.app[data-story] .main {
+  position: relative;
+}
+
+/* The zoom buttons are asleep (story/stage.ts makes their corner inert) and out of sight. The credit
+   line, bottom right, stays as MapLibre draws it. */
+.app[data-story] #map .maplibregl-ctrl-top-right {
+  display: none;
+}
+
+/* The app's own notes on the map (the overlay's caption with its "not a NISAR measurement" sentence,
+   the loading note) take the story's look while it is open: the same words, where they are, on the
+   same dark surface as the stamp above them. Only colours change; the loading note keeps its delay. */
+.app[data-story] .map-notes:not(.map-notes-under) :is(.overlay-map-caption, .picture-loading) {
+  background: var(--story-bg);
+  color: var(--story-text);
+  border-color: var(--story-muted);
+}
+
+.app[data-story] .map-notes:not(.map-notes-under) .overlay-map-note {
+  color: var(--story-muted);
+}
+
+/* --- The panel ------------------------------------------------------------------------------------
+   A grid, so that "Explore the map" can sit at the right of the eyebrow ("Step 4 of 10") instead of on
+   a row of its own. The two wrappers (.story-top and the block keyed by the step) take no box of their
+   own; every child spans the panel except those two. The page order of the controls is unchanged:
+   the segments, then "Explore the map", then the navigation bar. Spacing is by margins, so the rows
+   a step does not use take no room; the navigation bar sits in the last row, after a row that takes
+   the free height, so it is at the foot of the panel on every step. */
+
+.story-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  width: var(--side-width);
+  overflow-y: auto;
+  /* Focus is never hidden under the sticky navigation bar. */
+  scroll-padding-bottom: 88px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: repeat(14, auto) 1fr auto;
+  column-gap: 12px;
+  padding: 6px 20px 0;
+  background: var(--story-bg);
+  color: var(--story-text);
+  border-left: 1px solid var(--story-line);
+}
+
+/* Paragraphs start with no margin; :where() keeps this below the classes' own spacing. */
+.story-panel :where(p) {
+  margin: 0;
+}
+
+.story-top,
+.story-step {
+  display: contents;
+}
+
+.story-panel > *,
+.story-top > *,
+.story-step > * {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+/* The eyebrow at the left, "Explore the map" at the right, on one row. */
+.story-step > .story-eyebrow {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: center;
+}
+
+.story-top > .story-exit {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
+}
+
+/* One segment per step: a thin bar in a 44 px tall button. The steps behind you light, the one you
+   are on amber and thicker (a shape, not only a colour), the ones ahead dimmer: a neutral tint still
+   3.5:1 on the panel, so every segment stays visible as the control it is. */
+.story-progress {
+  display: flex;
+  gap: 4px;
+  margin: 0 0 2px;
+  padding: 0;
+  list-style: none;
+}
+
+.story-progress li {
+  flex: 1;
+  min-width: 24px;
+  display: flex;
+}
+
+.story-progress-step {
+  flex: 1;
+  min-width: 24px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 2px;
+}
+
+.story-progress-mark {
+  display: block;
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--story-muted);
+}
+
+.story-progress-step.story-progress-ahead .story-progress-mark {
+  background: color-mix(in srgb, var(--story-muted) 55%, var(--story-bg));
+}
+
+.story-progress-step:hover .story-progress-mark {
+  background: var(--story-text);
+}
+
+.story-progress-step[aria-current='step'] .story-progress-mark {
+  height: 6px;
+  background: var(--story-accent);
+}
+
+.story-eyebrow {
+  font-size: max(0.75rem, 12px);
+  font-weight: 500;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-wrap: balance;
+  color: var(--story-muted);
+}
+
+.story-step > .story-eyebrow {
+  margin: 4px 0 10px;
+}
+
+/* The display face has one weight: never a faked bold. */
+.story-title {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.2vw, 2.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+  color: var(--story-text);
+}
+
+.story-text,
+.story-cover-text {
+  font-size: 1.06rem;
+  line-height: 1.5;
+  max-width: 60ch;
+  overflow-wrap: anywhere;
+}
+
+.story-text {
+  margin-bottom: 16px;
+  text-wrap: pretty;
+}
+
+.story-panel .story-text p + p,
+.story-cover-block .story-cover-text p + p {
+  margin-top: 0.6em;
+}
+
+.story-loading {
+  color: var(--story-muted);
+}
+
+/* What a sequence has reached ("Pass 7 of 20", "Day 18 of 61: 2 October 2026"): a chip in the
+   figures face, so its digits never jump sideways. It changes with the picture, at once. */
+.story-sequence {
+  justify-self: start;
+  margin-bottom: 16px;
+  padding: 3px 10px;
+  border: 1px solid var(--story-line);
+  border-radius: 999px;
+  background: var(--story-raised);
+  color: var(--story-text);
+  font-family: var(--font-figures);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The line's row while it has no words (a picture still loading): kept, so nothing under it moves. */
+.story-sequence-empty {
+  visibility: hidden;
+}
+
+/* The cover's real figures: plain numerals in the figures face, each with its label under it. */
+.story-figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 20px;
+  margin: 10px 0 20px;
+  padding: 18px 0 0;
+  border-top: 1px solid var(--story-line);
+  list-style: none;
+}
+
+.story-figures li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.story-figure-value {
+  font-family: var(--font-figures);
+  font-weight: 500;
+  font-size: 2rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--story-text);
+}
+
+.story-figure-label {
+  font-size: max(0.8rem, 12px);
+  line-height: 1.35;
+  color: var(--story-muted);
+}
+
+/* What the step's data offers: the classes of a layer with classes, an overlay's caption and credit. */
+.story-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--story-line);
+  border-radius: var(--radius);
+  background: var(--story-raised);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.story-classes {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.story-classes li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* A class's colour is what it says: a contrast theme must not drop it. */
+.story-swatch {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 0.15em;
+  border: 1px solid var(--story-muted);
+  border-radius: 2px;
+  forced-color-adjust: none;
+}
+
+.story-classes + .story-overlay,
+.story-overlay + .story-overlay {
+  padding-top: 10px;
+  border-top: 1px solid var(--story-line);
+}
+
+.story-overlay {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.story-overlay-caption {
+  display: flex;
+  align-items: baseline;
+  font-weight: 600;
+}
+
+.story-overlay-credit,
+.story-overlay-note {
+  color: var(--story-muted);
+  font-size: max(0.82rem, 12px);
+}
+
+/* The mixed-release warning: an amber edge at its left, in view whenever dates are compared. */
+.story-warning {
+  margin-bottom: 16px;
+  padding: 2px 0 2px 12px;
+  border-left: 3px solid var(--story-warning);
+  color: var(--story-warning);
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.story-credit {
+  margin-bottom: 20px;
+  font-size: max(0.8rem, 12px);
+  line-height: 1.45;
+  color: var(--story-muted);
+}
+
+/* Back and the sequence's button at the left and in the middle, Next at the right, at the foot of the
+   panel; sticky, so they stay in reach while the panel scrolls, and solid with an edge above, so the
+   text scrolls under them and is never covered at its end. */
+.story-nav {
+  grid-row: -2 / -1;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 -20px;
+  padding: 12px 20px 16px;
+  background: var(--story-bg);
+  border-top: 1px solid var(--story-line);
+}
+
+.story-nav > :first-child {
+  margin-right: auto;
+}
+
+/* The one filled button (Start, Next) and the quiet ones (Back, the sequence's button, "Explore the
+   map" on the cover). At least 44 px. */
+.story-cta,
+.story-quiet {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.story-cta {
+  background: var(--story-cta-bg);
+  color: var(--story-cta-text);
+  border: 1px solid var(--story-cta-bg);
+}
+
+.story-cta:hover {
+  background: color-mix(in srgb, var(--story-cta-bg) 82%, var(--story-muted));
+  border-color: color-mix(in srgb, var(--story-cta-bg) 82%, var(--story-muted));
+}
+
+.story-quiet {
+  background: var(--story-raised);
+  color: var(--story-text);
+  border: 1px solid var(--story-muted);
+}
+
+.story-quiet:hover {
+  background: var(--story-line);
+}
+
+/* "Explore the map" on a step: a small text button at the top right, no fill and no box, underlined
+   so it reads as something to press. 44 px tall on touch screens. */
+.story-top .story-exit {
+  min-height: 36px;
+  margin-right: -8px;
+  padding: 4px 8px;
+  background: transparent;
+  border-color: transparent;
+  color: var(--story-muted);
+  font-size: max(0.85rem, 12px);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+
+.story-top .story-exit:hover {
+  background: var(--story-raised);
+  color: var(--story-text);
+}
+
+@media (max-width: 760px), (pointer: coarse) {
+  .story-top .story-exit {
+    min-height: 44px;
+  }
+}
+
+/* The cover's title in the panel (a phone): the display face, larger than a step's title. */
+.story-title-cover {
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 9vw, 2.75rem);
+  line-height: 1;
+}
+
+/* Each word of the cover's title is a box of its own (so it can rise); the spaces between them stay
+   text, so the title still reads, wraps and copies as one sentence. */
+.story-word {
+  display: inline-block;
+}
+
+/* --- The cover, on a desktop: the night map, with the words on a solid band at its left. ------------
+   Inside .map-wrap at z-index 1, before the notes in the page, so the notes (the stamp, the overlay's
+   caption, the loading note) and MapLibre's corners (z-index 2: the scale and the credit line) stay
+   above it. The band is solid --story-bg up to 54 % of the map's width and eases out to nothing by
+   80 %, so every word sits on a solid surface (its contrast never depends on the map) and the right
+   part shows the night map, where the engine places the site (74 % of the width) with its ring. */
+
+.story-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  padding: 72px 24px 76px 48px;
+  overflow-y: auto;
+  background: linear-gradient(
+    to right,
+    var(--story-bg) 0%,
+    var(--story-bg) 54%,
+    color-mix(in srgb, var(--story-bg) 82%, transparent) 59%,
+    color-mix(in srgb, var(--story-bg) 50%, transparent) 66%,
+    color-mix(in srgb, var(--story-bg) 20%, transparent) 73%,
+    transparent 80%
+  );
+  color: var(--story-text);
+}
+
+/* No card and no border: the block lies on the solid part of the band (its own background is the
+   band's colour, so it never shows as a box, and the words stay on a solid surface whatever the
+   width). */
+.story-cover-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: min(34rem, 50%);
+  margin: auto 0;
+  padding: 0;
+  background: var(--story-bg);
+}
+
+.story-cover-block :where(p) {
+  margin: 0;
+}
+
+.story-cover-block > .story-eyebrow {
+  margin-bottom: 18px;
+  text-wrap: balance;
+}
+
+.story-cover-title {
+  margin: 0 0 22px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 5.4vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  color: var(--story-text);
+}
+
+.story-cover-block > .story-cover-text {
+  max-width: 32em;
+  margin-bottom: 30px;
+  font-size: 1.15rem;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.story-cover-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.story-cover-actions .story-cta,
+.story-cover-actions .story-quiet {
+  min-height: 48px;
+  padding: 10px 22px;
+}
+
+/* A narrow map (a small window): the solid band goes a little further and the words take a little
+   more of it, so they keep a usable width; the site's ring (74 %) stays mostly clear. */
+@container (width < 720px) {
+  .story-cover {
+    padding-left: 28px;
+    background: linear-gradient(
+      to right,
+      var(--story-bg) 0%,
+      var(--story-bg) 60%,
+      color-mix(in srgb, var(--story-bg) 75%, transparent) 65%,
+      color-mix(in srgb, var(--story-bg) 35%, transparent) 72%,
+      color-mix(in srgb, var(--story-bg) 10%, transparent) 79%,
+      transparent 86%
+    );
+  }
+
+  .story-cover-block {
+    max-width: 56%;
+  }
+}
+
+/* --- The date stamp: the map's own tag in the story's look. -------------------------------------------
+   On a desktop where the tag is: first in the notes on the map (.map-notes, top left), which keep
+   clear of MapLibre's controls and of its credit line, and lie above the cover (later in the page at
+   the same level). Not at the bottom: while the story keeps the map still, the credit line stays
+   expanded, and a long citation runs along the whole bottom edge. It takes taps from nothing. It
+   names the picture drawn and changes in the same frame as the picture: no transition, no animation. */
+
+.story-stamp {
+  max-width: 100%;
+  margin: 0;
+  padding: 5px 12px;
+  border: 1px solid var(--story-muted);
+  border-radius: var(--radius);
+  background: var(--story-bg);
+  color: var(--story-text);
+  font-family: var(--font-figures);
+  font-weight: 500;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  transition: none;
+  animation: none;
+}
+
+/* --- A phone (the stacked layout): nothing of the story lies on the map. --------------------------- */
+
+@media (max-width: 760px) {
+  /* The panel takes the place of the panels under the map; the side column is not shown. */
+  .app[data-story] .side {
+    display: none;
+  }
+
+  .app[data-story] .main {
+    scroll-padding-bottom: 88px;
+  }
+
+  /* A shorter map while the story is open, so the map and the step's title are both in the first
+     screen (the tool's own 55vh and its tests stay as they are when the story is closed). */
+  .app[data-story] .map-wrap {
+    height: 40vh;
+    min-height: 180px;
+  }
+
+  /* The cover carries the pitch: the tagline is not shown while the story is open on a phone (the
+     name and the two buttons stay). */
+  .app[data-story] .tagline {
+    display: none;
+  }
+
+  .story-panel {
+    position: static;
+    flex: none;
+    width: auto;
+    overflow: visible;
+    padding: 2px 16px 0;
+    border-left: none;
+  }
+
+  /* The eyebrow at the left, "Explore the map" beside it at the right, so the step's title and its
+     first lines reach the first screen. */
+  .story-step > .story-eyebrow {
+    align-self: end;
+    margin: 2px 0 4px;
+  }
+
+  .story-top > .story-exit {
+    grid-row: 2 / span 2;
+    align-self: center;
+  }
+
+  /* The strip under the map (the overlay's caption, the loading note on a short map) in the story's
+     look, like the stamp's strip under it: the same words, on the dark surface, without a box. */
+  .app[data-story] .map-notes-under {
+    background: var(--story-bg);
+    color: var(--story-text);
+    border-bottom-color: var(--story-line);
+    padding-inline: 16px;
+  }
+
+  .app[data-story] .map-notes-under :is(.overlay-map-caption, .picture-loading) {
+    padding: 0;
+    background: transparent;
+    color: var(--story-text);
+    border-color: transparent;
+  }
+
+  .app[data-story] .map-notes-under .overlay-map-note {
+    color: var(--story-muted);
+  }
+
+  .story-title-cover {
+    margin-top: 2px;
+  }
+
+  .story-nav {
+    margin: 0 -16px;
+    padding: 8px 16px 10px;
+  }
+
+  /* The stamp in a strip under the map, like the notes strip: the width of the map, solid, an edge
+     under it. */
+  .story-stamp-under {
+    flex: none;
+    max-width: none;
+    padding: 5px 16px;
+    border: none;
+    border-bottom: 1px solid var(--story-line);
+    border-radius: 0;
+    font-size: 1rem;
+  }
+}
+
+/* --- A contrast theme: every story surface has a border, in the browser's own colours. ------------- */
+
+@media (forced-colors: active) {
+  .story-panel,
+  .story-cover-block,
+  .story-stamp,
+  .story-figure,
+  .story-sequence,
+  .story-cta,
+  .story-quiet,
+  .story-top .story-exit {
+    border: 1px solid CanvasText;
+  }
+
+  /* The band over the map is dropped (a theme's own background replaces it); the block of words is a
+     solid box with an edge of its own instead. */
+  .story-cover {
+    background: none;
+  }
+
+  .story-cover-block {
+    padding: 20px 24px;
+    background: Canvas;
+  }
+
+  .story-nav {
+    border-top: 1px solid CanvasText;
+  }
+
+  /* The segments keep their shape and their colours: the current one thicker and highlighted. */
+  .story-progress-mark,
+  .story-progress-step.story-progress-ahead .story-progress-mark {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+
+  .story-progress-step[aria-current='step'] .story-progress-mark {
+    background: Highlight;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------------
+   Motion (brief, sections 4 and 6; web/MOTION.md). Only the frame and the words move, and only by
+   transform and opacity. Nothing that carries a value moves: the stamp, the sequence's line, the
+   cover's figures and the step's figure (the classes, the overlay's caption and its count) appear
+   whole and change at once. Nothing leaves with motion: an outgoing step or cover is simply replaced.
+   All of it sits inside this media query, so with reduced motion none of it exists (no duration, no
+   delay); styles.css also zeroes every duration there.
+   --------------------------------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The cover: the words of the title rise in one after another (about 0.9 s in all), then the
+     eyebrow, the sentence and the buttons fade in. --i is each word's index (StoryPanel.tsx,
+     TitleWords). */
+  .story-word {
+    animation: story-rise var(--dur-4) var(--ease-out) backwards;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .story-cover-block > .story-eyebrow,
+  .story-cover-block > .story-cover-text,
+  .story-cover-actions {
+    animation: story-fade-rise var(--dur-3) var(--ease-out) backwards;
+  }
+
+  .story-cover-block > .story-eyebrow {
+    animation-delay: 420ms;
+  }
+
+  .story-cover-block > .story-cover-text {
+    animation-delay: 540ms;
+  }
+
+  .story-cover-actions {
+    animation-delay: 660ms;
+  }
+
+  /* A step arriving: its words rise into place, --stagger apart. The figures and the sequence's line
+     do not move (above). On the cover in the panel (a phone) the title's words rise instead. */
+  .story-step > :not(.story-sequence, .story-figures, .story-figure, .story-title-cover) {
+    animation: story-rise var(--dur-3) var(--ease-out) backwards;
+  }
+
+  .story-step > :nth-child(2) {
+    animation-delay: var(--stagger);
+  }
+
+  .story-step > :nth-child(3) {
+    animation-delay: calc(2 * var(--stagger));
+  }
+
+  .story-step > :nth-child(4) {
+    animation-delay: calc(3 * var(--stagger));
+  }
+
+  .story-step > :nth-child(n + 5) {
+    animation-delay: calc(4 * var(--stagger));
+  }
+
+  /* When the story closes the tool wakes: while the story is not closed the side column's panels
+     hold still, so their rise-in (styles/motion.css) plays again the moment data-story goes away. */
+  .app[data-story] .side > .panel {
+    animation: none;
+  }
+}
+
+@keyframes story-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise));
+  }
+}
+
+@keyframes story-fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}

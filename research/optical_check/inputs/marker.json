@@ -1,0 +1,467 @@
+{
+  "site": "tarn-taran",
+  "rule": "PROGRESS.md, \"The marker rule\", fixed on Saturday 14 November 2026 at 16:37 CT, before any fire data was analysed",
+  "method": "Rule fixed before any fire data was analysed (PROGRESS.md, 'The marker rule'). Window: VIIRS detections inside the site box with UTC dates from the third pass of the harvest analysis (the first at which a harvest pair can end) to the end of the fires block, both included; the test is made only when every day of the window has been fetched. Rice cells of the test: cells whose centres lie inside the site box and whose class is a rice class (a harvest pair, no harvest seen, fell before) in both HH and HV, so that both are scored on the same cells and the same detections. Each detection stands for a 375 m square centred on it and aligned with the product grid, shared among the cells by area as in the fire bars; its weight r is the share of the square on the test's rice cells, and a detection with no part on them (r below 1e-9) is not used. For each polarization, s is the share of the square on test rice cells that the polarization still calls not harvested on the detection's UTC date: no harvest seen, or a harvest pair whose later pass comes after that date (a pass on that date counts as on or before it); cells that fell before the first harvest pass count in r and never in s. Score of a polarization: the sum of s over the sum of r of the detections used. Difference: HV score minus HH score. Its 95 % interval: the 2.5th and 97.5th percentiles (numpy, method linear) of the difference over 2000 bootstrap replicates; each replicate draws as many of the UTC days of the detections used as there are, with replacement (numpy.random.default_rng(20261114), one call integers(0, days, size=days) per replicate, the days in date order), and takes every detection used of each day drawn as often as the day was drawn. Decision: an interval above zero gives HH and one below zero HV (rule item 3); otherwise, or with fewer than 2 days, the polarization that gives a harvest pair (not fell before) to more of the test's rice cells by the last pass (rule item 4); equal counts leave the choice to the team.",
+  "window": {
+    "first": "2026-10-11",
+    "last": "2026-11-14",
+    "detections_fetched": [
+      "2026-09-15",
+      "2026-11-14"
+    ],
+    "covered": [
+      "2026-10-11",
+      "2026-11-14"
+    ]
+  },
+  "bootstrap": {
+    "unit": "the UTC date of a detection used",
+    "replicates": 2000,
+    "seed": 20261114,
+    "generator": "numpy.random.default_rng",
+    "draws": "integers(0, days, size=days), one call per replicate, the days in date order",
+    "percentiles": [
+      2.5,
+      97.5
+    ],
+    "percentile_method": "linear",
+    "numpy": "2.5.4"
+  },
+  "grid": {
+    "crs": "EPSG:32643",
+    "cell_m": 100.0,
+    "shape": [
+      288,
+      286
+    ]
+  },
+  "cells": {
+    "test_rice": 45928,
+    "rice_in_one_band_only": 0
+  },
+  "detections": {
+    "in_window": 424,
+    "used": 417,
+    "unused": 7
+  },
+  "days": 31,
+  "by_day": [
+    {
+      "date": "2026-10-12",
+      "detections": 1,
+      "rice_weight": 0.6465791594799527,
+      "standing_weight": {
+        "HH": 0.6465791594799527,
+        "HV": 0.6465791594799527
+      }
+    },
+    {
+      "date": "2026-10-13",
+      "detections": 1,
+      "rice_weight": 0.8156650246854669,
+      "standing_weight": {
+        "HH": 0.5467326151629288,
+        "HV": 0.4943629707322769
+      }
+    },
+    {
+      "date": "2026-10-14",
+      "detections": 4,
+      "rice_weight": 1.6702848818747063,
+      "standing_weight": {
+        "HH": 1.2115115266781658,
+        "HV": 1.6702848818747063
+      }
+    },
+    {
+      "date": "2026-10-17",
+      "detections": 12,
+      "rice_weight": 7.050866083819032,
+      "standing_weight": {
+        "HH": 4.815718139537764,
+        "HV": 5.556461185984258
+      }
+    },
+    {
+      "date": "2026-10-18",
+      "detections": 18,
+      "rice_weight": 11.52370394413162,
+      "standing_weight": {
+        "HH": 8.461141986130883,
+        "HV": 9.554030467363244
+      }
+    },
+    {
+      "date": "2026-10-19",
+      "detections": 23,
+      "rice_weight": 11.934653017087129,
+      "standing_weight": {
+        "HH": 7.8147209631951995,
+        "HV": 9.549351035601807
+      }
+    },
+    {
+      "date": "2026-10-20",
+      "detections": 10,
+      "rice_weight": 5.569287343825268,
+      "standing_weight": {
+        "HH": 4.640064466106874,
+        "HV": 5.002518017103971
+      }
+    },
+    {
+      "date": "2026-10-21",
+      "detections": 7,
+      "rice_weight": 5.676865770445744,
+      "standing_weight": {
+        "HH": 4.340371097482535,
+        "HV": 4.459458440616477
+      }
+    },
+    {
+      "date": "2026-10-22",
+      "detections": 12,
+      "rice_weight": 8.90672178696937,
+      "standing_weight": {
+        "HH": 8.029066367061487,
+        "HV": 7.969873165687758
+      }
+    },
+    {
+      "date": "2026-10-23",
+      "detections": 5,
+      "rice_weight": 3.7676346168274635,
+      "standing_weight": {
+        "HH": 2.82381070972234,
+        "HV": 3.558731950233955
+      }
+    },
+    {
+      "date": "2026-10-24",
+      "detections": 12,
+      "rice_weight": 7.599504061566193,
+      "standing_weight": {
+        "HH": 4.805347347133859,
+        "HV": 5.8192751867860455
+      }
+    },
+    {
+      "date": "2026-10-26",
+      "detections": 10,
+      "rice_weight": 6.400883550199233,
+      "standing_weight": {
+        "HH": 2.6189640213283374,
+        "HV": 3.9115901316183566
+      }
+    },
+    {
+      "date": "2026-10-27",
+      "detections": 17,
+      "rice_weight": 10.952110664059576,
+      "standing_weight": {
+        "HH": 6.500151659786526,
+        "HV": 9.714050959918518
+      }
+    },
+    {
+      "date": "2026-10-28",
+      "detections": 54,
+      "rice_weight": 37.036956335870904,
+      "standing_weight": {
+        "HH": 26.433238696695277,
+        "HV": 33.145535012075044
+      }
+    },
+    {
+      "date": "2026-10-29",
+      "detections": 41,
+      "rice_weight": 28.477825680318475,
+      "standing_weight": {
+        "HH": 22.055567354683443,
+        "HV": 25.898139764921147
+      }
+    },
+    {
+      "date": "2026-10-30",
+      "detections": 20,
+      "rice_weight": 11.667207477820103,
+      "standing_weight": {
+        "HH": 7.9429755840742855,
+        "HV": 10.624305098479574
+      }
+    },
+    {
+      "date": "2026-10-31",
+      "detections": 8,
+      "rice_weight": 4.887020793868223,
+      "standing_weight": {
+        "HH": 4.364340928065703,
+        "HV": 4.602671581335567
+      }
+    },
+    {
+      "date": "2026-11-01",
+      "detections": 21,
+      "rice_weight": 14.548405908007489,
+      "standing_weight": {
+        "HH": 10.376724782219613,
+        "HV": 12.182140948726529
+      }
+    },
+    {
+      "date": "2026-11-02",
+      "detections": 12,
+      "rice_weight": 7.0404336127774,
+      "standing_weight": {
+        "HH": 4.992589236480433,
+        "HV": 6.274825521088481
+      }
+    },
+    {
+      "date": "2026-11-03",
+      "detections": 18,
+      "rice_weight": 12.1536008175078,
+      "standing_weight": {
+        "HH": 9.927892636162852,
+        "HV": 11.27402711117019
+      }
+    },
+    {
+      "date": "2026-11-04",
+      "detections": 22,
+      "rice_weight": 15.040013744267604,
+      "standing_weight": {
+        "HH": 8.150841120104252,
+        "HV": 3.6145230212937487
+      }
+    },
+    {
+      "date": "2026-11-05",
+      "detections": 3,
+      "rice_weight": 1.7971278697755806,
+      "standing_weight": {
+        "HH": 1.279145420825465,
+        "HV": 0.8285879476928546
+      }
+    },
+    {
+      "date": "2026-11-06",
+      "detections": 10,
+      "rice_weight": 6.749823641057263,
+      "standing_weight": {
+        "HH": 4.899261924423194,
+        "HV": 1.9771351872967604
+      }
+    },
+    {
+      "date": "2026-11-07",
+      "detections": 25,
+      "rice_weight": 15.407382118118392,
+      "standing_weight": {
+        "HH": 8.093613322505433,
+        "HV": 4.561954037616713
+      }
+    },
+    {
+      "date": "2026-11-08",
+      "detections": 11,
+      "rice_weight": 7.755593342520856,
+      "standing_weight": {
+        "HH": 3.4097869648550025,
+        "HV": 1.5524619072569092
+      }
+    },
+    {
+      "date": "2026-11-09",
+      "detections": 12,
+      "rice_weight": 6.695792091356368,
+      "standing_weight": {
+        "HH": 4.741531835452388,
+        "HV": 2.868831006073037
+      }
+    },
+    {
+      "date": "2026-11-10",
+      "detections": 13,
+      "rice_weight": 7.981284227698577,
+      "standing_weight": {
+        "HH": 3.9194771155413743,
+        "HV": 1.915689341074425
+      }
+    },
+    {
+      "date": "2026-11-11",
+      "detections": 6,
+      "rice_weight": 4.262497517211949,
+      "standing_weight": {
+        "HH": 2.6538139986296536,
+        "HV": 2.023118146837505
+      }
+    },
+    {
+      "date": "2026-11-12",
+      "detections": 2,
+      "rice_weight": 1.5068875144284997,
+      "standing_weight": {
+        "HH": 1.023689104338785,
+        "HV": 0.8976783756720481
+      }
+    },
+    {
+      "date": "2026-11-13",
+      "detections": 5,
+      "rice_weight": 3.4963647124166823,
+      "standing_weight": {
+        "HH": 2.3441671602714957,
+        "HV": 2.2119460172395966
+      }
+    },
+    {
+      "date": "2026-11-14",
+      "detections": 2,
+      "rice_weight": 1.1964650515310673,
+      "standing_weight": {
+        "HH": 0.9828474984610588,
+        "HV": 0.6587836642927106
+      }
+    }
+  ],
+  "rice_weight": 270.21544236152397,
+  "standing_weight": {
+    "HH": 184.84568474259655,
+    "HV": 195.01892124314415
+  },
+  "scores": {
+    "HH": 0.684067805774363,
+    "HV": 0.7217164183467589
+  },
+  "difference": 0.037648612572395934,
+  "interval": [
+    -0.0572701291782361,
+    0.10854624619206853
+  ],
+  "harvest_pair_cells": {
+    "HH": 20503,
+    "HV": 31192,
+    "by": "2026-11-04",
+    "of": 45928
+  },
+  "decision": {
+    "marker": "HV",
+    "status": "decided",
+    "rule_item": 4,
+    "branch": "fallback: interval includes zero",
+    "reason": "the 95 % interval of HV minus HH (-5.7 to +10.9 percentage points) includes zero; HV gives a harvest pair to more of the test's rice cells by 4 November 2026 (31192 against 20503 for HH)"
+  },
+  "cumulative": {
+    "HH": {
+      "counted_cells": 45928,
+      "by_pass": [
+        {
+          "date": "2026-10-11",
+          "cells": 4566,
+          "share": 0.09941647796551123
+        },
+        {
+          "date": "2026-10-23",
+          "cells": 10422,
+          "share": 0.22692039714335482
+        },
+        {
+          "date": "2026-11-04",
+          "cells": 20503,
+          "share": 0.44641612959414734
+        }
+      ]
+    },
+    "HV": {
+      "counted_cells": 45928,
+      "by_pass": [
+        {
+          "date": "2026-10-11",
+          "cells": 2883,
+          "share": 0.06277216512802648
+        },
+        {
+          "date": "2026-10-23",
+          "cells": 4240,
+          "share": 0.09231841142658073
+        },
+        {
+          "date": "2026-11-04",
+          "cells": 31192,
+          "share": 0.6791499738721477
+        }
+      ]
+    }
+  },
+  "inputs": {
+    "method": "Rule fixed before any fire data was analysed (PROGRESS.md, 'The marker rule'). Window: VIIRS detections inside the site box with UTC dates from the third pass of the harvest analysis (the first at which a harvest pair can end) to the end of the fires block, both included; the test is made only when every day of the window has been fetched. Rice cells of the test: cells whose centres lie inside the site box and whose class is a rice class (a harvest pair, no harvest seen, fell before) in both HH and HV, so that both are scored on the same cells and the same detections. Each detection stands for a 375 m square centred on it and aligned with the product grid, shared among the cells by area as in the fire bars; its weight r is the share of the square on the test's rice cells, and a detection with no part on them (r below 1e-9) is not used. For each polarization, s is the share of the square on test rice cells that the polarization still calls not harvested on the detection's UTC date: no harvest seen, or a harvest pair whose later pass comes after that date (a pass on that date counts as on or before it); cells that fell before the first harvest pass count in r and never in s. Score of a polarization: the sum of s over the sum of r of the detections used. Difference: HV score minus HH score. Its 95 % interval: the 2.5th and 97.5th percentiles (numpy, method linear) of the difference over 2000 bootstrap replicates; each replicate draws as many of the UTC days of the detections used as there are, with replacement (numpy.random.default_rng(20261114), one call integers(0, days, size=days) per replicate, the days in date order), and takes every detection used of each day drawn as often as the day was drawn. Decision: an interval above zero gives HH and one below zero HV (rule item 3); otherwise, or with fewer than 2 days, the polarization that gives a harvest pair (not fell before) to more of the test's rice cells by the last pass (rule item 4); equal counts leave the choice to the team.",
+    "constants": {
+      "first_end_pass": 2,
+      "seed": 20261114,
+      "replicates": 2000,
+      "percentiles": [
+        2.5,
+        97.5
+      ],
+      "percentile_method": "linear",
+      "min_days": 2,
+      "zero_weight": 1e-09,
+      "square_m": 375.0
+    },
+    "classes": {
+      "file": "harvest_classes.tif",
+      "sha256": "88eff1e932d231fa8e22758514197b5eb11b3dadf38c354d190d0d7bd7a89005"
+    },
+    "harvest_settings": {
+      "cell_m": 100.0,
+      "flood_dates": [
+        "2026-06-13",
+        "2026-06-25",
+        "2026-07-19"
+      ],
+      "peak_dates": [
+        "2026-08-24",
+        "2026-09-17",
+        "2026-09-29"
+      ],
+      "passes": [
+        "2026-09-17",
+        "2026-09-29",
+        "2026-10-11",
+        "2026-10-23",
+        "2026-11-04"
+      ],
+      "false_alarm": 0.02,
+      "rice_rise_db": "auto",
+      "stable_boxes": [
+        [
+          74.8466,
+          31.2774,
+          74.8592,
+          31.2883
+        ]
+      ],
+      "stable_boxes_from": "stable_target"
+    },
+    "detections": {
+      "file": "detections.json",
+      "sha256": "1bbfd996f7d3f2730d154f25762748f6140c7e2049533bb35d37061c98848bf6",
+      "asked": [
+        "2026-09-15",
+        "2026-11-14"
+      ]
+    },
+    "bbox": [
+      74.78,
+      31.08,
+      75.08,
+      31.34
+    ],
+    "window": [
+      "2026-10-11",
+      "2026-11-14"
+    ]
+  }
+}

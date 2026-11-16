@@ -1,0 +1,45 @@
+{
+  "site": "sample",
+  "generated_at": "2026-11-14T17:19:38Z",
+  "product": "GCOV",
+  "stack": "030_A_019",
+  "direction": "ascending",
+  "query": {
+    "bbox": [-118.17, 34.64, -117.77, 34.96],
+    "releases": ["sample"]
+  },
+  "granules": [
+    {
+      "name": "NISAR_L2_PR_GCOV_001_030_A_019_2800_SHNA_A_20081012T060911_20081012T060925_D00404_N_F_J_001",
+      "date": "2008-10-12",
+      "start": "2008-10-12T06:09:11Z",
+      "release": "sample",
+      "collection": "NISAR-SAMPLE-DATA",
+      "version": "D00404",
+      "counter": 1,
+      "pols": ["HH"],
+      "bandwidth_mhz": 28.0,
+      "full_frame": true,
+      "url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR-SAMPLE-DATA/GCOV/NISAR_L2_PR_GCOV_001_030_A_019_2800_SHNA_A_20081012T060911_20081012T060925_D00404_N_F_J_001/NISAR_L2_PR_GCOV_001_030_A_019_2800_SHNA_A_20081012T060911_20081012T060925_D00404_N_F_J_001.h5",
+      "browse": ["https://nisar.asf.earthdatacloud.nasa.gov/NISAR-SAMPLE-DATA/GCOV/NISAR_L2_PR_GCOV_001_030_A_019_2800_SHNA_A_20081012T060911_20081012T060925_D00404_N_F_J_001/NISAR_L2_PR_GCOV_001_030_A_019_2800_SHNA_A_20081012T060911_20081012T060925_D00404_N_F_J_001.png"],
+      "size_bytes": 171966464
+    },
+    {
+      "name": "NISAR_L2_PR_GCOV_002_030_A_019_2800_SHNA_A_20081127T061000_20081127T061014_D00404_N_F_J_001",
+      "date": "2008-11-27",
+      "start": "2008-11-27T06:10:00Z",
+      "release": "sample",
+      "collection": "NISAR-SAMPLE-DATA",
+      "version": "D00404",
+      "counter": 1,
+      "pols": ["HH"],
+      "bandwidth_mhz": 28.0,
+      "full_frame": true,
+      "url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR-SAMPLE-DATA/GCOV/NISAR_L2_PR_GCOV_002_030_A_019_2800_SHNA_A_20081127T061000_20081127T061014_D00404_N_F_J_001/NISAR_L2_PR_GCOV_002_030_A_019_2800_SHNA_A_20081127T061000_20081127T061014_D00404_N_F_J_001.h5",
+      "browse": ["https://nisar.asf.earthdatacloud.nasa.gov/NISAR-SAMPLE-DATA/GCOV/NISAR_L2_PR_GCOV_002_030_A_019_2800_SHNA_A_20081127T061000_20081127T061014_D00404_N_F_J_001/NISAR_L2_PR_GCOV_002_030_A_019_2800_SHNA_A_20081127T061000_20081127T061014_D00404_N_F_J_001.png"],
+      "size_bytes": 171966464
+    }
+  ],
+  "missing_passes": [],
+  "excluded": []
+}

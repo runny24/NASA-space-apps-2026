@@ -1,0 +1,4 @@
+# Development tools on top of the runtime pins: the offline test suite and the linter.
+-r requirements.txt
+pytest==9.2.0
+ruff==0.17.5

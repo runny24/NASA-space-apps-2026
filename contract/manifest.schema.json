@@ -1,0 +1,374 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/runny24/NASA-space-apps-2026/contract/manifest.schema.json",
+  "title": "Data manifest",
+  "description": "The single contract between the Python pipeline (which writes web/public/data/manifest.json) and the web app (which reads it and nothing else about the data). Human explanation: docs/DATA_CONTRACT.md. Cross-field rules that JSON Schema cannot express are listed there and enforced by `python -m pipeline validate`.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "generated_at", "generator", "sites"],
+  "properties": {
+    "schema": {
+      "const": 1,
+      "description": "Contract version. Bump on any breaking change and update both sides in the same commit."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC time the manifest was written, ISO 8601 with a trailing Z."
+    },
+    "generator": { "$ref": "#/$defs/generator" },
+    "sites": {
+      "type": "array",
+      "description": "One entry per place. May be empty before the first pipeline run.",
+      "items": { "$ref": "#/$defs/site" }
+    }
+  },
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,62}$",
+      "description": "Lower-case letters, digits and hyphens. Used in file names and URLs."
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "description": "Calendar date in UTC (YYYY-MM-DD) of the start of the acquisition. This matches granule names, the NASA catalog and NASA GIBS layer dates. It can differ from the local date at the site."
+    },
+    "url": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Resolved against the URL of manifest.json itself (so 'sample/hh_2008-10-12.tif' sits next to the manifest). Absolute https URLs are allowed for data hosted elsewhere."
+    },
+    "polarization": { "enum": ["HH", "HV", "VH", "VV"] },
+    "release": {
+      "enum": ["beta", "provisional", "validated", "sample"],
+      "description": "Data maturity. 'sample' means a format-sample or simulated product that is NOT a NISAR observation."
+    },
+    "bounds": {
+      "type": "array",
+      "description": "[west, south, east, north] in degrees, EPSG:4326.",
+      "prefixItems": [
+        { "type": "number", "minimum": -180, "maximum": 180 },
+        { "type": "number", "minimum": -90, "maximum": 90 },
+        { "type": "number", "minimum": -180, "maximum": 180 },
+        { "type": "number", "minimum": -90, "maximum": 90 }
+      ],
+      "items": false,
+      "minItems": 4
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "ai_assisted", "note"],
+      "description": "Provenance of the processing, including whether its code was written with AI assistance.",
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "git_commit": { "type": "string", "description": "Short hash of the repository commit the pipeline ran from, when known. Ends in '+uncommitted' when the pipeline or contract code had uncommitted changes at the time." },
+        "ai_assisted": { "type": "boolean" },
+        "note": { "type": "string" }
+      }
+    },
+    "site": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "bounds", "source", "dates", "missing_passes", "layers", "stacks"],
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "title": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "description": "One or two plain sentences shown with the site." },
+        "is_sample": {
+          "type": "boolean",
+          "default": false,
+          "description": "true when this site is NOT built from real NISAR observations. The app must then show `notice` prominently and permanently."
+        },
+        "notice": { "type": "string", "description": "Plain-language notice shown prominently with this site (required in practice when is_sample is true)." },
+        "bounds": { "$ref": "#/$defs/bounds" },
+        "view": { "$ref": "#/$defs/view", "description": "Optional initial map view. Without it the app fits `bounds`." },
+        "source": { "$ref": "#/$defs/source" },
+        "dates": {
+          "type": "array",
+          "description": "Every acquisition the pipeline processed for this site, ascending by date. These are real acquisition dates, never a calendar.",
+          "items": { "$ref": "#/$defs/acquisition" }
+        },
+        "missing_passes": {
+          "type": "array",
+          "description": "Dates on which the 12-day repeat cycle predicts a pass that has no usable product. The app shows them as missing instead of hiding them.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["date", "reason"],
+            "properties": {
+              "date": { "$ref": "#/$defs/date" },
+              "reason": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "layers": { "type": "array", "items": { "$ref": "#/$defs/layer" } },
+        "stacks": {
+          "type": "array",
+          "description": "Multi-band files for click queries: one band per date, so one range request returns a pixel's whole history.",
+          "items": { "$ref": "#/$defs/stack" }
+        },
+        "stats": { "$ref": "#/$defs/url", "description": "URL of this site's statistics file (contract/stats.schema.json)." },
+        "overlays": {
+          "type": "array",
+          "description": "Vector data from independent sources, drawn over the layers. Optional.",
+          "items": { "$ref": "#/$defs/overlay" }
+        },
+        "story": {
+          "type": "array",
+          "description": "Steps of a guided tour of this site, in order. Optional.",
+          "items": { "$ref": "#/$defs/storyStep" }
+        },
+        "extra": { "type": "object", "description": "Escape hatch for experiments. Anything the app relies on must be promoted to a real field in this schema." }
+      }
+    },
+    "view": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A map view: centre and zoom.",
+      "required": ["center", "zoom"],
+      "properties": {
+        "center": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": -180, "maximum": 180 },
+            { "type": "number", "minimum": -85, "maximum": 85 }
+          ],
+          "items": false,
+          "minItems": 2,
+          "description": "[longitude, latitude]. Latitude is limited to what a web map can show."
+        },
+        "zoom": { "type": "number", "minimum": 0, "maximum": 22 }
+      }
+    },
+    "overlay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "kind", "url", "description", "credit"],
+      "description": "Vector data drawn on top of the raster layers, for example fire detections from another instrument. It is context from an independent source, never a NISAR measurement, and the app must show its credit wherever it is drawn.",
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "title": { "type": "string", "minLength": 1 },
+        "kind": {
+          "enum": ["points"],
+          "description": "points: a GeoJSON FeatureCollection of Point features, coordinates [longitude, latitude] in EPSG:4326."
+        },
+        "url": { "$ref": "#/$defs/url" },
+        "description": { "type": "string", "minLength": 1, "description": "One plain sentence on how to read the overlay. Shown in the legend." },
+        "method": { "type": "string", "description": "Short provenance: where the points come from and how they were selected. Details belong in docs/METHODS.md." },
+        "credit": { "type": "string", "minLength": 1, "description": "Who to credit for this data." },
+        "date_property": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the feature property that holds the UTC calendar date (YYYY-MM-DD) of each point. With it the app can show the points of a period instead of all of them."
+        },
+        "date_range": {
+          "type": "array",
+          "prefixItems": [{ "$ref": "#/$defs/date" }, { "$ref": "#/$defs/date" }],
+          "items": false,
+          "minItems": 2,
+          "description": "First and last UTC date the overlay covers, inclusive. Outside this range the app must say that the overlay has no data, never that there were no points."
+        },
+        "fields": {
+          "type": "array",
+          "description": "Feature properties worth showing when a point is selected, in order.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "label"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "label": { "type": "string", "minLength": 1 },
+              "unit": { "type": "string" }
+            }
+          }
+        },
+        "count": { "type": "integer", "minimum": 0, "description": "Number of features in the file." },
+        "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$", "description": "Drawing hint. Must stay readable on the layers it is drawn over and survive colour-blindness." },
+        "bytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "storyStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "text"],
+      "description": "One step of a guided tour: a short text and what the map should show while it is read. Everything a step points at must exist in the same site.",
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "title": { "type": "string", "minLength": 1 },
+        "text": { "type": "string", "minLength": 1, "description": "A few plain sentences. Interpretation is worded as a hypothesis." },
+        "layer": { "$ref": "#/$defs/slug", "description": "id of the layer to show." },
+        "date": { "$ref": "#/$defs/date", "description": "For a per-date layer: the acquisition to show." },
+        "reference": { "$ref": "#/$defs/date", "description": "For a pair layer: the earlier acquisition." },
+        "secondary": { "$ref": "#/$defs/date", "description": "For a pair layer: the later acquisition." },
+        "overlays": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/slug" }, "description": "ids of the overlays to switch on." },
+        "view": { "$ref": "#/$defs/view" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["product", "collection", "release", "stack", "direction", "frequency", "posting_m", "working_resolution_m", "native_epsg"],
+      "properties": {
+        "product": { "type": "string", "examples": ["NISAR L2 GCOV"] },
+        "collection": { "type": "string", "description": "Catalog short name(s) the granules came from.", "examples": ["NISAR_L2_GCOV_PROVISIONAL_V1"] },
+        "release": {
+          "enum": ["beta", "provisional", "validated", "sample", "mixed"],
+          "description": "'mixed' only when dates come from more than one release; the app then says so wherever dates are compared."
+        },
+        "stack": {
+          "type": "string",
+          "pattern": "^[0-9]{3}_[AD]_[0-9]{3}$",
+          "description": "track_direction_frame. Only images of one stack may be compared directly."
+        },
+        "direction": { "enum": ["ascending", "descending"] },
+        "frequency": { "enum": ["A", "B"], "description": "Which radar band of the product the layers were read from." },
+        "posting_m": { "type": "number", "exclusiveMinimum": 0, "description": "Pixel spacing of the source product in metres." },
+        "working_resolution_m": { "type": "number", "exclusiveMinimum": 0, "description": "Pixel spacing after multilooking, before reprojection for display." },
+        "native_epsg": { "type": "integer", "description": "EPSG code of the source product grid." },
+        "citation": { "type": "string" }
+      }
+    },
+    "acquisition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "datetime", "granule", "version", "release", "pols"],
+      "properties": {
+        "date": { "$ref": "#/$defs/date" },
+        "datetime": { "type": "string", "format": "date-time", "description": "Acquisition start, UTC." },
+        "granule": { "type": "string", "minLength": 1, "description": "Granule name without the .h5 extension, exactly as in the catalog." },
+        "version": { "type": "string", "description": "Processing version (CRID) from the granule name, e.g. P05023." },
+        "release": { "$ref": "#/$defs/release" },
+        "pols": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/polarization" },
+          "description": "Polarizations present in this granule for the frequency used. Read from the file, never assumed."
+        },
+        "bandwidth_mhz": { "type": "number" },
+        "full_frame": { "type": "boolean" },
+        "notes": { "type": "string", "description": "Anything a reader should know about this date (partial frame, quality remark)." }
+      }
+    },
+    "encoding": {
+      "description": "How the uint8 pixel values in a file map back to physical values. 0 is always nodata and is declared as nodata inside the file.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "nodata", "lo", "hi"],
+          "properties": {
+            "type": { "const": "linear-uint8" },
+            "nodata": { "const": 0 },
+            "lo": { "type": "number", "description": "Physical value of pixel value 1." },
+            "hi": { "type": "number", "description": "Physical value of pixel value 255." }
+          },
+          "description": "physical = lo + (pixel - 1) * (hi - lo) / 254 for pixel in 1..255. Values outside [lo, hi] were clipped when the file was written."
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "nodata", "classes"],
+          "properties": {
+            "type": { "const": "categorical-uint8" },
+            "nodata": { "const": 0 },
+            "classes": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["value", "label", "color"],
+                "properties": {
+                  "value": { "type": "integer", "minimum": 1, "maximum": 255 },
+                  "label": { "type": "string", "minLength": 1 },
+                  "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }
+                }
+              }
+            }
+          },
+          "description": "Each pixel value is a class. Used for classified maps."
+        }
+      ]
+    },
+    "layerItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url"],
+      "properties": {
+        "url": { "$ref": "#/$defs/url" },
+        "date": { "$ref": "#/$defs/date", "description": "For kind 'per-date': the acquisition this file shows." },
+        "reference": { "$ref": "#/$defs/date", "description": "For kind 'pair': the earlier acquisition." },
+        "secondary": { "$ref": "#/$defs/date", "description": "For kind 'pair': the later acquisition." },
+        "bytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "kind", "unit", "description", "encoding", "items"],
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "title": { "type": "string", "minLength": 1 },
+        "kind": {
+          "enum": ["per-date", "pair", "static"],
+          "description": "per-date: one file per acquisition. pair: one file per (reference, secondary) pair of acquisitions, e.g. a change map. static: exactly one file for the whole site."
+        },
+        "unit": { "type": "string", "description": "Unit of the physical value, e.g. 'dB'. Empty string for unitless or categorical layers." },
+        "description": { "type": "string", "minLength": 1, "description": "One plain sentence on how to read the layer. Shown in the legend." },
+        "polarization": { "$ref": "#/$defs/polarization" },
+        "method": { "type": "string", "description": "Short provenance: how this layer was computed. Details belong in docs/METHODS.md." },
+        "encoding": { "$ref": "#/$defs/encoding" },
+        "display": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional hint for drawing a linear-uint8 layer, in physical units. One fixed range for every date of a layer, so a difference between dates is a difference on the ground and not in the stretch.",
+          "required": ["min", "max"],
+          "properties": {
+            "min": { "type": "number", "description": "Lower end of the drawn range. Must be less than max." },
+            "max": { "type": "number", "description": "Upper end of the drawn range." },
+            "ramp": { "type": "string", "description": "Name of a colour ramp the app knows. Must survive colour-blindness; never red against green." },
+            "diverging": { "type": "boolean", "description": "true when the scale has a meaningful centre (for example 0 dB change)." }
+          }
+        },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/layerItem" } }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "per-date" } }, "required": ["kind"] },
+          "then": { "properties": { "items": { "items": { "required": ["url", "date"], "not": { "anyOf": [{ "required": ["reference"] }, { "required": ["secondary"] }] } } } } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "pair" } }, "required": ["kind"] },
+          "then": { "properties": { "items": { "items": { "required": ["url", "reference", "secondary"], "not": { "required": ["date"] } } } } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "static" } }, "required": ["kind"] },
+          "then": { "properties": { "items": { "minItems": 1, "maxItems": 1, "items": { "not": { "anyOf": [{ "required": ["date"] }, { "required": ["reference"] }, { "required": ["secondary"] }] } } } } }
+        }
+      ]
+    },
+    "stack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["layer", "url", "band_dates", "encoding", "resolution_m"],
+      "properties": {
+        "layer": { "$ref": "#/$defs/slug", "description": "id of the per-date layer whose history this file holds." },
+        "url": { "$ref": "#/$defs/url" },
+        "band_dates": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/date" },
+          "description": "Band i (1-based) of the file is the acquisition band_dates[i-1]. Ascending."
+        },
+        "encoding": { "$ref": "#/$defs/encoding" },
+        "resolution_m": { "type": "number", "exclusiveMinimum": 0, "description": "Approximate ground pixel size of the stack, which may be coarser than the display layer." },
+        "bytes": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

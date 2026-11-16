@@ -1,0 +1,40 @@
+# The sample site: proves the processing chain from archive to map without any login.
+# The two input files are NASA/JPL's public NISAR-format sample products. They are NOT NISAR
+# observations (2008 ALOS-1 PALSAR scenes, older product specification 1.2.1, HH only), so this site is
+# marked is_sample and the app shows the notice below whenever it is on screen.
+# Its granule list, sample.granules.json, is hand-written: these files are not in the NASA catalog, so
+# `discover` cannot find them. The URLs are copied from https://science.nasa.gov/mission/nisar/sample-data/
+# (L2 GCOV, Date 1 and Date 2).
+id: sample
+title: "Sample data: Rosamond, California, 2008 (not NISAR)"
+summary: "A test site built from NASA's public NISAR-format sample files. It shows that the pipeline works from archive to map; it says nothing about change on the ground."
+is_sample: true
+notice: "Sample data, not a NISAR observation. These two images are 2008 ALOS-1 PALSAR scenes over Rosamond, California, repackaged by NASA/JPL in NISAR file format for testing. They are shown only to prove that the processing chain works from archive to map. The values are not calibrated NISAR measurements, and differences between the two dates are not meaningful."
+# The NASA sample-data page (https://science.nasa.gov/mission/nisar/sample-data/, fetched 2026-11-14)
+# gives no credit or usage statement for these files, so this is our own wording. The scenes were taken by
+# JAXA's ALOS-1 PALSAR, so JAXA/METI are credited as the original data owners.
+citation: "NISAR sample data products: NASA/JPL-Caltech, distributed by the Alaska Satellite Facility DAAC. Original ALOS-1 PALSAR data © JAXA/METI 2008."
+
+# About 36 by 36 km around Rosamond; 100 % valid in both sample dates.
+bbox: [-118.17, 34.64, -117.77, 34.96]
+product: GCOV
+frequency: A
+stack: 030_A_019
+releases: [sample]
+polarizations: [HH]
+access: public
+
+working_resolution_m: 40
+power_floor: 1.0e-5
+min_valid_fraction: 0.5
+display_zoom: auto
+stack_zoom_offset: 2
+change_boxcar_px: 3
+
+backscatter:
+  encoding: {lo: -35, hi: 5}
+  display: {min: -25, max: 0, ramp: grey}
+
+change:
+  encoding: {lo: -10, hi: 10}
+  display: {min: -6, max: 6, ramp: BrewerPuOr11}

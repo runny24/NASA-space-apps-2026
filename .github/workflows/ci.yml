@@ -1,0 +1,75 @@
+# Continuous integration: proves on every push that the project sets up, passes its checks and builds on
+# Linux and on Windows (the team's build machine is a Windows PC). It runs the same `npm run` commands a
+# teammate types, so a green run here means those commands work.
+
+name: CI
+
+on:
+  push:
+  pull_request:
+
+# A newer push to the same branch or pull request makes the older run pointless, so cancel it.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Least privilege: the jobs only read the repository.
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: check (${{ matrix.os }})
+    strategy:
+      # Let both systems finish, so a Linux failure does not hide the Windows result (or the reverse).
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: pipeline/requirements*.txt
+
+      - run: npm run doctor
+      - run: npm run setup
+      - run: npm run check
+      - run: npm run build
+
+  e2e:
+    name: e2e (ubuntu-latest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      # The browser test needs only the web app, so Python is not installed in this job.
+      - run: npm ci
+        working-directory: web
+
+      # Chromium plus the Linux libraries it needs, at the version pinned in web/package-lock.json.
+      - run: npx playwright install --with-deps chromium
+        working-directory: web
+
+      - run: npm run e2e

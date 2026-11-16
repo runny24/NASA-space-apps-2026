@@ -1,0 +1,204 @@
+# Site for the team's concept "Before the Smoke" (docs/CONCEPT.md): rice and wheat fields in southern
+# Tarn Taran district, Punjab, India, from Patti to the Harike wetland. One stack, one farm year.
+#   node scripts/py.mjs -m pipeline discover --site tarn-taran --stack 156_A_017
+#   node scripts/py.mjs -m pipeline run --site tarn-taran
+
+id: tarn-taran
+
+# Shown in the app. Plain facts only; the story is told elsewhere.
+title: "Southern Tarn Taran, Punjab, India: a farm year seen by radar"
+summary: "NISAR L-band radar backscatter over the rice and wheat fields between Patti and the Harike wetland, one pass every 12 days from November 2025 to November 2026."
+
+is_sample: false
+
+citation: "NISAR L2 GCOV data: NASA/JPL-Caltech and ISRO, distributed by the Alaska Satellite Facility DAAC."
+
+# [west, south, east, north]. About 29 x 29 km. From docs/CONCEPT.md: all four corners are inside the
+# frame of stack 156_A_017 on every date; a box further north is not.
+bbox: [74.78, 31.08, 75.08, 31.34]
+
+product: GCOV
+frequency: A
+
+# Recorded by `discover --stack 156_A_017` in tarn-taran.granules.json.
+stack: null
+
+# Deliberately two releases (docs/CONCEPT.md, "Mixed release"): the harvest crosses the boundary between
+# provisional data (up to 2026-10-11) and validated data (from 2026-10-23). The app labels the site
+# "mixed", and a stable target is checked across the boundary (docs/TASKS.md, T4). Validated is listed
+# first, so that it wins if one pass exists in both.
+releases: [validated, provisional]
+
+polarizations: [HH, HV]
+
+access: earthdata
+
+# The product posting is 10 m (40 MHz mode). 20 m is 2 x 2 looks: fields here are about 100 to 200 m
+# across, so they stay several pixels wide.
+working_resolution_m: 20
+
+power_floor: 1.0e-5
+min_valid_fraction: 0.5
+display_zoom: auto
+stack_zoom_offset: 2
+change_boxcar_px: 3
+series_min_coverage: 0.8
+
+backscatter:
+  encoding: {lo: -35, hi: 5}
+  display: {min: -25, max: 0, ramp: grey}
+  # Written with AI and checked by a teammate on 15 November 2026. The same text for HH and HV; the layer's
+  # title names the polarization.
+  description: >-
+    How strongly the ground sent the radar signal back: brighter usually means rougher or wetter ground,
+    buildings or vegetation; darker usually means smoother surfaces such as calm water.
+  # HV is about 7 dB darker than HH here (Patti town: HH about -4.4 dB, HV about -11.5 dB), so with HH's range
+  # it looks almost black. A drawing hint in the manifest only: no raster is rewritten.
+  display_by_polarization:
+    HV: {min: -30, max: -8, ramp: grey}
+
+# No `change` block: a layer of change between every pair of consecutive dates would be 23 pairs in two
+# polarizations, about 140 MB, and the concept does not ask for it. The harvest analysis adds its own layers.
+
+# The stable target the concept names: the town of Patti. The box is 1.2 km square around the centre of the
+# town's bright pixels. It was sized on the data: the box's year-mean HH stays near -4.2 dB up to this
+# size and falls once the box grows into the fields (-4.6 dB at 1.6 km, -5.0 dB at 2 km).
+stable_target:
+  name: "Patti town"
+  bbox: [74.8466, 31.2774, 74.8592, 31.2883]
+  tolerance_db: 1.0
+
+# The harvest analysis (docs/METHODS.md, "Analysis: harvest pairs"). The dates follow the year seen in the
+# data (PROGRESS.md, "The go/no-go test"): the transplanting flood in June and July (2026-07-07 is a missing
+# pass), full canopy from late August, then the passes across the harvest. The first pair of passes,
+# 17 to 29 September, lies before the harvest starts. The stable ground is the stable target's box.
+harvest:
+  cell_m: 100
+  # Chosen by the rule fixed before any fire data was analysed (PROGRESS.md, "The marker rule"), applied once
+  # on Saturday 14 November 2026 at 20:28 CT (`marker --site tarn-taran`): the fire test could not tell HH
+  # from HV (95 % interval of HV minus HH: -5.7 to +10.9 percentage points), so rule item 4 chose HV, which
+  # gives a harvest pair to more rice cells by 4 November (31,192 against 20,503). docs/METHODS.md, section 6.
+  marker: HV
+  flood_dates: ["2026-06-13", "2026-06-25", "2026-07-19"]
+  peak_dates: ["2026-08-24", "2026-09-17", "2026-09-29"]
+  passes: ["2026-09-17", "2026-09-29", "2026-10-11", "2026-10-23", "2026-11-04"]
+  false_alarm: 0.02
+  rice_rise_db: auto
+  # Written with AI and checked by a teammate on 15 November 2026. It carries the limit the comparisons
+  # found (docs/METHODS.md, section 6): the map misses much of the harvest, so the yellow class must not be
+  # read as standing rice.
+  description: >-
+    For each 100 m rice cell, the pair of radar passes in which its HV backscatter first fell sharply, from 29 September 2026 on; such a fall in this season is read as the
+    harvest. The map misses much of the harvest: official figures and NASA's fire detections both point to
+    more cut rice than it shows. So "no harvest seen" means that the radar saw no sharp fall, not that the
+    rice was still standing. Cells that are not rice are grey.
+
+# NASA FIRMS fire detections (docs/METHODS.md, section 6), from two days before the first pass of the analysis
+# to 14 November 2026. Every VIIRS source is listed, since the marker rule takes every VIIRS detection.
+# Suomi NPP is listed last: FIRMS's attribute page (read 14 November) says it no longer delivers new data,
+# but its near-real-time source still returned detections for these dates (125 of 452).
+# The periods are the three windows of the concept's Hypothesis 2 (docs/CONCEPT.md): 5 to 14 November, and
+# the two earlier windows between the harvest passes.
+fires:
+  start: "2026-09-15"
+  end: "2026-11-14"
+  sources: [VIIRS_NOAA20_NRT, VIIRS_NOAA21_NRT, VIIRS_SNPP_NRT]
+  periods: [["2026-10-12", "2026-10-23"], ["2026-10-24", "2026-11-04"], ["2026-11-05", "2026-11-14"]]
+  # Written with AI and checked by a teammate on 15 November 2026.
+  description: >-
+    Each dot is one VIIRS fire detection: a 375 m pixel that a satellite flagged as holding at least one fire
+    at the time of its pass, drawn at the pixel's centre. It is not a fire's exact place, its size or a count of
+    burning fields, and fires that burn between passes or under thick smoke or cloud can be missed.
+
+# The guided tour (docs/MOTION_AND_STORY_BRIEF.md, section 9). Written with AI and checked by a teammate on
+# 15 November 2026. Its numbers were checked on 14 November 2026 against docs/METHODS.md
+# section 6 and the published stats.json and site.json of that day's run; claims the repository did not
+# support were taken out, not adjusted. pipeline/tests/test_story.py checks that every layer, date and
+# overlay a step names exists in the published site.
+story:
+  - id: two-dances
+    title: Punjab's fields dance twice a year
+    text: Wheat in winter, rice in the monsoon. The second dance ends in fire.
+    layer: hh
+    date: 2025-11-21
+    view: { center: [74.93, 31.21], zoom: 4.6 }
+  - id: where
+    title: One place, a pass every 12 days
+    text: >-
+      This is about 29 by 29 km, mostly farmland, in southern Tarn Taran, Punjab, and across the Sutlej
+      river in Ferozepur district. NISAR passes over it every 12 days, at about a quarter to six in the
+      morning. Its radar needs no daylight and sees through haze and cloud.
+    layer: hh
+    date: 2025-11-21
+  - id: reading-radar
+    title: How to read the picture
+    text: >-
+      Brighter means more of the radar signal came back. Buildings are bright: the town of Patti is one of
+      the pale patches. Calm water sends the signal away and looks black: the dark ribbons are rivers, the
+      Sutlej among them, and the edge of the Harike wetland. The fields in between are the part that
+      changes.
+    layer: hh
+    date: 2025-11-21
+    view: { center: [74.90, 31.23], zoom: 11.2 }
+  - id: the-year
+    title: The year, pass by pass
+    text: >-
+      Watch the fields. They brighten as the wheat grows from December to March, darken when it is cut in
+      April, dip again when the paddies are flooded in June, and brighten strongly as the rice grows. We
+      read these two rises as the two crops.
+    layer: hh
+    date: 2026-09-29
+  - id: june-flood
+    title: June, the fields become mirrors
+    text: >-
+      Before rice is planted the fields are flooded. Smooth water reflects the radar away from the
+      satellite, so a flooded paddy looks dark.
+    layer: hh
+    date: 2026-06-25
+  - id: harvest
+    title: October, the rice comes off
+    text: >-
+      The same fields in HV, the part of the signal that leafy plants scatter. We expect it to rise as the
+      rice fills in and to fall when the crop is cut. Watch for fields that turn dark from one pass to the
+      next: we read that sharp fall as the harvest. In HV most of the rice does so between 23 October and
+      4 November.
+    layer: hv
+    date: 2026-11-04
+  - id: the-wave
+    title: The harvest wave
+    text: >-
+      Each 100 m cell of rice is coloured by the pair of passes in which its HV first fell sharply; by 4
+      November that is about two thirds of the rice. Yellow means the radar saw no sharp fall, not that the
+      rice still stood: officials reported more of the harvest done, and an optical check on Copernicus
+      Sentinel-2 data suggests that about half to four fifths of the yellow cells had lost their green by
+      then (three of its dates look hazy, and greenness alone cannot tell a cut field from a ripe one).
+      The same check suggests the map's order is right: the later it dates a cell's harvest, the greener that
+      cell still was in early October. Contains modified Copernicus Sentinel data 2026.
+    layer: harvest-wave
+  - id: the-fires
+    title: Then the fires
+    text: >-
+      Each dot is a 375 m square in which a VIIRS satellite instrument flagged at least one fire, between
+      15 September and 14 November 2026 (NASA FIRMS). At the peak of the burning, from 24 October to
+      4 November, fire detections were denser on rice the map calls harvested between 23 October and
+      4 November than on land that is not rice, but the map's harvest dates do not sort them. From 5 to
+      14 November the detection densities of the rice classes could not be told apart, so our guess that
+      fires follow the newest harvest is not supported.
+    layer: harvest-wave
+    overlays: [fires]
+  - id: what-next
+    title: What NISAR could do next
+    text: >-
+      These are ideas, not results. A harvest map made after every pass could show the teams that send
+      out straw machines where the rice came off since the last pass. The same radar could follow the
+      sowing of the wheat, test whether burned stubble looks different from unburned, and keep a crop
+      calendar where monsoon clouds hide the fields from optical satellites.
+    layer: harvest-wave
+  - id: explore
+    title: Now look for yourself
+    text: >-
+      What this can show is limited: one look every 12 days, one year of passes and one rice harvest, a
+      harvest map of 100 m cells that hold several fields, and an analysis done after the fires. Click any
+      field to see its year as a curve.
+    layer: hh
+    date: 2026-11-04

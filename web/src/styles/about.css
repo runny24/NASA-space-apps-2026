@@ -1,0 +1,42 @@
+/* The About panel's own pieces (components/AboutDialog.tsx): its blocks, and its folds (the
+   challenge's three questions and the method), native <details> built like the legend's method fold
+   (styles/motion.css). The marker and Enter / Space are the
+   browser's own; the focus ring is the app's (:focus-visible in styles.css). The dialog's frame, its
+   scrolling and the Close button that stays in reach on a phone are in styles.css. No motion here. */
+
+.about h3 {
+  margin: 18px 0 6px;
+}
+
+.about-block > p,
+.about-block > ul,
+.about-block > ol {
+  margin: 4px 0 0;
+}
+
+.about-block li + li {
+  margin-top: 4px;
+}
+
+.about-fold {
+  margin: 6px 0 0;
+}
+
+.about-fold > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.about-fold > .about-block {
+  margin: 4px 0 10px;
+}
+
+/* Touch screens and phone widths: each summary at least a 44 px row, its text in the middle. */
+@media (max-width: 760px), (pointer: coarse) {
+  .about-fold > summary {
+    min-height: 44px;
+    box-sizing: border-box;
+    padding-block: 11px;
+  }
+}
+

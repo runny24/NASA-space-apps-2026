@@ -1,0 +1,23 @@
+# Tool settings only (pytest and ruff). The pipeline is not an installable package: it runs from the
+# repository root as `npm run pipeline -- <command>` (python -m pipeline inside .venv), with dependencies
+# from pipeline/requirements*.txt.
+
+[tool.pytest.ini_options]
+testpaths = ["pipeline/tests"]
+pythonpath = ["."]
+addopts = "-ra"
+filterwarnings = [
+    # rasterio warns when a temporary in-memory GeoTIFF has no georeferencing yet; harmless here.
+    "ignore::rasterio.errors.NotGeoreferencedWarning",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["research", "web", "work", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+ignore = [
+    "SIM108",  # a plain if/else is often clearer to a student than a conditional expression
+]

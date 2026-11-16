@@ -1,0 +1,168 @@
+/* The year as a curve (docs/MOTION_AND_STORY_BRIEF.md, slice 5; components/YearCurve.tsx): above the
+   timeline's marks in the date stepper, and as a story step's figure (story/StoryCurve.tsx).
+
+   Static, on purpose: no transition and no animation on any element of the curve, here or anywhere.
+   A line that draws itself or a dot that glides would show values the data does not hold (web/MOTION.md,
+   rule 3). In the story, whole points and whole segments appear as each picture is drawn.
+   Nothing here touches a timeline mark (.tick, .tick-current): their rules and markup are as they were.
+
+   No text under 12 px (0.8rem is 12 px with the app's 15 px root; max() keeps it so). Interface colours
+   only: the tool's greys, and in the story its own tokens (story/story.css) with the amber
+   (--story-accent) for the dot of the picture on the map and for nothing else. No data colour: not the
+   fire dots' #d55e00, not the harvest classes' viridis. */
+
+/* --- Above the marks ----------------------------------------------------------------------------------
+   The same side margins as .timeline (margin: var(--sp-2) var(--sp-3) 2px in styles.css), so the plot is
+   exactly as wide as the marks' axis: a dot at x % of the plot stands right above the mark at left x % of
+   the timeline. If the timeline's sides change, change these with them (e2e/curve.spec.ts measures it). */
+
+.curve {
+  margin: 8px var(--sp-3) 0;
+  /* A picture, not a control: taps and clicks go to whatever is under it, never to the curve. */
+  pointer-events: none;
+}
+
+.curve-label {
+  margin: 0;
+  font-size: max(0.8rem, 12px);
+  line-height: 1.25;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.curve-plot {
+  display: block;
+  width: 100%;
+  height: 48px;
+  /* The first and last dots sit on the plot's edges (the first and last passes); let them show whole. */
+  overflow: visible;
+}
+
+/* The faint rules at the highest and lowest value, which the labels name: the frame, not data. */
+.curve-rule {
+  stroke: var(--line);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+.curve-segment {
+  stroke: var(--muted);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.curve-dot {
+  fill: var(--text);
+}
+
+/* The month names under the marks, on the same axis (the timeline's side margins, as above). */
+.curve-months {
+  position: relative;
+  height: calc(max(0.8rem, 12px) * 1.25);
+  margin: 0 var(--sp-3) 2px;
+  font-size: max(0.8rem, 12px);
+  line-height: 1.25;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.curve-month {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* --- A story step's figure, on the story's dark surface ------------------------------------------------ */
+
+.story-curve {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.story-curve .curve {
+  margin: 0;
+}
+
+.story-curve .curve-months {
+  margin: 4px 0 0;
+  padding-top: 2px;
+  border-top: 1px solid var(--story-line);
+}
+
+.curve-caption {
+  margin: 0 0 2px;
+  font-size: max(0.8rem, 12px);
+  line-height: 1.3;
+  color: var(--story-text);
+}
+
+.story-curve .curve-label,
+.story-curve .curve-months {
+  color: var(--story-muted);
+}
+
+.story-curve .curve-segment {
+  stroke: var(--story-muted);
+}
+
+.story-curve .curve-rule {
+  stroke: var(--story-line);
+}
+
+.story-curve .curve-dot {
+  fill: var(--story-text);
+}
+
+/* The picture on the map: "where you are", the app's amber, ringed in the figure's own surface so the
+   line under it does not run into it. */
+.story-curve .curve-dot-current {
+  fill: var(--story-accent);
+  stroke: var(--story-raised);
+  stroke-width: 1.5;
+}
+
+/* --- A contrast theme: strokes and text in the system's colours ------------------------------------- */
+
+@media (forced-colors: active) {
+  .curve-segment,
+  .story-curve .curve-segment {
+    stroke: CanvasText;
+  }
+
+  /* Still dashed, so they never read as the data's line. */
+  .curve-rule,
+  .story-curve .curve-rule {
+    stroke: CanvasText;
+  }
+
+  .curve-dot,
+  .story-curve .curve-dot {
+    fill: CanvasText;
+  }
+
+  .story-curve .curve-dot-current {
+    fill: Highlight;
+    stroke: CanvasText;
+  }
+
+  .curve-label,
+  .curve-months,
+  .curve-caption,
+  .story-curve .curve-label,
+  .story-curve .curve-months {
+    color: CanvasText;
+  }
+
+  .story-curve .curve-months {
+    border-top-color: CanvasText;
+  }
+
+  /* No backplate behind a month's name: it would cut the axis line above it. Its colour is the theme's. */
+  .curve-month {
+    forced-color-adjust: none;
+    color: CanvasText;
+  }
+}

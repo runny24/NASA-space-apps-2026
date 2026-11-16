@@ -1,0 +1,196 @@
+# Template for a site: one place, one stack. Copy this file to pipeline/sites/<id>.yaml, where <id> is
+# the site id below, and fill it in. Then, from the repository root:
+#   npm run pipeline -- coverage --lon <lon> --lat <lat>   which stacks and dates cover the place
+#   npm run pipeline -- discover --site <id>               list the candidate stacks
+#   npm run pipeline -- discover --site <id> --stack <s>   choose one, write <id>.granules.json
+#   npm run pipeline -- run --site <id>                    runs, in this order: fetch, process, analyse,
+#                                                          fires, qa, export, manifest, validate
+# (In PowerShell, if the arguments after -- go missing: node scripts/py.mjs -m pipeline <command> ...)
+# Every field is checked when the file is loaded; an unknown or misspelled field, an unknown colour ramp,
+# or a range whose lower end is not below its upper end is an error.
+
+# Lower-case letters, digits and hyphens. Used in file names and URLs. Must match the file name.
+id: my-site
+
+# Shown in the app.
+title: "Place name, what changed"
+summary: "One or two plain sentences about what this site shows."
+
+# true only for data that is NOT a real NISAR observation (e.g. NASA's format samples). The app then
+# shows `notice` permanently. Real sites: leave is_sample false and delete notice.
+is_sample: false
+# notice: "..."
+
+# How to credit the data. Shown with the site.
+citation: "NISAR L2 GCOV data: NASA/JPL-Caltech and ISRO, distributed by the Alaska Satellite Facility DAAC."
+
+# Area of interest: [west, south, east, north] in degrees (longitude first). Keep it to a few tens of
+# kilometres: every date's window is streamed from multi-GB files.
+# The numbers below are a placeholder in open ocean: replace them with your own box.
+bbox: [0.0, 0.0, 0.4, 0.3]
+
+# Product and radar band. Frequency A is the main band; some granules carry only B (80 m).
+product: GCOV
+frequency: A
+
+# The stack (track_direction_frame) all dates come from, e.g. "030_A_019" (the sample's: track 030,
+# Ascending, frame 019). Leave it null: `discover --stack` records the chosen stack in <id>.granules.json,
+# and every stage uses that. If you do set it here, it must match the granule list, or the run stops.
+# Never mix stacks.
+stack: null
+
+# Data releases to accept. Every date found in ANY listed release is used; the order only decides which
+# copy wins when the same pass is in two releases. Two releases therefore usually give a mixed time series
+# (discover warns, the app labels the site 'mixed'), which the NISAR data guide advises against. List one
+# release unless mixing them is deliberate and a stable target is checked across the boundary (TASKS T4).
+releases: [provisional]
+
+# Polarizations to process; each must be present in every granule (HH, HV, VH or VV).
+polarizations: [HH, HV]
+
+# public: no login (only NASA's sample files). earthdata: real NISAR data; needs EARTHDATA_TOKEN or
+# EARTHDATA_USERNAME / EARTHDATA_PASSWORD in the .env file. Test with `npm run pipeline -- auth-check`.
+access: earthdata
+
+# Pixel size after multilooking, in metres. Must be a whole multiple of the product posting (20 m for
+# 20 MHz frequency A, 10 m for 40 MHz, 80 m for frequency B). 40 m keeps a whole site within the size budget.
+working_resolution_m: 40
+
+# Pixels with linear power at or below this floor are treated as invalid (real files hold values near
+# 1e-14 at scene edges).
+power_floor: 1.0e-5
+
+# A multilooked pixel needs at least this fraction of valid source pixels, otherwise it is no data.
+min_valid_fraction: 0.5
+
+# Web-map zoom of the display files: "auto" picks the zoom whose ground pixel size is closest to the
+# working resolution at this latitude.
+display_zoom: auto
+
+# The click-query stack is this many zoom levels coarser than the display files (2 = 4x coarser).
+stack_zoom_offset: 2
+
+# Box size, in display pixels, of the mean filter applied to each date before computing change.
+change_boxcar_px: 3
+
+# The statistics series (stats.json) averages every date over the same pixels: those valid on all dates
+# used. A date with fewer valid pixels than this fraction of the best-covered date is left out of that
+# footprint and shown as a gap, so a partial frame does not look like a change in backscatter.
+series_min_coverage: 0.8
+
+# Per-date backscatter layers. encoding: dB range stored in the 8-bit files (values outside are clipped);
+# lo must be below hi. display: the fixed stretch the app draws with, the same for every date; min must be
+# below max. ramp: a colour ramp the app knows (web/src/map/ramps.ts): grey (black to white, the usual
+# way to show radar: dark = low backscatter), viridis, or for layers with a meaningful centre
+# blue-orange, blue-red, BrewerPuOr11, BrewerRdBu11, BrewerBrBG11. All are colour-blind safe; never red
+# against green. Careful: the ColorBrewer name BrewerGreys9 runs white to black, which inverts a radar image.
+# description (optional): what the layer shows, as the app tells a visitor. The same text is used for
+# every polarization. Without it the app shows a short default.
+# display_by_polarization (optional): a display for one polarization's layer that replaces `display` there,
+# for example because HV is several dB darker than HH. It is only a drawing hint in the manifest: changing
+# it rewrites site.json and the manifest, never a raster.
+backscatter:
+  encoding: {lo: -35, hi: 5}
+  display: {min: -25, max: 0, ramp: grey}
+  # display_by_polarization:
+  #   HV: {min: -30, max: -8, ramp: grey}
+  # description: "..."
+
+# Change between consecutive dates, 10*log10(later/earlier) in dB. Delete this block for no change layer.
+# description (optional): as above.
+change:
+  encoding: {lo: -10, hi: 10}
+  display: {min: -6, max: 6, ramp: BrewerPuOr11}
+  # description: "..."
+
+# Stable-target check (optional; without this block it is skipped). The qa stage measures the mean
+# backscatter of this box on every date and flags a date more than tolerance_db (default 1.0) from the median
+# of all dates: on ground that should not change, such a jump points to a calibration, mode or release
+# problem, not to a change on the ground. With exactly two dates, both are flagged when they differ from
+# each other by more than tolerance_db; likewise, with an even number of dates whose two middle dates differ
+# by more than that, every date is flagged and neither half is blamed. A date with fewer than 100 valid
+# pixels in the box is left out and named. Results: work/<id>/qa/stable_target.json and a printed table.
+# Choosing a target: ground that should not change between your dates, such as dense forest or a city, in a
+# box inside bbox above that holds at least about 100 pixels at working_resolution_m.
+# stable_target:
+#   name: "what the target is, in a few words"
+#   bbox: [west, south, east, north]   # degrees, longitude first
+#   tolerance_db: 1.0
+
+# Harvest analysis (optional; without this block there is none). The analyse stage (it runs after process)
+# averages linear power over cells of cell_m metres, finds rice cells by how much HH rises from the flood to
+# the canopy, and gives every rice cell the first pair of passes in which its backscatter falls by more than a
+# threshold taken from the site's own data. It writes work/<id>/analysis/harvest.json (every number, the
+# settings used) and harvest_classes.tif; export then adds the static layer harvest-wave and two series to
+# stats.json. The method, its thresholds and its limits: docs/METHODS.md, "Analysis: harvest pairs".
+# Which dates are the flood, the canopy and the harvest passes is the team's choice. Every date named must be
+# one of the site's dates, written YYYY-MM-DD; the site needs HH and HV in polarizations above.
+#   cell_m        cell size in metres, a whole multiple of working_resolution_m (default 100)
+#   marker        HH or HV: the polarization whose harvest pairs make the map (default HH). Both are always
+#                 computed and both series are published. Once the analysis and the fire detections are in,
+#                 `npm run pipeline -- marker --site <id>` applies the rule that chooses it (docs/METHODS.md,
+#                 section 6, "Choosing the marker"); it changes no setting: set marker yourself, then run
+#                 analyse and export again.
+#   flood_dates   passes of the transplanting flood: a rice cell is darkest on one of them
+#   peak_dates    passes at full canopy (none of them a flood date)
+#   passes        at least three dates in ascending order. Their first pair must come BEFORE the harvest
+#                 starts: it measures how much standing rice varies, which sets the threshold together with
+#                 the stable ground
+#   false_alarm   the share of unchanged cells allowed to cross the threshold in a pair (default 0.02)
+#   rice_rise_db  auto (Otsu's threshold on the rise of all cells) or a number of dB (default auto)
+#   stable_boxes  boxes of ground that should not change, [west, south, east, north] each, inside bbox above;
+#                 default: the stable_target's box. Together they need at least 1/false_alarm cells (50 at
+#                 0.02) that are not rice
+#   title, description  (optional) the layer's title and the team's own words for it; without a description
+#                 the app shows a short default
+# harvest:
+#   cell_m: 100
+#   marker: HH
+#   flood_dates: [YYYY-MM-DD, YYYY-MM-DD]
+#   peak_dates: [YYYY-MM-DD, YYYY-MM-DD]
+#   passes: [YYYY-MM-DD, YYYY-MM-DD, YYYY-MM-DD, YYYY-MM-DD]
+#   false_alarm: 0.02
+#   rice_rise_db: auto
+#   stable_boxes: [[west, south, east, north]]
+#   title: "..."
+#   description: "..."
+
+# Fire detections (optional; without this block there are none). The fires stage (it runs after analyse) asks
+# NASA FIRMS for VIIRS 375 m active fire detections inside bbox above, at most 5 days per request, and caches
+# the raw CSV files under work/<id>/fires/, so a re-run asks only for what is missing (and again for a request
+# made less than 2 days, by UTC date, after its last day). It needs a free map key in .env as FIRMS_MAP_KEY (see
+# .env.example); without one it says how to get one and the run carries on. When FIRMS fails (a wrong key, the
+# rate limit, an outage), `run` prints a WARNING and carries on without new detections; the fires command on
+# its own stops with the error. export then publishes
+# <id>/fires.geojson as the overlay "fires", and with periods one bar chart per period in stats.json: detections
+# per km2 on each class of the harvest-wave layer, with a 95 % interval. Method and limits: docs/METHODS.md,
+# section 6. Which days and periods to use is the team's choice.
+#   start, end    first and last UTC date to fetch, written YYYY-MM-DD; days that have not ended yet are
+#                 fetched by a later run
+#   sources       FIRMS source names: VIIRS_NOAA20_NRT, VIIRS_NOAA21_NRT, VIIRS_SNPP_NRT (near real time:
+#                 recent weeks) or the same with _SP (standard processing: months after the pass). A detection
+#                 found in two sources is kept once, from the one listed first. FIRMS's attribute page (read on
+#                 14 November 2026) says Suomi NPP (SNPP) no longer delivers new data
+#   periods       (optional; needs the harvest block) a list of [first day, last day], inside start..end
+#   title, description  (optional) the overlay's title and the team's own words for it; without a description
+#                 the app shows a short default
+# fires:
+#   start: YYYY-MM-DD
+#   end: YYYY-MM-DD
+#   sources: [VIIRS_NOAA20_NRT, VIIRS_NOAA21_NRT]
+#   periods: [[YYYY-MM-DD, YYYY-MM-DD]]
+#   title: "..."
+#   description: "..."
+
+# Guided tour (optional): steps shown in order, copied to site.json as written. Each step has an id, a
+# title and a text in the team's words.
+# A step may name a layer (with a date for a per-date layer, or reference and secondary for a pair layer),
+# overlays to switch on, and a view {center: [longitude, latitude], zoom}. validate checks that everything a
+# step names exists.
+# story:
+#   - id: first-step
+#     title: "..."
+#     text: "..."
+#     layer: hh
+#     date: YYYY-MM-DD
+#     overlays: [fires]

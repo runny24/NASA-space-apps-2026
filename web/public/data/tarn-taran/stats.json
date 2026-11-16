@@ -1,0 +1,510 @@
+{
+  "schema": 1,
+  "site": "tarn-taran",
+  "series": [
+    {
+      "id": "hh-mean",
+      "title": "Mean HH backscatter over the window",
+      "unit": "dB",
+      "layer": "hh",
+      "region": "The site box drawn in the product's own map projection (EPSG:32643) and rounded to whole pixels, which is slightly larger than the lon/lat bounds; only the pixels valid on every date used.",
+      "method": "Mean of linear gamma-naught power at 20 m over the same pixels on every date (those valid on all 24 dates used), then converted to dB with 10*log10; n is that pixel count. A date with fewer valid pixels than 80% of the best-covered date is not used: its value is null (a gap) and its n is its own valid-pixel count.",
+      "points": [
+        {
+          "date": "2025-11-21",
+          "value": -10.453,
+          "n": 2063502
+        },
+        {
+          "date": "2025-12-03",
+          "value": -10.476,
+          "n": 2063502
+        },
+        {
+          "date": "2025-12-15",
+          "value": -10.205,
+          "n": 2063502
+        },
+        {
+          "date": "2025-12-27",
+          "value": -9.932,
+          "n": 2063502
+        },
+        {
+          "date": "2026-01-08",
+          "value": -9.761,
+          "n": 2063502
+        },
+        {
+          "date": "2026-01-20",
+          "value": -9.531,
+          "n": 2063502
+        },
+        {
+          "date": "2026-02-01",
+          "value": -8.956,
+          "n": 2063502
+        },
+        {
+          "date": "2026-02-25",
+          "value": -9.032,
+          "n": 2063502
+        },
+        {
+          "date": "2026-03-09",
+          "value": -9.492,
+          "n": 2063502
+        },
+        {
+          "date": "2026-03-21",
+          "value": -8.877,
+          "n": 2063502
+        },
+        {
+          "date": "2026-04-26",
+          "value": -11.444,
+          "n": 2063502
+        },
+        {
+          "date": "2026-05-08",
+          "value": -10.952,
+          "n": 2063502
+        },
+        {
+          "date": "2026-05-20",
+          "value": -10.795,
+          "n": 2063502
+        },
+        {
+          "date": "2026-06-01",
+          "value": -9.895,
+          "n": 2063502
+        },
+        {
+          "date": "2026-06-13",
+          "value": -9.145,
+          "n": 2063502
+        },
+        {
+          "date": "2026-06-25",
+          "value": -10.859,
+          "n": 2063502
+        },
+        {
+          "date": "2026-07-19",
+          "value": -10.165,
+          "n": 2063502
+        },
+        {
+          "date": "2026-08-12",
+          "value": -6.728,
+          "n": 2063502
+        },
+        {
+          "date": "2026-08-24",
+          "value": -5.624,
+          "n": 2063502
+        },
+        {
+          "date": "2026-09-17",
+          "value": -4.928,
+          "n": 2063502
+        },
+        {
+          "date": "2026-09-29",
+          "value": -5.291,
+          "n": 2063502
+        },
+        {
+          "date": "2026-10-11",
+          "value": -6.517,
+          "n": 2063502
+        },
+        {
+          "date": "2026-10-23",
+          "value": -7.874,
+          "n": 2063502
+        },
+        {
+          "date": "2026-11-04",
+          "value": -9.305,
+          "n": 2063502
+        }
+      ]
+    },
+    {
+      "id": "hv-mean",
+      "title": "Mean HV backscatter over the window",
+      "unit": "dB",
+      "layer": "hv",
+      "region": "The site box drawn in the product's own map projection (EPSG:32643) and rounded to whole pixels, which is slightly larger than the lon/lat bounds; only the pixels valid on every date used.",
+      "method": "Mean of linear gamma-naught power at 20 m over the same pixels on every date (those valid on all 24 dates used), then converted to dB with 10*log10; n is that pixel count. A date with fewer valid pixels than 80% of the best-covered date is not used: its value is null (a gap) and its n is its own valid-pixel count.",
+      "points": [
+        {
+          "date": "2025-11-21",
+          "value": -18.166,
+          "n": 2063502
+        },
+        {
+          "date": "2025-12-03",
+          "value": -18.212,
+          "n": 2063502
+        },
+        {
+          "date": "2025-12-15",
+          "value": -15.701,
+          "n": 2063502
+        },
+        {
+          "date": "2025-12-27",
+          "value": -16.922,
+          "n": 2063502
+        },
+        {
+          "date": "2026-01-08",
+          "value": -16.849,
+          "n": 2063502
+        },
+        {
+          "date": "2026-01-20",
+          "value": -16.681,
+          "n": 2063502
+        },
+        {
+          "date": "2026-02-01",
+          "value": -16.166,
+          "n": 2063502
+        },
+        {
+          "date": "2026-02-25",
+          "value": -16.227,
+          "n": 2063502
+        },
+        {
+          "date": "2026-03-09",
+          "value": -17.37,
+          "n": 2063502
+        },
+        {
+          "date": "2026-03-21",
+          "value": -15.807,
+          "n": 2063502
+        },
+        {
+          "date": "2026-04-26",
+          "value": -18.835,
+          "n": 2063502
+        },
+        {
+          "date": "2026-05-08",
+          "value": -18.046,
+          "n": 2063502
+        },
+        {
+          "date": "2026-05-20",
+          "value": -18.299,
+          "n": 2063502
+        },
+        {
+          "date": "2026-06-01",
+          "value": -17.763,
+          "n": 2063502
+        },
+        {
+          "date": "2026-06-13",
+          "value": -16.447,
+          "n": 2063502
+        },
+        {
+          "date": "2026-06-25",
+          "value": -18.451,
+          "n": 2063502
+        },
+        {
+          "date": "2026-07-19",
+          "value": -18.693,
+          "n": 2063502
+        },
+        {
+          "date": "2026-08-12",
+          "value": -17.357,
+          "n": 2063502
+        },
+        {
+          "date": "2026-08-24",
+          "value": -15.847,
+          "n": 2063502
+        },
+        {
+          "date": "2026-09-17",
+          "value": -16.094,
+          "n": 2063502
+        },
+        {
+          "date": "2026-09-29",
+          "value": -15.894,
+          "n": 2063502
+        },
+        {
+          "date": "2026-10-11",
+          "value": -16.036,
+          "n": 2063502
+        },
+        {
+          "date": "2026-10-23",
+          "value": -15.423,
+          "n": 2063502
+        },
+        {
+          "date": "2026-11-04",
+          "value": -16.901,
+          "n": 2063502
+        }
+      ]
+    },
+    {
+      "id": "harvest-share-hh",
+      "title": "Share of the rice area with a harvest pair seen by each pass (HH, for comparison; HV defines the map)",
+      "unit": "%",
+      "layer": "harvest-wave",
+      "region": "Rice cells of the site box: 100 m cells on the product's own grid (EPSG:32643) whose centres lie inside the site box and whose HH rose by at least 7.40 dB from the flood (2026-06-13, 2026-06-25, 2026-07-19) to the canopy (2026-08-24, 2026-09-17, 2026-09-29): 45928 cells, 459.28 km2. Counted here: the 45928 of them (459.28 km2) valid in HH on every pass from 2026-09-17 to 2026-11-04, the same cells for every point.",
+      "method": "A rice cell counts from the first pair of consecutive passes, from 2026-09-29 to 2026-10-11 on, in which its HH backscatter (mean of linear power over the cell, in dB) fell by more than 3.52 dB. That threshold is the more negative of the 0.02 quantile of the change on stable ground in any pair (-3.52 dB) and on standing rice from 2026-09-17 to 2026-09-29 (-2.39 dB). False alarms at that threshold: stable cells at most 1.9 % in any pair, standing rice 0.6 % in the first pair. The 289 cells that fell already from 2026-09-17 to 2026-09-29 count in the total, not as harvested. n is the number of rice cells counted.",
+      "points": [
+        {
+          "date": "2026-10-11",
+          "value": 9.941647796551123,
+          "n": 45928
+        },
+        {
+          "date": "2026-10-23",
+          "value": 22.692039714335483,
+          "n": 45928
+        },
+        {
+          "date": "2026-11-04",
+          "value": 44.641612959414736,
+          "n": 45928
+        }
+      ]
+    },
+    {
+      "id": "harvest-share-hv",
+      "title": "Share of the rice area with a harvest pair seen by each pass (HV, defines the harvest map)",
+      "unit": "%",
+      "layer": "harvest-wave",
+      "region": "Rice cells of the site box: 100 m cells on the product's own grid (EPSG:32643) whose centres lie inside the site box and whose HH rose by at least 7.40 dB from the flood (2026-06-13, 2026-06-25, 2026-07-19) to the canopy (2026-08-24, 2026-09-17, 2026-09-29): 45928 cells, 459.28 km2. Counted here: the 45928 of them (459.28 km2) valid in HV on every pass from 2026-09-17 to 2026-11-04, the same cells for every point.",
+      "method": "A rice cell counts from the first pair of consecutive passes, from 2026-09-29 to 2026-10-11 on, in which its HV backscatter (mean of linear power over the cell, in dB) fell by more than 1.59 dB. That threshold is the more negative of the 0.02 quantile of the change on stable ground in any pair (-1.41 dB) and on standing rice from 2026-09-17 to 2026-09-29 (-1.59 dB). False alarms at that threshold: stable cells at most 1.9 % in any pair, standing rice 2.0 % in the first pair. The 918 cells that fell already from 2026-09-17 to 2026-09-29 count in the total, not as harvested. n is the number of rice cells counted.",
+      "points": [
+        {
+          "date": "2026-10-11",
+          "value": 6.2772165128026485,
+          "n": 45928
+        },
+        {
+          "date": "2026-10-23",
+          "value": 9.231841142658073,
+          "n": 45928
+        },
+        {
+          "date": "2026-11-04",
+          "value": 67.91499738721477,
+          "n": 45928
+        }
+      ]
+    }
+  ],
+  "bars": [
+    {
+      "id": "fires-2026-10-12-2026-10-23",
+      "title": "VIIRS fire detections (NASA FIRMS) per km2 in each harvest-map class, 12 to 23 October 2026 (UTC dates)",
+      "unit": "detections per km2",
+      "layer": "harvest-wave",
+      "region": "The classes of the harvest-wave map (HV, 100 m cells on the product's own grid, EPSG:32643, those whose centres lie inside the site box) under the VIIRS detections inside the site box with UTC dates from 2026-10-12 to 2026-10-23: 99 detections. Of their area, 0.0 % fell on cells without a class and 0.5 % outside the site box or the analysis grid; that part is not counted.",
+      "method": "Detections from the FIRMS sources VIIRS_NOAA20_NRT, VIIRS_NOAA21_NRT, VIIRS_SNPP_NRT. Each detection stands for a 375 m square (the nominal VIIRS I-band pixel) centred on it and aligned with the product grid, and is shared among the classes by the area of that square on each class's cells; the parts on cells without a class, outside the site box or outside the grid are not counted. Density = detections attributed to a class / the class's area in km2 inside the site box, on the product grid. low and high: Garwood's chi-square formula for a 95 % Poisson interval (exact for whole counts), applied to the attributed count n, chi2(0.025; 2n)/2 to chi2(0.975; 2n+2)/2 from scipy's chi-square quantiles, divided by the area. The attributed count is a sum of shares and rarely a whole number; for such a count the formula interpolates between whole counts and is not exact. Neighbouring detections are not independent (one fire can fill several pixels and be seen by several satellites), so this interval is a lower bound on the real uncertainty. n is the attributed count rounded to a whole number, for display only. Details: docs/METHODS.md, section 6. Credit: We acknowledge the use of data and/or imagery from NASA's Fire Information for Resource Management System (FIRMS) (https://earthdata.nasa.gov/firms), part of NASA's Land, Atmosphere Near real-time Capability for Earth observations (LANCE) (https://earthdata.nasa.gov/lance), and NASA's Earth Science Data and Information System (ESDIS).",
+      "categories": [
+        {
+          "label": "Harvested between 29 September and 11 October 2026",
+          "value": 0.267524095503641,
+          "n": 8,
+          "class": 1,
+          "low": 0.11334302156318639,
+          "high": 0.5334778350111814,
+          "note": "7.71 detections attributed, class area 28.83 km2"
+        },
+        {
+          "label": "Harvested between 11 October and 23 October 2026",
+          "value": 0.2515539912520836,
+          "n": 3,
+          "class": 2,
+          "low": 0.059277007914931235,
+          "high": 0.6915141022635506,
+          "note": "3.41 detections attributed, class area 13.57 km2"
+        },
+        {
+          "label": "Harvested between 23 October and 4 November 2026",
+          "value": 0.10457298681987852,
+          "n": 28,
+          "class": 3,
+          "low": 0.06959077222620108,
+          "high": 0.1509570544742629,
+          "note": "28.18 detections attributed, class area 269.52 km2"
+        },
+        {
+          "label": "Rice, no harvest seen by 4 November 2026",
+          "value": 0.12303765929350384,
+          "n": 17,
+          "class": 4,
+          "low": 0.0716757098985579,
+          "high": 0.1969916247841068,
+          "note": "17.00 detections attributed, class area 138.18 km2"
+        },
+        {
+          "label": "Fell before 29 September 2026",
+          "value": 0.13617637533932203,
+          "n": 1,
+          "class": 5,
+          "low": 0.0064627383411610985,
+          "high": 0.6535334439518148,
+          "note": "1.25 detections attributed, class area 9.18 km2"
+        },
+        {
+          "label": "Not rice",
+          "value": 0.11244314189315097,
+          "n": 41,
+          "class": 6,
+          "low": 0.0806573075585481,
+          "high": 0.15259558805314138,
+          "note": "40.90 detections attributed, class area 363.78 km2"
+        }
+      ]
+    },
+    {
+      "id": "fires-2026-10-24-2026-11-04",
+      "title": "VIIRS fire detections (NASA FIRMS) per km2 in each harvest-map class, 24 October to 4 November 2026 (UTC dates)",
+      "unit": "detections per km2",
+      "layer": "harvest-wave",
+      "region": "The classes of the harvest-wave map (HV, 100 m cells on the product's own grid, EPSG:32643, those whose centres lie inside the site box) under the VIIRS detections inside the site box with UTC dates from 2026-10-24 to 2026-11-04: 235 detections. Of their area, 0.0 % fell on cells without a class and 0.7 % outside the site box or the analysis grid; that part is not counted.",
+      "method": "Detections from the FIRMS sources VIIRS_NOAA20_NRT, VIIRS_NOAA21_NRT, VIIRS_SNPP_NRT. Each detection stands for a 375 m square (the nominal VIIRS I-band pixel) centred on it and aligned with the product grid, and is shared among the classes by the area of that square on each class's cells; the parts on cells without a class, outside the site box or outside the grid are not counted. Density = detections attributed to a class / the class's area in km2 inside the site box, on the product grid. low and high: Garwood's chi-square formula for a 95 % Poisson interval (exact for whole counts), applied to the attributed count n, chi2(0.025; 2n)/2 to chi2(0.975; 2n+2)/2 from scipy's chi-square quantiles, divided by the area. The attributed count is a sum of shares and rarely a whole number; for such a count the formula interpolates between whole counts and is not exact. Neighbouring detections are not independent (one fire can fill several pixels and be seen by several satellites), so this interval is a lower bound on the real uncertainty. n is the attributed count rounded to a whole number, for display only. Details: docs/METHODS.md, section 6. Credit: We acknowledge the use of data and/or imagery from NASA's Fire Information for Resource Management System (FIRMS) (https://earthdata.nasa.gov/firms), part of NASA's Land, Atmosphere Near real-time Capability for Earth observations (LANCE) (https://earthdata.nasa.gov/lance), and NASA's Earth Science Data and Information System (ESDIS).",
+      "categories": [
+        {
+          "label": "Harvested between 29 September and 11 October 2026",
+          "value": 0.2827430966106116,
+          "n": 8,
+          "class": 1,
+          "low": 0.12323022207053015,
+          "high": 0.5537470547530403,
+          "note": "8.15 detections attributed, class area 28.83 km2"
+        },
+        {
+          "label": "Harvested between 11 October and 23 October 2026",
+          "value": 0.5331725100273015,
+          "n": 7,
+          "class": 2,
+          "low": 0.21831367664532172,
+          "high": 1.0862033360282142,
+          "note": "7.24 detections attributed, class area 13.57 km2"
+        },
+        {
+          "label": "Harvested between 23 October and 4 November 2026",
+          "value": 0.3502328465659375,
+          "n": 94,
+          "class": 3,
+          "low": 0.2831568424368616,
+          "high": 0.4284158471658177,
+          "note": "94.39 detections attributed, class area 269.52 km2"
+        },
+        {
+          "label": "Rice, no harvest seen by 4 November 2026",
+          "value": 0.3147845644611227,
+          "n": 43,
+          "class": 4,
+          "low": 0.2282679378459048,
+          "high": 0.42329583920600905,
+          "note": "43.50 detections attributed, class area 138.18 km2"
+        },
+        {
+          "label": "Fell before 29 September 2026",
+          "value": 0.2751242141850999,
+          "n": 3,
+          "class": 5,
+          "low": 0.04633583162613397,
+          "high": 0.8764560566976746,
+          "note": "2.53 detections attributed, class area 9.18 km2"
+        },
+        {
+          "label": "Not rice",
+          "value": 0.21298771365731317,
+          "n": 77,
+          "class": 6,
+          "low": 0.16821764261264893,
+          "high": 0.26601456220294517,
+          "note": "77.48 detections attributed, class area 363.78 km2"
+        }
+      ]
+    },
+    {
+      "id": "fires-2026-11-05-2026-11-14",
+      "title": "VIIRS fire detections (NASA FIRMS) per km2 in each harvest-map class, 5 to 14 November 2026 (UTC dates)",
+      "unit": "detections per km2",
+      "layer": "harvest-wave",
+      "region": "The classes of the harvest-wave map (HV, 100 m cells on the product's own grid, EPSG:32643, those whose centres lie inside the site box) under the VIIRS detections inside the site box with UTC dates from 2026-11-05 to 2026-11-14: 90 detections. Of their area, 0.0 % fell on cells without a class and 0.3 % outside the site box or the analysis grid; that part is not counted.",
+      "method": "Detections from the FIRMS sources VIIRS_NOAA20_NRT, VIIRS_NOAA21_NRT, VIIRS_SNPP_NRT. Each detection stands for a 375 m square (the nominal VIIRS I-band pixel) centred on it and aligned with the product grid, and is shared among the classes by the area of that square on each class's cells; the parts on cells without a class, outside the site box or outside the grid are not counted. Density = detections attributed to a class / the class's area in km2 inside the site box, on the product grid. low and high: Garwood's chi-square formula for a 95 % Poisson interval (exact for whole counts), applied to the attributed count n, chi2(0.025; 2n)/2 to chi2(0.975; 2n+2)/2 from scipy's chi-square quantiles, divided by the area. The attributed count is a sum of shares and rarely a whole number; for such a count the formula interpolates between whole counts and is not exact. Neighbouring detections are not independent (one fire can fill several pixels and be seen by several satellites), so this interval is a lower bound on the real uncertainty. n is the attributed count rounded to a whole number, for display only. Details: docs/METHODS.md, section 6. Credit: We acknowledge the use of data and/or imagery from NASA's Fire Information for Resource Management System (FIRMS) (https://earthdata.nasa.gov/firms), part of NASA's Land, Atmosphere Near real-time Capability for Earth observations (LANCE) (https://earthdata.nasa.gov/lance), and NASA's Earth Science Data and Information System (ESDIS).",
+      "categories": [
+        {
+          "label": "Harvested between 29 September and 11 October 2026",
+          "value": 0.12458088862463877,
+          "n": 4,
+          "class": 1,
+          "low": 0.030820380312540207,
+          "high": 0.33458983930423764,
+          "note": "3.59 detections attributed, class area 28.83 km2"
+        },
+        {
+          "label": "Harvested between 11 October and 23 October 2026",
+          "value": 0.09752796613765982,
+          "n": 1,
+          "class": 2,
+          "low": 0.005316086007801457,
+          "high": 0.45120153903399235,
+          "note": "1.32 detections attributed, class area 13.57 km2"
+        },
+        {
+          "label": "Harvested between 23 October and 4 November 2026",
+          "value": 0.11778085691441059,
+          "n": 32,
+          "class": 3,
+          "low": 0.08042728392670069,
+          "high": 0.16649937537990947,
+          "note": "31.74 detections attributed, class area 269.52 km2"
+        },
+        {
+          "label": "Rice, no harvest seen by 4 November 2026",
+          "value": 0.1410926735493744,
+          "n": 19,
+          "class": 4,
+          "low": 0.08557097570821233,
+          "high": 0.2191029223074562,
+          "note": "19.50 detections attributed, class area 138.18 km2"
+        },
+        {
+          "label": "Fell before 29 September 2026",
+          "value": 0.07555712199938631,
+          "n": 1,
+          "class": 5,
+          "low": 0.00046527841584951727,
+          "high": 0.5478841691260179,
+          "note": "0.69 detections attributed, class area 9.18 km2"
+        },
+        {
+          "label": "Not rice",
+          "value": 0.09030827374845997,
+          "n": 33,
+          "class": 6,
+          "low": 0.06210704053785671,
+          "high": 0.12692203577017044,
+          "note": "32.85 detections attributed, class area 363.78 km2"
+        }
+      ]
+    }
+  ]
+}

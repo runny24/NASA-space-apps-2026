@@ -1,0 +1,13 @@
+# Teammates work on macOS and Windows. Keep every text file LF in the working
+# tree on both, so scripts, JSON and YAML behave the same everywhere.
+* text=auto eol=lf
+
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.tif  binary
+*.tiff binary
+*.h5   binary
+*.pdf  binary
+*.ico  binary
