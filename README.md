@@ -1,5 +1,5 @@
 # NASA Space Apps 2026: Dancing with the SARs
-
+Members: Owen Xie, Felix Yu, Yunyi Qian, Aryan Grover, Nuraziz Ungboyev
 
 ## How it works
 
